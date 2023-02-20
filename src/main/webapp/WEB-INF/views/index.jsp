@@ -66,14 +66,21 @@
 								<button type='button' class='like p-1'
 									onclick="like(${i.getMabaiviet() },true, '${i.getUser().getTaikhoan()}')">
 									<i
-										class='fas fa-heart action <c:if test="${i.IsLiked(userID.getTaikhoan(), true) }">fas-liked</c:if>'
-										id='pl${i.getMabaiviet() }'></i> <span class='count-like'
-										id='p${i.getMabaiviet() }'>${i.getCountLike() }</span>
+										class='fas fa-heart action <c:if test="${ i.IsLiked(userID.getTaikhoan()) }">fas-liked</c:if>'
+										id='pl${i.getMabaiviet() }'></i>
+										<span class='count-like' id='p${i.getMabaiviet() }'>
+										<c:if test="${i.getCountLike() > 0}">${i.getCountLike() }</c:if>
+										</span>
 								</button>
 								<button type='button' class='comment p-1'
-									onclick="window.location.href='./post.php?id='">
-									<i class='fas fa-comment action'></i> <span
-										class='count-comment'>${i.getCountComment() }</span>
+									onclick="window.location.href='/bai-viet/${i.getMabaiviet()}'">
+									<i class='fas fa-comment action'></i> 
+									<span class='count-comment'>
+									
+						<c:if test="${i.getCountComment() > 0}">${i.getCountComment() }</c:if>
+									
+									
+									</span>
 								</button>
 								<button type='button' class='share p-1'>
 									<i class='fas fa-share action'></i><span class='count-share'></span>

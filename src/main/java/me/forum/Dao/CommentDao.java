@@ -54,7 +54,7 @@ public class CommentDao {
 
 		@Override
 		public Comment mapRow(ResultSet rs, int rowNum) throws SQLException {
-			return new Comment(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getLong(4), rs.getDate(5));
+			return new Comment(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getLong(4), rs.getString(5));
 		}
 		
 	}

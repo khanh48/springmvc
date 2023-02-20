@@ -47,6 +47,15 @@ public class NotificationDao {
 		return jdbcTemplate.update("insert into thongbao(mathongbao, nguoigui, noidung, nguoinhan, url) value(?, ?, ?, ?, ?)",id , nguoigui, noidung, nguoinhan, url);
 	}
 	
+
+	public int MakeAsRead(long id) {
+		try {
+			return jdbcTemplate.update("update thongbao set trangthai = 1 where mathongbao = ?", id);
+		} catch (Exception e) {
+			return 0;
+		}
+	}
+	
 	
 	private class NotiMapper implements RowMapper<Notification> {
 		@Override

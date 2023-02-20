@@ -29,7 +29,7 @@ public class PostDao {
 	
 	public Post GetPostByID(long id) {
 		try {
-			return jdbcTemplate.queryForObject("select * from baiviet where mabaiviet=?", new Object[] {id}, new int[] {Types.INTEGER}, new PostMapper());
+			return jdbcTemplate.queryForObject("select * from baiviet where mabaiviet=?", new Object[] {id}, new int[] {Types.BIGINT}, new PostMapper());
 		} catch (EmptyResultDataAccessException e) {
 			return null;
 		}
@@ -37,7 +37,7 @@ public class PostDao {
 	
 	public List<Post> GetPostsByUser(String taikhoan){
 		try {
-			return jdbcTemplate.query("select * from baiviet where taikhoan=?", new Object[] {taikhoan},new int[] {Types.INTEGER}, new PostMapper());
+			return jdbcTemplate.query("select * from baiviet where taikhoan=?", new Object[] {taikhoan},new int[] {Types.CHAR}, new PostMapper());
 		} catch (EmptyResultDataAccessException e) {
 			return null;
 		}

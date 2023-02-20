@@ -95,16 +95,21 @@ public class MainRestController {
 	}
 
 	@RequestMapping(value = "/sendLike", method = RequestMethod.POST)
-	public Map<String, String> like(@RequestParam long id, @RequestParam boolean isPost, @RequestParam String token,
+	public Map<String, Object> like(@RequestParam long id, @RequestParam boolean isPost, @RequestParam String token,
 			@RequestParam String to) {
 
+		Map<String, Object> map = new HashMap<>();
 		User user = userDao.findUserByCrypt(token);
 		User toUser = userDao.findUserByUserName(to);
-		if (user == null || toUser == null)
-			return null;
+		boolean liked;
+		int count = 0;
 		long curTime = System.currentTimeMillis();
-		if (likeDao.IsLiked(id, user.getTaikhoan(), isPost) > 0) {
+		if (user == null || toUser == null) {
+			liked = false;
+		}
+		else if (likeDao.IsLiked(id, user.getTaikhoan(), isPost) > 0) {
 			likeDao.DeleteLike(isPost, user.getTaikhoan(), id);
+			liked = false;
 		} else {
 			String ct, url;
 			ct = user.getHoten() + " đã thích " + (isPost ? "bài viết" : "bình luận") + " của bạn.";
@@ -120,9 +125,12 @@ public class MainRestController {
 				json.put("date", ntf.getDateFormated());
 				UserHandler.GetInstance().send(to, json.toString());
 			}
+			liked = true;
 		}
-		HashMap<String, String> map = new HashMap<>();
-		return null;
+		count = likeDao.GetTotalLikePost(id);
+		map.put("status", liked);
+		map.put("count", count);
+		return map;
 	}
 
 	public static String encrypt(String input, long key) {

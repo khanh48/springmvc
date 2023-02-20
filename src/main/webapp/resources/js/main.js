@@ -51,7 +51,6 @@ function loadReadMore() {
 			}
 		}
 	}
-
 }
 
 function login() {

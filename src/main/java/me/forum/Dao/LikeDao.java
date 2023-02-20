@@ -27,12 +27,13 @@ public class LikeDao {
 	}
 
 	public int IsLiked(long mabaiviet, String taikhoan, boolean isPost) {
-		String sql = "SELECT COUNT(maluotthich) FROM luotthich WHERE +" + (isPost ? "mabaiviet" : "mabinhluan")
+		String sql = "SELECT COUNT(maluotthich) FROM luotthich WHERE " + (isPost ? "mabaiviet" : "mabinhluan")
 				+ " = ? and taikhoan = ?";
 		try {
 			return jdbcTemplate.queryForObject(sql, new Object[] { mabaiviet, taikhoan },
 					new int[] { Types.BIGINT, Types.CHAR }, Integer.class);
 		} catch (EmptyResultDataAccessException e) {
+			System.out.println(e.getMessage());
 			return 0;
 		}
 	}

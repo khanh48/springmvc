@@ -13,18 +13,16 @@ function like(id, isPost, toUser) {
 			"to": toUser
 		},
 		success: function(respone) {
-			
-			/*var data = JSON.parse(respone)
-			$('#' + tagID).text(data.count);
+			var data = respone
+			$('#' + tagID).text(data.count > 0 ? data.count : "");
 			$classLiked = "fas-liked";
 			$tagLikeSelected = $('#' + tagLike);
 			if (data.status) {
 				if (!$tagLikeSelected.hasClass($classLiked))
 					$tagLikeSelected.addClass($classLiked);
-				sendLike(userName, toUser, data.notify)
-			} else { 
+			} else {
 				$('#' + tagLike).removeClass($classLiked);
-			}*/
+			}
 		}
 	})
 
@@ -63,24 +61,26 @@ $(document).ready(function() {
 		$.ajax({
 			type: "GET",
 			url: "/loadPost",
-			data: {start: start,
-					limit: 10},
-			success : function(response){
-				$.each(response, function(index, item){
+			data: {
+				start: start,
+				limit: 10
+			},
+			success: function(response) {
+				$.each(response, function(index, item) {
 					$("#listPosts").append(item)
 				})
 			}
 		})
 	})
-	
+
 	$("#confirm-yes").click(function() {
 		console.log($(this)[0].value)
 		$.ajax({
 			type: "POST",
 			url: "/delete-post",
-			data: {id: $(this)[0].value},
-			success : function(response){
-				$.each(response, function(index, item){
+			data: { id: $(this)[0].value },
+			success: function(response) {
+				$.each(response, function(index, item) {
 					$("#listPosts").append(item)
 				})
 			}

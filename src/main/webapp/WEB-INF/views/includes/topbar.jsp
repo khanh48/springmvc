@@ -9,7 +9,7 @@
 		<!-- Toggle button -->
 
 		<div class="logo">
-			<a class="navbar-brand mt-2 mt-lg-0" href="./"> <img
+			<a class="navbar-brand mt-2 mt-lg-0" href="/"> <img
 				src="/resources/images/logo.png" height="50" alt="logo">
 			</a><i class="bi bi-bag-fill"></i>
 			<form method="get">

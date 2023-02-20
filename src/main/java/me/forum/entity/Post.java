@@ -7,9 +7,6 @@ import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.ZoneId;
 import java.util.Date;
-
-import org.springframework.jdbc.core.JdbcTemplate;
-
 import me.forum.controller.BaseController;
 
 public class Post {
@@ -39,12 +36,9 @@ public class Post {
 		this.user = null;
 	}
 
-	public boolean IsLiked(String taikoan, boolean isPost) {
+	public boolean IsLiked(String taikoan) {
 		int count = 0;
-		try {
-			count = BaseController.GetInstance().likeDao.IsLiked(this.mabaiviet, taikoan, isPost);
-		} catch (Exception e) {
-		}
+		count = BaseController.GetInstance().likeDao.IsLiked(this.mabaiviet, taikoan, true);
 		return count > 0 ? true : false;
 	}
 
