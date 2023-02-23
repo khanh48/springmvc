@@ -7,6 +7,8 @@ import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.List;
+
 import me.forum.controller.BaseController;
 
 public class Post {
@@ -40,6 +42,10 @@ public class Post {
 		int count = 0;
 		count = BaseController.GetInstance().likeDao.IsLiked(this.mabaiviet, taikoan, true);
 		return count > 0 ? true : false;
+	}
+	public List<Image> getImage() {
+		List<Image> list = BaseController.GetInstance().imageDao.getByPost(mabaiviet);
+		return list;
 	}
 
 	public User getUser() {

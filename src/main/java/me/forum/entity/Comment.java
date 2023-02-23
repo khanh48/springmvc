@@ -49,7 +49,8 @@ public class Comment {
 	}
 
 	public int getCountLike() {
-		return 0;
+		
+		return BaseController.GetInstance().likeDao.GetTotalLikeComment(this.mabinhluan);
 	}
 
 	public User getUser() {

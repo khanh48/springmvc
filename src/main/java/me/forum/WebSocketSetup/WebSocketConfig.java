@@ -33,9 +33,6 @@ public class WebSocketConfig {
 				handler.send(json.getString("name"), "hihi");
 			}
 			break;
-		case "updateNtf":
-			
-			break;
 		default:
 			User user = userDao.findUserByCrypt(json.getString("token"));
 			if (user == null)

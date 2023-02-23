@@ -28,6 +28,28 @@ function like(id, isPost, toUser) {
 
 }
 
+function loadMore(id) {
+
+	var start = $("#listComments > div").length;
+	console.log("click")
+	$.ajax({
+		type: "GET",
+		url: "/loadComment",
+		data: {id: id,
+			start: start,
+			limit: 10
+		},
+		success: function(response) {
+			if(response.length < 10){
+				$("#loadMoreCmt").hide();
+			}
+			$.each(response, function(index, item) {
+				$("#listComments").append(item)
+			})
+		}
+	})
+}
+
 $(document).ready(function() {
 	$("#changePassword").click(function(e) {
 		$.ajax({
@@ -66,6 +88,9 @@ $(document).ready(function() {
 				limit: 10
 			},
 			success: function(response) {
+			if(response.length < 10){
+				$("#loadMore").hide();
+			}
 				$.each(response, function(index, item) {
 					$("#listPosts").append(item)
 				})

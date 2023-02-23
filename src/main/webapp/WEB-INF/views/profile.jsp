@@ -34,7 +34,7 @@
 					</div>
 				</c:if>
 				<div id="listPosts">
-					<c:forEach items="${posts}" var="i">
+					<c:forEach items="${postOfUser}" var="i">
 
 						<div class='content'>
 							<div class='d-flex justify-content-between'>
@@ -148,6 +148,5 @@
 	</div>
 
 	<%@ include file="/WEB-INF/views/includes/footer.jsp"%>
-	<script src="/resources/js/filecustom.js"></script>
 </body>
 </html>

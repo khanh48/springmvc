@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.servlet.ModelAndView;
 
 import me.forum.Dao.CommentDao;
+import me.forum.Dao.ImageDao;
 import me.forum.Dao.LikeDao;
 import me.forum.Dao.NotificationDao;
 import me.forum.Dao.PostDao;
@@ -22,6 +23,8 @@ public class BaseController {
 	public CommentDao commentDao;
 	@Autowired
 	public NotificationDao notificationDao;
+	@Autowired
+	public ImageDao imageDao;
 
 	public ModelAndView mav = new ModelAndView();
 	

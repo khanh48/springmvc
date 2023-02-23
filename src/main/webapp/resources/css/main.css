@@ -893,12 +893,12 @@ caption {
 .container-fluid {
     box-shadow: 0px 3px 10px #42574f;
 }
-#loadMore{
+#loadMore, #loadMoreCmt{
     -webkit-user-select: none;
     -ms-user-select: none;
     user-select: none;
     text-decoration: underline;
 }
-#loadMore:hover{
+#loadMore:hover,#loadMoreCmt:hover{
 	cursor: pointer;
 }

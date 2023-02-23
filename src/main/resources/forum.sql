@@ -70,7 +70,9 @@ create table if not exists hinhanh(
     mabinhluan int,
     ngaytao timestamp not null default current_timestamp,
 	constraint pk_images primary key(mahinhanh),
-    constraint fk_images_owner foreign key(taikhoan) references nguoidung(taikhoan) on delete cascade
+    constraint fk_images_owner foreign key(taikhoan) references nguoidung(taikhoan) on delete cascade,
+    constraint fk_images_post foreign key(mabaiviet) references baiviet(mabaiviet) on delete cascade,
+    constraint fk_images_cmt foreign key(mabinhluan) references binhluan(mabinhluan) on delete cascade
 );
 
 -- delimiter $$

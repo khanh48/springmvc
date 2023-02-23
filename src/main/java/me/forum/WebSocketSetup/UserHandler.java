@@ -1,6 +1,5 @@
 package me.forum.WebSocketSetup;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,7 +32,7 @@ public class UserHandler {
 		try {
 			if(containsClient(name))
 				clients.get(name).getBasicRemote().sendText(message);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			clients.remove(name);
 		}
 	}
@@ -46,7 +45,7 @@ public class UserHandler {
 		for (Session session : allUser) {
 			try {
 				session.getBasicRemote().sendText(message);
-			} catch (IOException e) {
+			} catch (Exception e) {
 				allUser.remove(session);
 			}
 		}

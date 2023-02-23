@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import me.forum.Dao.CommentDao;
 import me.forum.Dao.LikeDao;
 import me.forum.Dao.NotificationDao;
 import me.forum.Dao.UserDao;
@@ -35,6 +36,8 @@ public class MainRestController {
 	public NotificationDao notificationDao;
 	@Autowired
 	public LikeDao likeDao;
+	@Autowired
+	public CommentDao commentDao;
 
 	public MainRestController() {
 	}
@@ -104,6 +107,7 @@ public class MainRestController {
 		boolean liked;
 		int count = 0;
 		long curTime = System.currentTimeMillis();
+		long urlID = isPost?id: commentDao.GetByID(id).getMabaiviet();
 		if (user == null || toUser == null) {
 			liked = false;
 		}
@@ -113,7 +117,7 @@ public class MainRestController {
 		} else {
 			String ct, url;
 			ct = user.getHoten() + " đã thích " + (isPost ? "bài viết" : "bình luận") + " của bạn.";
-			url = "";
+			url = "/bai-viet/" + urlID + "/"+curTime;
 			likeDao.AddLike(isPost, user.getTaikhoan(), id);
 			if (!user.getTaikhoan().equals(toUser.getTaikhoan())) {
 				notificationDao.AddNotification(curTime, user.getTaikhoan(), ct, toUser.getTaikhoan(), url);
@@ -127,7 +131,7 @@ public class MainRestController {
 			}
 			liked = true;
 		}
-		count = likeDao.GetTotalLikePost(id);
+		count = isPost? likeDao.GetTotalLikePost(id):likeDao.GetTotalLikeComment(id);
 		map.put("status", liked);
 		map.put("count", count);
 		return map;

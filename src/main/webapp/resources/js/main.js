@@ -79,6 +79,18 @@ function login() {
 	return false;
 }
 $(document).ready(function() {
+	var content = $(".content").find(">:first-child");
+	
+	if(content.length > 0){
+		content[0].classList.add("mt-0");
+	}
+	
+	if($("#listComments > div").length < 10){
+		$("#loadMoreCmt").hide();
+	}
+	if($("#listPosts > div").length < 10){
+		$("#loadMore").hide();
+	}
 	$("#checkBoxAll").click(function() {
 		$('input[name="checkbox[]"]').prop('checked', $(this).is(":checked"));
 	});

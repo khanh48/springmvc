@@ -25,6 +25,31 @@ public class CommentDao {
 			return null;
 		}
 	}
+	
+
+	public Comment GetByID(long id){
+		try {
+			return jdbcTemplate.queryForObject("select * from binhluan where mabinhluan = ?", new Object[] {id}, new int[] {Types.INTEGER}, new CommentMap());
+		}catch (EmptyResultDataAccessException e) {
+			return null;
+		}
+	}
+
+	public List<Comment> GetPostsLimit(long id, int start, int limit){
+		try {
+			return jdbcTemplate.query("select * from binhluan where mabaiviet = ? order by ngaytao asc limit ?, ?", new Object[] {id, start, limit},new int[] {Types.BIGINT, Types.INTEGER, Types.INTEGER}, new CommentMap());
+		} catch (EmptyResultDataAccessException e) {
+			return null;
+		}
+	}
+
+	public List<Comment> GetPostsLimitDesc(long id, int start, int limit){
+		try {
+			return jdbcTemplate.query("select * from binhluan where mabaiviet = ? order by ngaytao desc limit ?, ?", new Object[] {id, start, limit},new int[] {Types.BIGINT, Types.INTEGER, Types.INTEGER}, new CommentMap());
+		} catch (EmptyResultDataAccessException e) {
+			return null;
+		}
+	}
 
 	public int GetTotalComment(long mabaiviet) {
 		try {

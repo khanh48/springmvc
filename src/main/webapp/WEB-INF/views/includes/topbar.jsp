@@ -46,7 +46,15 @@
 						<c:if test="${listNotify.size() > 0}">
 								<span
 									class="badge rounded-pill position-absolute top-0 start-100 translate-middle bg-danger"
-									id="ntf-num"> ${ listNotify.size() } </span>
+									id="ntf-num"> 
+									
+									<c:if test="${listNotify.size() < 100}">
+									${ listNotify.size() } 
+									</c:if>
+									<c:if test="${listNotify.size() > 99}">
+									99+ 
+									</c:if>
+									</span>
 							</c:if>
 
 					</i>
@@ -57,7 +65,7 @@
 						<c:forEach var="i" items="${listNotify}">
 							<li><a class="dropdown-item text-wrap" href="${i.url}">
 									<p class="small mb-0">${i.getDateFormated()}</p>
-									<p class="mb-0">${i.noidung}</p>
+									<p class="mb-0 <c:if test="${not i.trangthai }">unread</c:if>">${i.noidung}</p>
 							</a></li>
 						</c:forEach>
 					</ul>
