@@ -1,4 +1,4 @@
-package me.forum.entity;
+package me.forum.Entity;
 
 public class Like {
 	private int maluotthich;

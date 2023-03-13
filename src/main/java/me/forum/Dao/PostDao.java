@@ -7,13 +7,12 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import me.forum.controller.BaseController;
-import me.forum.entity.Post;
+import me.forum.Controller.BaseController;
+import me.forum.Entity.Post;
 
 @Repository
 public class PostDao {
@@ -85,7 +84,7 @@ public class PostDao {
 	}
 
 	public int DeletePostByID(long id) {
-		return jdbcTemplate.update("delete from baiviet where id = ?", id);
+		return jdbcTemplate.update("delete from baiviet where mabaiviet = ?", id);
 	}
 
 	public int DeletePostByUser(String taikhoan) {

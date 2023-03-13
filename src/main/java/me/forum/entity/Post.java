@@ -1,4 +1,4 @@
-package me.forum.entity;
+package me.forum.Entity;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -9,7 +9,7 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 
-import me.forum.controller.BaseController;
+import me.forum.Controller.BaseController;
 
 public class Post {
 	private long mabaiviet;

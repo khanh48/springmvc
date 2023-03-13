@@ -7,15 +7,19 @@
 	<div class="body">
 		<%@ include file="/WEB-INF/views/includes/topbar.jsp"%>
 		<div class="main">
+			<%@ include file="/WEB-INF/views/includes/containerleft.jsp"%>
 			<div class="right">
 				<c:if test="${not empty post }">
-					<div class="content">
+					<div class="content" id="${post.getMabaiviet() }">
 						<div class='d-flex justify-content-between'>
 							<div class=' c-header'>
-								<span> <a class='name' href='#'> <img class='avt'
-										src="${post.getUser().getAnhdaidien() }" alt='avatar'></a></span>
+								<span> <a class='name'
+									href='/ho-so/${post.getUser().getTaikhoan() }'> <img
+										class='avt' src="${post.getUser().getAnhdaidien() }"
+										alt='avatar'></a></span>
 								<div class='c-name'>
-									<span><a class='name' href='#'>${post.getUser().getHoten() }</a>
+									<span><a class='name'
+										href='/ho-so/${post.getUser().getTaikhoan() }'>${post.getUser().getHoten() }</a>
 										<div class='time'>
 											<small class='text-secondary'>${post.getDateFormated() }</small>
 										</div> </span>
@@ -68,47 +72,50 @@
 						</div>
 					</c:if>
 				</c:if>
-					<div id="listComments">
-						<c:forEach items="${comments}" var="i">
+				<div id="listComments">
+					<c:forEach items="${comments}" var="i">
 
-							<div class='content rm'>
-								<div class='d-flex justify-content-between'>
-									<div class=' c-header'>
-										<span> <a class='name' href='#'> <img class='avt'
-												src="${i.getUser().getAnhdaidien() }" alt='avatar'></a></span>
-										<div class='c-name'>
-											<span><a class='name' href='#'>${i.getUser().getHoten() }</a>
-												<div class='time'>
-													<small class='text-secondary'>${i.getDateFormated() }</small>
-												</div> </span>
-										</div>
+						<div class='content' id="${i.getMabinhluan() }">
+							<div class='d-flex justify-content-between'>
+								<div class=' c-header'>
+									<span> <a class='name'
+										href='/ho-so/${i.getUser().getTaikhoan() }'> <img
+											class='avt' src="${i.getUser().getAnhdaidien() }"
+											alt='avatar'></a></span>
+									<div class='c-name'>
+										<span><a class='name'
+											href='/ho-so/${i.getUser().getTaikhoan() }'>${i.getUser().getHoten() }</a>
+											<div class='time'>
+												<small class='text-secondary'>${i.getDateFormated() }</small>
+											</div> </span>
 									</div>
-									<button name='delete-notification' class='btn-close py-1 px-3'
-										value='a' data-bs-toggle='modal' data-bs-target='#delete-post'
-										onclick="deletePost(${i.getMabinhluan()})"></button>
 								</div>
-								<div class='c-body'>${i.getNoidung() }</div>
-								<div class='m-0 hide wh' style='text-align: end;'>
-									<span class='read-more'></span>
-								</div>
-								<hr class='m-0'>
-								<div class='interactive p-1 m-0'>
-									<button type='button' class='like p-1'
-										onclick="like(${i.getMabinhluan() }, false, '${i.getUser().getTaikhoan()}')">
-										<i
-											class='fas fa-heart action <c:if test="${ i.IsLiked(userID.getTaikhoan()) }">fas-liked</c:if>'
-											id='cl${i.getMabinhluan() }'></i> <span class='count-like'
-											id='c${i.getMabinhluan() }'> <c:if
-												test="${i.getCountLike() > 0}">${i.getCountLike() }</c:if>
-										</span>
-									</button>
-								</div>
+								<button name='delete-notification' class='btn-close py-1 px-3'
+									value='a' data-bs-toggle='modal' data-bs-target='#delete-cmt'
+									onclick="deleteCmt(${i.getMabinhluan()})"></button>
 							</div>
+							<div class='c-body'>${i.getNoidung() }</div>
+							<div class='m-0 hide wh' style='text-align: end;'>
+								<span class='read-more'></span>
+							</div>
+							<hr class='m-0'>
+							<div class='interactive p-1 m-0'>
+								<button type='button' class='like p-1'
+									onclick="like(${i.getMabinhluan() }, false, '${i.getUser().getTaikhoan()}')">
+									<i
+										class='fas fa-heart action <c:if test="${ i.IsLiked(userID.getTaikhoan()) }">fas-liked</c:if>'
+										id='cl${i.getMabinhluan() }'></i> <span class='count-like'
+										id='c${i.getMabinhluan() }'> <c:if
+											test="${i.getCountLike() > 0}">${i.getCountLike() }</c:if>
+									</span>
+								</button>
+							</div>
+						</div>
 
-						</c:forEach>
-					</div>
-					<div id="loadMoreCmt" onclick="loadMore(${post.getMabaiviet()})">Tải
-						thêm bình luận</div>
+					</c:forEach>
+				</div>
+				<div id="loadMoreCmt" onclick="loadMore(${post.getMabaiviet()})">Tải
+					thêm bình luận</div>
 
 			</div>
 		</div>
@@ -131,7 +138,29 @@
 					</button>
 					<button type="button"
 						class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0"
-						data-bs-dismiss="modal">Hủy</button>
+						data-bs-dismiss="modal" id="cancel-delete">Hủy</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal modal-alert py-5" tabindex="-1" role="dialog"
+		id="delete-cmt">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content rounded-3 shadow">
+				<div class="modal-body p-4 text-center">
+					<h5 class="mb-0">Xóa bình luận?</h5>
+					<p class="mb-0">Bình luận sẽ bị xóa vĩnh viễn.</p>
+				</div>
+				<div class="modal-footer flex-nowrap p-0">
+					<button name="delete-cmt"
+						class="btn btn-lg btn-link text-danger fs-6 text-decoration-none col-6 m-0 rounded-0 border-end"
+						id="confirm-yes-1">
+						<strong>Xóa</strong>
+					</button>
+					<button type="button"
+						class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0"
+						data-bs-dismiss="modal" id="cancel-delete-1">Hủy</button>
 				</div>
 			</div>
 		</div>

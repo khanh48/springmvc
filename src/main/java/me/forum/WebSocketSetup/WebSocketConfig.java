@@ -9,9 +9,9 @@ import javax.websocket.server.ServerEndpoint;
 
 import org.json.JSONObject;
 
+import me.forum.Controller.BaseController;
 import me.forum.Dao.UserDao;
-import me.forum.controller.BaseController;
-import me.forum.entity.User;
+import me.forum.Entity.User;
 
 @ServerEndpoint("/websocket")
 public class WebSocketConfig {
@@ -25,7 +25,6 @@ public class WebSocketConfig {
 
 	@OnMessage
 	public void handleMessage(String msg, Session session) {
-		System.out.println(msg);
 		JSONObject json = new JSONObject(msg);
 		switch (json.getString("type")) {
 		case "sendMessage":
@@ -34,6 +33,7 @@ public class WebSocketConfig {
 			}
 			break;
 		default:
+			if(json.isNull("token")) break;
 			User user = userDao.findUserByCrypt(json.getString("token"));
 			if (user == null)
 				break;

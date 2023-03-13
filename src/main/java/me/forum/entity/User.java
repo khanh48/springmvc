@@ -1,4 +1,4 @@
-package me.forum.entity;
+package me.forum.Entity;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -144,4 +144,13 @@ public class User {
 		}
 		return sb.toString();
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if(this.taikhoan.equals(((User)obj).getTaikhoan()))
+			return true;
+		return false;
+	}
+	
+	
 }

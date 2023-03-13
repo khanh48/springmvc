@@ -1,4 +1,4 @@
-package me.forum.entity;
+package me.forum.Entity;
 
 import java.util.Date;
 

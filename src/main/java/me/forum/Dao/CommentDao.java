@@ -11,7 +11,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import me.forum.entity.Comment;
+import me.forum.Entity.Comment;
 
 @Repository
 public class CommentDao {

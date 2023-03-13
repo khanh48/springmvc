@@ -1,7 +1,8 @@
-package me.forum.controller;
+package me.forum.Controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
@@ -9,9 +10,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import me.forum.entity.Comment;
-import me.forum.entity.Post;
-import me.forum.entity.User;
+import me.forum.Entity.Comment;
+import me.forum.Entity.Post;
+import me.forum.Entity.User;
 
 @Controller
 public class MainController extends BaseController {
@@ -20,7 +21,7 @@ public class MainController extends BaseController {
 	}
 
 	@RequestMapping(value = { "/", "/index" })
-	public ModelAndView homePage(HttpSession session) {
+	public ModelAndView homePage(HttpSession session, HttpServletRequest request) {
 		mav.setViewName("index");
 		mav.addObject("posts", postDao.GetPostsLimitDesc(0, 10));
 		if (session.getAttribute("userID") != null)
@@ -89,7 +90,6 @@ public class MainController extends BaseController {
 		mav.setViewName("redirect:/bai-viet/" + id);
 		return mav;
 	}
-
 	@RequestMapping(value = "/logout")
 	public ModelAndView logout(HttpSession session) {
 

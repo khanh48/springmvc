@@ -1,4 +1,4 @@
-package me.forum.controller;
+package me.forum.Controller;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
@@ -20,10 +21,13 @@ import org.springframework.web.bind.annotation.RestController;
 import me.forum.Dao.CommentDao;
 import me.forum.Dao.LikeDao;
 import me.forum.Dao.NotificationDao;
+import me.forum.Dao.PostDao;
 import me.forum.Dao.UserDao;
+import me.forum.Entity.Comment;
+import me.forum.Entity.Notification;
+import me.forum.Entity.Post;
+import me.forum.Entity.User;
 import me.forum.WebSocketSetup.UserHandler;
-import me.forum.entity.Notification;
-import me.forum.entity.User;
 
 @RestController
 public class MainRestController {
@@ -38,6 +42,8 @@ public class MainRestController {
 	public LikeDao likeDao;
 	@Autowired
 	public CommentDao commentDao;
+	@Autowired
+	public PostDao postDao;
 
 	public MainRestController() {
 	}
@@ -96,6 +102,45 @@ public class MainRestController {
 		map.put("message", message);
 		return map;
 	}
+	
+
+	
+	@RequestMapping(value = "/changePass", method = RequestMethod.POST)
+	public Map<String, String> changePass(HttpSession session, HttpServletRequest request) {
+		String oldPass, newPass, confirmPass, pattern;
+		HashMap<String, String> map = new HashMap<>();
+		User user = (User)session.getAttribute("userID");
+		if(user == null) {
+			map.put("type", "failed");
+			map.put("message", "Tài khoản không tồn tại");
+			return map;
+		}
+		oldPass = request.getParameter("oldPass");
+		newPass = request.getParameter("newPass");
+		confirmPass = request.getParameter("confirmPass");
+		pattern = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{6,15}$";
+		
+		if(!user.getMatkhau().equals(User.MD5(oldPass))) {
+			map.put("type", "failed");
+			map.put("message", "Mật khẩu không chính xác.");
+		}else if(!Pattern.matches(pattern, newPass)) {
+			map.put("type", "failed");
+			map.put("message", "Mật khẩu mới không hợp lệ.");
+		}else if(!newPass.equals(confirmPass)) {
+			map.put("type", "failed");
+			map.put("message", "Mật khẩu mới phải trùng nhau.");
+		}else if(oldPass.equals(newPass)) {
+			map.put("type", "failed");
+			map.put("message", "Hãy thử một mật khẩu khác.");
+		}else {
+			map.put("type", "success");
+			map.put("message", "Đổi mật khẩu thành công.");
+			userDao.ChangePassword(user.getTaikhoan(), User.MD5(newPass));
+			user.setMatkhau(User.MD5(newPass));
+			session.setAttribute("userID", user);
+		}
+		return map;
+	}
 
 	@RequestMapping(value = "/sendLike", method = RequestMethod.POST)
 	public Map<String, Object> like(@RequestParam long id, @RequestParam boolean isPost, @RequestParam String token,
@@ -134,6 +179,46 @@ public class MainRestController {
 		count = isPost? likeDao.GetTotalLikePost(id):likeDao.GetTotalLikeComment(id);
 		map.put("status", liked);
 		map.put("count", count);
+		return map;
+	}
+
+	@RequestMapping(value = "/deleteCmt", method = RequestMethod.POST)
+	public Map<String, String> deleteCmt(@RequestParam int cid, HttpSession session) {
+
+		HashMap<String, String> map = new HashMap<>();
+		Comment cmt = commentDao.GetByID(cid);
+		User user = (User) session.getAttribute("userID");
+		if(user == null || cmt == null) {
+			map.put("type", "failed");
+			map.put("message", "null");
+		}else if(!user.equals(cmt.getUser()) && !user.getChucvu().equals("Admin")) {
+			map.put("type", "failed");
+			map.put("message", "no permission");
+		}else {
+			commentDao.DeleteByID(cid);
+			map.put("type", "success");
+			map.put("message", "" + cid);
+		}
+		return map;
+	}
+
+	@RequestMapping(value = "/deletePost", method = RequestMethod.POST)
+	public Map<String, String> deletePost(@RequestParam long pid, HttpSession session) {
+
+		HashMap<String, String> map = new HashMap<>();
+		Post post = postDao.GetPostByID(pid);
+		User user = (User) session.getAttribute("userID");
+		if(user == null || post == null) {
+			map.put("type", "failed");
+			map.put("message", "null");
+		}else if(!user.equals(post.getUser()) && !user.getChucvu().equals("Admin")) {
+			map.put("type", "failed");
+			map.put("message", "no permission");
+		}else {
+			postDao.DeletePostByID(pid);
+			map.put("type", "success");
+			map.put("message", "" + pid);
+		}
 		return map;
 	}
 

@@ -1,4 +1,4 @@
-package me.forum.controller;
+package me.forum.Controller;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,32 +16,42 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import me.forum.entity.Comment;
-import me.forum.entity.Image;
-import me.forum.entity.Post;
-import me.forum.entity.User;
+import me.forum.Entity.Comment;
+import me.forum.Entity.Image;
+import me.forum.Entity.Post;
+import me.forum.Entity.User;
 
 @Controller
 public class PostController extends BaseController {
 
 	public PostController() {
+
 	}
 
 	@RequestMapping(value = "/loadPost", method = RequestMethod.GET)
 	@ResponseBody
-	public List<String> loadOnScroll(@RequestParam int start, @RequestParam int limit) {
+	public List<String> loadOnScroll(@RequestParam int start, @RequestParam int limit, HttpSession session) {
+		String numlike, numcmt, uUrl, isliked;
 		List<String> list = new ArrayList<>();
 		List<Post> posts = postDao.GetPostsLimitDesc(start, limit);
+		User user = (User) session.getAttribute("userID");
 		for (Post p : posts) {
+			isliked = "";
 			User u = p.getUser();
+			uUrl = "/ho-so/" + u.getTaikhoan();
+			numlike = p.getCountLike() > 0 ? p.getCountLike() + "" : "";
+			numcmt = p.getCountComment() > 0 ? p.getCountComment() + "" : "";
+			if (user != null && p.IsLiked(user.getTaikhoan())) {
+				isliked = "fas-liked";
+			}
 
-			String item = "<div class='content rm'>";
-			item += "<div class='d-flex justify-content-between $loggedin'>";
+			String item = "<div class='content' id='" + p.getMabaiviet() + "'>";
+			item += "<div class='d-flex justify-content-between'>";
 			item += "<div class=' c-header'>";
-			item += "<span> <a class='name' href='#'> <img class='avt' src='" + u.getAnhdaidien()
+			item += "<span> <a class='name' href='" + uUrl + "'> <img class='avt' src='" + u.getAnhdaidien()
 					+ "' alt='avatar'></a></span>";
 			item += "<div class='c-name'>";
-			item += "<span><a class='name' href='#'>" + u.getHoten() + "</a>";
+			item += "<span><a class='name' href='" + uUrl + "'>" + u.getHoten() + "</a>";
 			item += "<div class='time'><small class='text-secondary'>" + p.getDateFormated()
 					+ "</small></div> </span></div></div>";
 			item += "<button name='delete-notification' class='btn-close py-1 px-3' ";
@@ -53,6 +63,7 @@ public class PostController extends BaseController {
 			item += "<div class='c-body'>" + p.getNoidung() + "</div>";
 			item += "<div class='m-0 hide wh' style='text-align: end;'>";
 			item += "<span class='read-more'></span></div>";
+			
 			List<Image> imgs = p.getImage();
 			if (imgs != null && !imgs.isEmpty()) {
 				item += "<div id='forpost" + p.getMabaiviet()
@@ -79,12 +90,11 @@ public class PostController extends BaseController {
 			item += "<div class='interactive p-1 m-0'>";
 			item += "<button type='button' class='like p-1' onclick=\"like(" + p.getMabaiviet() + ",true, '"
 					+ u.getTaikhoan() + "')\">";
-			item += "<i class='fas fa-heart action $is_liked' id='pl" + p.getMabaiviet() + "'></i> ";
-			item += "<span class='count-like' id='p" + p.getMabaiviet() + "'>" + p.getCountLike() + "</span></button>";
+			item += "<i class='fas fa-heart action " + isliked + "' id='pl" + p.getMabaiviet() + "'></i> ";
+			item += "<span class='count-like' id='p" + p.getMabaiviet() + "'>" + numlike + "</span></button>";
 			item += "<button type='button' class='comment p-1' onclick=\"window.location.href='/bai-viet/"
 					+ p.getMabaiviet() + "'\">";
-			item += "<i class='fas fa-comment action'></i> <span class='count-comment'>" + p.getCountComment()
-					+ "</span>";
+			item += "<i class='fas fa-comment action'></i> <span class='count-comment'>" + numcmt + "</span>";
 			item += "</button><button type='button' class='share p-1'>";
 			item += "<i class='fas fa-share action'></i><span class='count-share'></span>";
 			item += "</button></div></div>";
@@ -95,28 +105,36 @@ public class PostController extends BaseController {
 
 	@RequestMapping(value = "/loadComment", method = RequestMethod.GET)
 	@ResponseBody
-	public List<String> loadCommentOnScroll(@RequestParam long id, @RequestParam int start, @RequestParam int limit) {
+	public List<String> loadCommentOnScroll(@RequestParam long id, @RequestParam int start, @RequestParam int limit, HttpSession session) {
+		String numlike, uUrl, isliked;
 
 		List<String> list = new ArrayList<>();
 		List<Comment> comments = commentDao.GetPostsLimitDesc(id, start, limit);
+		User user = (User) session.getAttribute("userID");
 		for (Comment cmt : comments) {
 			User u = cmt.getUser();
+			isliked = "";
+			uUrl = "/ho-so/" + u.getTaikhoan();
+			numlike = cmt.getCountLike() > 0 ? cmt.getCountLike() + "" : "";
+			if (user != null && cmt.IsLiked(user.getTaikhoan())) {
+				isliked = "fas-liked";
+			}
 
 			String item = "<div class='content rm'>" + "<div class='d-flex justify-content-between $loggedin'>"
-					+ "<div class=' c-header'>" + "<span> <a class='name' href='#'> <img class='avt' src='"
+					+ "<div class=' c-header'>" + "<span> <a class='name' href='"+uUrl+"'> <img class='avt' src='"
 					+ u.getAnhdaidien() + "' alt='avatar'></a></span>" + "<div class='c-name'>"
-					+ "<span><a class='name' href='#'>" + u.getHoten() + "</a>"
+					+ "<span><a class='name' href='"+uUrl+"'>" + u.getHoten() + "</a>"
 					+ "<div class='time'><small class='text-secondary'>" + cmt.getDateFormated()
 					+ "</small></div> </span></div></div>"
 					+ "<button name='delete-notification' class='btn-close py-1 px-3' "
-					+ "value='a' data-bs-toggle='modal' data-bs-target='#delete-post' onclick=\"deletePost("
+					+ "value='a' data-bs-toggle='modal' data-bs-target='#delete-post' onclick=\"deleteCmt("
 					+ cmt.getMabinhluan() + ")\"></button>" + "</div><div class='c-body'>" + cmt.getNoidung() + "</div>"
 					+ "<div class='m-0 hide wh' style='text-align: end;'>" + "<span class='read-more'></span></div>"
 					+ "<hr class='m-0'>" + "<div class='interactive p-1 m-0'>"
 					+ "<button type='button' class='like p-1' onclick=\"like(" + cmt.getMabinhluan() + ",false, '"
-					+ u.getTaikhoan() + "')\">" + "<i class='fas fa-heart action $is_liked' id='cl"
+					+ u.getTaikhoan() + "')\">" + "<i class='fas fa-heart action "+isliked+"' id='cl"
 					+ cmt.getMabinhluan() + "'></i> " + "<span class='count-like' id='c" + cmt.getMabinhluan() + "'>"
-					+ cmt.getCountLike() + "</span></button>" + "</div></div>";
+					+ numlike + "</span></button>" + "</div></div>";
 			list.add(item);
 		}
 		return list;
@@ -130,6 +148,7 @@ public class PostController extends BaseController {
 		tieude = request.getParameter("tieude");
 		noidung = request.getParameter("noidung");
 		nhom = request.getParameter("nhom");
+		System.out.println(nhom);
 		mav.setViewName("redirect:/");
 		User user = (User) session.getAttribute("userID");
 		String rootPath = request.getServletContext().getRealPath("/");
@@ -155,7 +174,7 @@ public class PostController extends BaseController {
 	}
 
 	@RequestMapping(value = "/addComment", method = RequestMethod.POST)
-	public ModelAndView addComment(HttpSession session, HttpServletRequest request){
+	public ModelAndView addComment(HttpSession session, HttpServletRequest request) {
 		String content;
 		long id;
 
@@ -163,7 +182,7 @@ public class PostController extends BaseController {
 		id = Long.parseLong(request.getParameter("send"));
 		mav.setViewName("redirect:/bai-viet/" + id);
 		User user = (User) session.getAttribute("userID");
-		if(user != null)
+		if (user != null)
 			commentDao.AddComment(content, user.getTaikhoan(), id);
 		return mav;
 	}

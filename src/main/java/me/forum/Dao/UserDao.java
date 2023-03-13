@@ -12,7 +12,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import me.forum.entity.User;
+import me.forum.Entity.User;
 
 @Repository
 public class UserDao {

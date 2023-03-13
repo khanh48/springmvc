@@ -1,4 +1,4 @@
-package me.forum.entity;
+package me.forum.Entity;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -8,7 +8,7 @@ import java.time.Period;
 import java.time.ZoneId;
 import java.util.Date;
 
-import me.forum.controller.BaseController;
+import me.forum.Controller.BaseController;
 
 public class Comment {
 	private int mabinhluan;

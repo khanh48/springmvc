@@ -7,6 +7,7 @@
 	<div class="body">
 		<%@ include file="/WEB-INF/views/includes/topbar.jsp"%>
 		<div class="main">
+		<%@ include file="/WEB-INF/views/includes/containerleft.jsp"%>
 			<div class="right">
 				<c:if test="${not empty userID }">
 					<div class="content">
@@ -20,7 +21,7 @@
 							</div>
 							<div class="group-file">
 								<select class="form-select form-select-sm" name="nhom">
-									<option selected disabled value="Bắc">Nhóm</option>
+									<option value="Bắc" selected hidden>Nhóm</option>
 									<option value="Bắc">Bắc</option>
 									<option value="Trung">Trung</option>
 									<option value="Nam">Nam</option>
@@ -36,13 +37,13 @@
 				<div id="listPosts">
 					<c:forEach items="${posts}" var="i">
 
-						<div class='content'>
+						<div class='content' id="${i.getMabaiviet() }">
 							<div class='d-flex justify-content-between'>
 								<div class=' c-header'>
-									<span> <a class='name' href='#'> <img class='avt'
+									<span> <a class='name' href='/ho-so/${i.getUser().getTaikhoan() }'> <img class='avt'
 											src="${i.getUser().getAnhdaidien() }" alt='avatar'></a></span>
 									<div class='c-name'>
-										<span><a class='name' href='#'>${i.getUser().getHoten() }</a>
+										<span><a class='name' href='/ho-so/${i.getUser().getTaikhoan() }'>${i.getUser().getHoten() }</a>
 											<div class='time'>
 												<small class='text-secondary'>${i.getDateFormated() }</small>
 											</div> </span>
@@ -141,7 +142,7 @@
 					</button>
 					<button type="button"
 						class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0"
-						data-bs-dismiss="modal">Hủy</button>
+						data-bs-dismiss="modal" id="cancel-delete">Hủy</button>
 				</div>
 			</div>
 		</div>

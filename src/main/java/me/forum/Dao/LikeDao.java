@@ -10,7 +10,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import me.forum.entity.Like;
+import me.forum.Entity.Like;
 
 @Repository
 public class LikeDao {

@@ -1,4 +1,4 @@
-package me.forum.controller;
+package me.forum.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

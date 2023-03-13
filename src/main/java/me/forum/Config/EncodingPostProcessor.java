@@ -1,4 +1,4 @@
-package Config;
+package me.forum.Config;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;

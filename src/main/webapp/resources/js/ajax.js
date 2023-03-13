@@ -35,12 +35,13 @@ function loadMore(id) {
 	$.ajax({
 		type: "GET",
 		url: "/loadComment",
-		data: {id: id,
+		data: {
+			id: id,
 			start: start,
 			limit: 10
 		},
 		success: function(response) {
-			if(response.length < 10){
+			if (response.length < 10) {
 				$("#loadMoreCmt").hide();
 			}
 			$.each(response, function(index, item) {
@@ -50,23 +51,54 @@ function loadMore(id) {
 	})
 }
 
+function delPost(id) {
+	$.ajax({
+		type: "POST",
+		url: "/deletePost",
+		data: { pid: id },
+		success: function(response) {
+			if (response.type === "success") {
+				$("#" + response.message).html("<div class='c-body'>Bài viết đã bị xóa.</div>");
+				$("#cancel-delete").click();
+			}
+		}
+	})
+}
+function delComment(id) {
+	$.ajax({
+		type: "POST",
+		url: "/deleteCmt",
+		data: { cid: id },
+		success: function(response) {
+			if (response.type === "success") {
+				$("#" + response.message).html("<div class='c-body'>Bình luận đã bị xóa.</div>");
+				$("#cancel-delete-1").click();
+			}
+		}
+	})
+}
+
 $(document).ready(function() {
 	$("#changePassword").click(function(e) {
 		$.ajax({
 			type: 'POST',
-			url: './includes/changePass.php',
+			url: '/changePass',
 			data: {
-				user: sessionStorage.getItem("uid"),
 				oldPass: $('#oldPass').val(),
 				newPass: $('#newPass').val(),
-				reNewPass: $('#reNewPass').val()
+				confirmPass: $('#confirmPass').val()
 			},
 			success: function(respone) {
-				var data = JSON.parse(respone);
+				var data = respone;
 				if (data.type === 'failed') {
 					$("#failToChangePass").text(data.message);
 				} else {
 					$("#failToChangePass").text("");
+					$('#oldPass').val("");
+					$('#newPass').val("");
+					$('#confirmPass').val("");
+					$('#cancelChange').click();
+
 
 					$('#headerToast').text("Thông báo");
 					$('#toastMessage').text(data.message);
@@ -88,28 +120,23 @@ $(document).ready(function() {
 				limit: 10
 			},
 			success: function(response) {
-			if(response.length < 10){
-				$("#loadMore").hide();
-			}
+				if (response.length < 10) {
+					$("#loadMore").hide();
+				}
 				$.each(response, function(index, item) {
 					$("#listPosts").append(item)
 				})
+				removeControl();
 			}
 		})
 	})
 
 	$("#confirm-yes").click(function() {
-		console.log($(this)[0].value)
-		$.ajax({
-			type: "POST",
-			url: "/delete-post",
-			data: { id: $(this)[0].value },
-			success: function(response) {
-				$.each(response, function(index, item) {
-					$("#listPosts").append(item)
-				})
-			}
-		})
+		delPost($(this)[0].value)
+	})
+
+	$("#confirm-yes-1").click(function() {
+		delComment($(this)[0].value)
 	})
 })
 

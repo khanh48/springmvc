@@ -26,6 +26,17 @@ document.addEventListener("DOMContentLoaded", function() {
 	//     };
 })
 
+function removeControl() {
+	var inner = $(".carousel-inner");
+	if (inner.length > 0) {
+		$.each(inner, function(index, item) {
+			if (item.querySelectorAll(".carousel-item").length < 2) {
+				$(".carousel-control-prev")[index].hidden = true;
+				$(".carousel-control-next")[index].hidden = true;
+			}
+		})
+	}
+}
 
 function loadReadMore() {
 	var ct = document.querySelectorAll('.rm');
@@ -79,16 +90,17 @@ function login() {
 	return false;
 }
 $(document).ready(function() {
+	removeControl();
 	var content = $(".content").find(">:first-child");
-	
-	if(content.length > 0){
+
+	if (content.length > 0) {
 		content[0].classList.add("mt-0");
 	}
-	
-	if($("#listComments > div").length < 10){
+
+	if ($("#listComments > div").length < 10) {
 		$("#loadMoreCmt").hide();
 	}
-	if($("#listPosts > div").length < 10){
+	if ($("#listPosts > div").length < 10) {
 		$("#loadMore").hide();
 	}
 	$("#checkBoxAll").click(function() {
@@ -134,6 +146,7 @@ $(document).ready(function() {
 			}
 		})
 	});
+	
 
 })
 function deletePost(id) {

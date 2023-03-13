@@ -7,31 +7,80 @@
 	<div class="body">
 		<%@ include file="/WEB-INF/views/includes/topbar.jsp"%>
 		<div class="main">
+			<%@ include file="/WEB-INF/views/includes/containerleft.jsp"%>
 			<div class="right">
-				<c:if test="${not empty userID }">
+				<c:if test="${not empty profile }">
 					<div class="content">
-						<form action="/addPost" method="post"
-							enctype="multipart/form-data">
-							<div class="form-group p-1">
-								<input type="text" class="form-control f-sm mb-1"
-									placeholder="Tiêu đề" name="tieude" required>
-								<textarea class="form-control f-sm" placeholder="Nội dung"
-									name="noidung" required></textarea>
+						<div class='mt-0 ms-2'>
+							<div class=' c-header'>
+								<img class='avt-profile rounded-circle'
+									src='${profile.getAnhdaidien() }'>
+								<div>
+									<div class='name'>${profile.getHoten() }</div>
+									<p class='ps-2 mb-0'>Bài viết: ${postOfUser.size() }</p>
+									<p class='ps-2 mb-0'>Giới tính: ${profile.getGioitinh() }</p>
+									<p class='ps-2 mb-0'>Ngày sinh: ${profile.getNgaysinh() }</p>
+									<p class='ps-2 mb-0'>Số điện thoại:
+										${profile.getSodienthoai() }</p>
+									<p class='ps-2 mb-0'>Sở thích: ${profile.getSothich() }</p>
+								</div>
 							</div>
-							<div class="group-file">
-								<select class="form-select form-select-sm" name="nhom">
-									<option selected disabled value="Bắc">Nhóm</option>
-									<option value="Bắc">Bắc</option>
-									<option value="Trung">Trung</option>
-									<option value="Nam">Nam</option>
-								</select> <input type="file" id="file-1" class="inputfile inputfile-1"
-									name="uploadImg" data-multiple-caption="{count} files selected"
-									accept="image/*" multiple /> <label for="file-1"> <i
-									class="fas fa-images"></i> <span>Choose images&hellip;</span></label>
-								<button type="submit" name="post" class="btn btn-danger btn-sm">Đăng</button>
-							</div>
-						</form>
+						</div>
 					</div>
+					<c:if test="${profile.getTaikhoan() == userID.getTaikhoan()}">
+						<div class='content'>
+							<div>
+								<form action="/updateProfile" method='post' enctype='multipart/form-data'>
+									<div class='form-group p-1'>
+										<table>
+											<tr>
+												<td><label for='avt'>Ảnh đại diện:</label></td>
+												<td><input type='file' class='form-control f-sm mb-1'
+													name='avt' id='avt' accept='image/jpeg,image/jpg,image/png' /></td>
+											</tr>
+											<tr>
+												<td><label for='hoten'>Họ tên:</label></td>
+												<td><input type='text' class='form-control f-sm mb-1'
+													name='hoten' id='hoten' value='${profile.getHoten()}' /></td>
+											</tr>
+											<tr>
+												<td><label for='gioitinh'>Giới tính:</label></td>
+												<td><select id='gioitinh'
+													class='form-control f-sm mb-1' name='gioitinh'>
+														<option value=''>Khác</option>
+														<option value='Nam'
+															<c:if test="${profile.getGioitinh() == 'Nam' }">selected</c:if>>Nam</option>
+														<option value='Nữ'
+															<c:if test="${profile.getGioitinh() == 'Nữ' }">selected</c:if>>Nữ</option>
+												</select></td>
+											</tr>
+											<tr>
+												<td><label for='ngaysinh'>Ngày sinh:</label></td>
+												<td><input type='date' class='form-control f-sm mb-1'
+													name='ngaysinh' id='ngaysinh'
+													value="${profile.getNgaysinh()}" /></td>
+											</tr>
+											<tr>
+												<td><label for='sdt'>Số điện thoại:</label></td>
+												<td><input type='text' class='form-control f-sm mb-1'
+													name='sdt' id='sdt' value='${profile.getSodienthoai()}' /></td>
+											</tr>
+											<tr>
+												<td><label for='sothich'>Sở thích:</label></td>
+												<td><textarea class='form-control f-sm' name='sothich' id='sothich'>${profile.getSothich()}</textarea></td>
+											</tr>
+										</table>
+										<div>
+											<button class='btn btn-success my-2 f-sm' name='save'>Lưu</button>
+											<span class='my-auto' data-bs-toggle='modal'
+												data-bs-target='#changePass' id='changePassBtn'>Đổi
+												mật khẩu</span>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</c:if>
 				</c:if>
 				<div id="listPosts">
 					<c:forEach items="${postOfUser}" var="i">
@@ -39,10 +88,10 @@
 						<div class='content'>
 							<div class='d-flex justify-content-between'>
 								<div class=' c-header'>
-									<span> <a class='name' href='#'> <img class='avt'
+									<span> <a class='name' href='/ho-so/${i.getUser().getTaikhoan() }'> <img class='avt'
 											src="${i.getUser().getAnhdaidien() }" alt='avatar'></a></span>
 									<div class='c-name'>
-										<span><a class='name' href='#'>${i.getUser().getHoten() }</a>
+										<span><a class='name' href='/ho-so/${i.getUser().getTaikhoan() }'>${i.getUser().getHoten() }</a>
 											<div class='time'>
 												<small class='text-secondary'>${i.getDateFormated() }</small>
 											</div> </span>
@@ -146,6 +195,38 @@
 			</div>
 		</div>
 	</div>
+	
+	
+    <div class="modal modal-alert py-5" tabindex="-1" role="dialog" id="changePass">
+        <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+            <div class="modal-content rounded-3 shadow">
+                <div class="modal-body p-4">
+                    <small class="text-danger" id="failToChangePass"></small>
+                    <table>
+                        <tr>
+                            <td><label class="form-label" for="oldPass">Mật khẩu cũ:</label></td>
+                            <td><input class="form-control" type="password" name="oldPass" id="oldPass"></td>
+                        </tr>
+                        <tr>
+                            <td><label class="form-label" for="newPass">Mật khẩu mới:</label></td>
+                            <td><input class="form-control" type="password" name="newPass" id="newPass"></td>
+                        </tr>
+                        <tr>
+                            <td><label class="form-label" for="confirmPass">Nhập lại mật khẩu:</label></td>
+                            <td><input class="form-control" type="password" name="confirmPass" id="confirmPass"></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer flex-nowrap p-0">
+                    <button
+                        class="btn btn-lg btn-link text-success fs-6 text-decoration-none col-6 m-0 rounded-0 border-end"
+                        id="changePassword"><strong>Xác nhận</strong></button>
+                    <button class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0"
+                        data-bs-dismiss="modal" id="cancelChange">Hủy</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 	<%@ include file="/WEB-INF/views/includes/footer.jsp"%>
 </body>

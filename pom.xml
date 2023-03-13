@@ -6,13 +6,6 @@
 	<packaging>war</packaging>
 	
 	<repositories>
-
-
-		<!-- To use snapshots, you must also use the Sonatype Snapshots respository -->
-		<repository>
-			<id>sonatype-snapshots</id>
-			<url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-		</repository>
 		<repository>
 			<id>apache-tomcat</id>
 			<url>https://repo.maven.apache.org/maven2/</url>
