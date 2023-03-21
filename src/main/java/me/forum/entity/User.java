@@ -4,6 +4,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 
+import me.forum.Controller.BaseController;
+
 public class User {
 	private String taikhoan;
 	private String matkhau;
@@ -12,14 +14,14 @@ public class User {
     private String gioitinh;
     private String sothich;
     private String sodienthoai;
-    private String chucvu;
+    private Rule chucvu;
     private String anhdaidien;
     private Date ngaytao;
     private long lastlogin;
     private String mabaomat;
 
 	public User(String taikhoan, String matkhau, String mabaomat, String hoten, Date ngaysinh, String gioitinh, String sothich,
-			String sodienthoai, String chucvu, String anhdaidien, long lastlogin, Date ngaytao) {
+			String sodienthoai, int chucvu, String anhdaidien, long lastlogin, Date ngaytao) {
 		this.taikhoan = taikhoan;
 		this.matkhau = matkhau;
 		this.hoten = hoten;
@@ -27,7 +29,7 @@ public class User {
 		this.gioitinh = gioitinh;
 		this.sothich = sothich;
 		this.sodienthoai = sodienthoai;
-		this.chucvu = chucvu;
+		this.chucvu = BaseController.GetInstance().ruleDao.getById(chucvu);
 		this.anhdaidien = anhdaidien;
 		this.ngaytao = ngaytao;
 		this.mabaomat = mabaomat;
@@ -100,12 +102,16 @@ public class User {
 		this.sodienthoai = sodienthoai;
 	}
 
-	public String getChucvu() {
+	public Rule getChucvu() {
 		return chucvu;
 	}
 
-	public void setChucvu(String chucvu) {
+	public void setChucvu(Rule chucvu) {
 		this.chucvu = chucvu;
+	}
+	
+	public int getRank() {
+		return chucvu.getHang();
 	}
 
 	public String getAnhdaidien() {

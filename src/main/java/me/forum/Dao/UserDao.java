@@ -85,16 +85,16 @@ public class UserDao {
 	}
 
 	public int UpdateUser(String userName, String hoten, String gioitinh, Date ngaysinh, String sodienthoai,
-			String chucvu) {
+			int machucvu) {
 		return jdbcTemplate.update(
-				"update nguoidung set hoten = ?, gioitinh = ?, ngaysinh = ?, sodienthoai = ?, chucvu = ? where taikhoan = ?",
-				hoten, gioitinh, ngaysinh, sodienthoai, chucvu, userName);
+				"update nguoidung set hoten = ?, gioitinh = ?, ngaysinh = ?, sodienthoai = ?, machucvu = ? where taikhoan = ?",
+				hoten, gioitinh, ngaysinh, sodienthoai, machucvu, userName);
 	}
 
 	public int UpdateUser(User user) {
 		return jdbcTemplate.update(
-				"update nguoidung set hoten = ?, gioitinh = ?, ngaysinh = ?, sodienthoai = ?, chucvu = ? where taikhoan = ?",
-				user.getHoten(), user.getGioitinh(), user.getNgaysinh(), user.getSodienthoai(), user.getChucvu(),
+				"update nguoidung set hoten = ?, gioitinh = ?, ngaysinh = ?, sodienthoai = ?, machucvu = ? where taikhoan = ?",
+				user.getHoten(), user.getGioitinh(), user.getNgaysinh(), user.getSodienthoai(), user.getChucvu().getMachucvu(),
 				user.getTaikhoan());
 	}
 
@@ -103,7 +103,7 @@ public class UserDao {
 		@Override
 		public User mapRow(ResultSet rs, int rowNum) throws SQLException {
 			return new User(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getDate(5),
-					rs.getString(6), rs.getString(7), rs.getString(8), rs.getString(9), rs.getString(10),
+					rs.getString(6), rs.getString(7), rs.getString(8), rs.getInt(9), rs.getString(10),
 					rs.getLong(11), rs.getDate(12));
 		}
 	}

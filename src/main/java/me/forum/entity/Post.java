@@ -16,12 +16,12 @@ public class Post {
 	private String tieude;
 	private String noidung;
 	private String taikhoan;
-	private String nhom;
+	private int nhom;
 	private int countLike, countComment;
 	private Date ngaytao;
 	private User user;
 
-	public Post(long mabaiviet, String tieude, String noidung, String taikhoan, String nhom, String ngaytao) {
+	public Post(long mabaiviet, String tieude, String noidung, String taikhoan, int nhom, String ngaytao) {
 		this.mabaiviet = mabaiviet;
 		this.tieude = tieude;
 		this.noidung = noidung;
@@ -105,10 +105,10 @@ public class Post {
 	}
 
 	public String getNhom() {
-		return nhom;
+		return BaseController.GetInstance().groupDao.getById(nhom).getTennhom();
 	}
 
-	public void setNhom(String nhom) {
+	public void setNhom(int nhom) {
 		this.nhom = nhom;
 	}
 

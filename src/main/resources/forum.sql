@@ -1,5 +1,13 @@
 create database if not exists diendan;
 use diendan;
+
+create table if not exists chucvu(
+	machucvu int not null auto_increment,
+    tenchucvu nchar(50) not null,
+    hang int not null,
+	constraint pk_chucvu primary key(machucvu)
+);
+
 create table if not exists nguoidung(
     taikhoan char(13) not null,
     matkhau char(255) not null,
@@ -9,22 +17,31 @@ create table if not exists nguoidung(
     gioitinh nchar(10),
     sothich text,
     sodienthoai char(12),
-    chucvu nvarchar(50) DEFAULT "Thành Viên",
+    machucvu int not null DEFAULT 1,
     anhdaidien varchar(250) DEFAULT "/resources/images/default_avatar.png",
     lastlogin bigint not null,
     ngaytao timestamp not null default current_timestamp,
-	constraint pk_nguoidung primary key(taikhoan)
+	constraint pk_nguoidung primary key(taikhoan),
+    constraint fk_user_chucvu foreign key(machucvu) references chucvu(machucvu) on delete cascade
 );
 
+create table if not exists nhom(
+	manhom int not null auto_increment,
+    tennhom nvarchar(150) not null,
+    mota nvarchar(200) not null,
+    ngaytao timestamp not null default current_timestamp,
+	constraint pk_nhom primary key(manhom)
+);
 create table if not exists baiviet(
     mabaiviet bigint not null,
     tieude nvarchar(150) not null,
     noidung text not null,
     taikhoan char(13) not null,
-    nhom nvarchar(50) not null,
+    manhom int not null,
     ngaytao timestamp not null default current_timestamp,
     constraint pk_posts primary key(mabaiviet),
-    constraint fk_posts foreign key(taikhoan) references nguoidung(taikhoan) on delete cascade
+    constraint fk_posts foreign key(taikhoan) references nguoidung(taikhoan) on delete cascade,
+    constraint fk_posts_nhom foreign key(manhom) references nhom(manhom) on delete cascade
 );
 
 create table if not exists binhluan(
@@ -75,6 +92,18 @@ create table if not exists hinhanh(
     constraint fk_images_cmt foreign key(mabinhluan) references binhluan(mabinhluan) on delete cascade
 );
 
+insert into chucvu(tenchucvu, hang) values('Thành viên', 0);
+insert into chucvu(tenchucvu, hang) values('Quản lý nhóm', 1);
+insert into chucvu(tenchucvu, hang) values('Quản lý', 2);
+insert into chucvu(tenchucvu, hang) values('Admin', 5);
+
+insert into nhom(tennhom, mota) values('Tổng hợp', 'Tổng hợp những bài viết về chủ đề phượt.');
+insert into nhom(tennhom, mota) values('Bắc', 'Những bài viết, hình ảnh về các địa điểm phượt miền Bắc.');
+insert into nhom(tennhom, mota) values('Trung', 'Miền Trung đầy nắng và gió.');
+insert into nhom(tennhom, mota) values('Nam', 'Miền Nam thân thương.');
+insert into nhom(tennhom, mota) values('Tâm sự, chia sẻ kinh nghiệm', 'Cùng chia sẻ chuyến đi, kinh nghiệm phượt.');
+insert into nhom(tennhom, mota) values('Tìm kiếm đồng đội', 'Bạn không muốn phượt một mình? Hãy kiếm đồng đội.');
+
 -- delimiter $$
 -- create function deleteLikes(id bigint) returns boolean
 -- begin
@@ -93,7 +122,7 @@ create table if not exists hinhanh(
 -- DELIMITER ;
 -- set global event_scheduler = on;
 
-insert into nguoidung(taikhoan, matkhau, hoten, chucvu) values('admin', '900150983cd24fb0d6963f7d28e17f72', 'ADMIN', 'Admin');
+insert into nguoidung(taikhoan, matkhau, hoten, machucvu) values('admin', '900150983cd24fb0d6963f7d28e17f72', 'ADMIN', 4);
 insert into nguoidung(taikhoan, matkhau, hoten) values('user', '900150983cd24fb0d6963f7d28e17f72', 'User');
 -- alter table users add column date timestamp default current_timestamp() after avatar
 
@@ -105,34 +134,6 @@ insert into nguoidung(taikhoan, matkhau, hoten) values('user', '900150983cd24fb0
 -- alter table likes add constraint fk_user foreign key(user_name) references users(user_name);
 -- alter table notifications add constraint fk_from foreign key(from_user) references users(user_name);
 -- alter table notifications add constraint fk_to foreign key(to_user) references users(user_name);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

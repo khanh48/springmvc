@@ -42,19 +42,16 @@
 					<a class="me-3 dropdown" href="#" id="navbarDropdownMenuLink"
 						role="button" data-bs-toggle="dropdown" aria-expanded="true">
 
-						<i class="fas fa-bell" id="bell-num"> 
-						<c:if test="${listNotify.size() > 0}">
+						<i class="fas fa-bell" id="bell-num"> <c:if
+								test="${listNotify.size() > 0}">
 								<span
 									class="badge rounded-pill position-absolute top-0 start-100 translate-middle bg-danger"
-									id="ntf-num"> 
-									
-									<c:if test="${listNotify.size() < 100}">
+									id="ntf-num"> <c:if test="${listNotify.size() < 100}">
 									${ listNotify.size() } 
-									</c:if>
-									<c:if test="${listNotify.size() > 99}">
+									</c:if> <c:if test="${listNotify.size() > 99}">
 									99+ 
 									</c:if>
-									</span>
+								</span>
 							</c:if>
 
 					</i>
@@ -73,20 +70,27 @@
 				<!-- Avatar -->
 				<div class="dropdown">
 					<a class="dropdown" href="#" id="navbarDropdownMenuAvatar"
-						role="button" data-bs-toggle="dropdown" aria-expanded="false">
+						role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
 						<img src="${userID.anhdaidien }" class="rounded-circle"
 						height="25" alt="avatar">
 					</a>
 					<ul class="dropdown-menu dropdown-menu-end"
 						aria-labelledby="navbarDropdownMenuAvatar">
-						<li><a class="dropdown-item"
-							href="./profile?user=<?php echo $my_id; ?>">Trang cá nhân</a></li>
+						<li><a class="dropdown-item" href="/ho-so">Trang cá nhân</a></li>
 
 						<li><a class="dropdown-item" href="./notification">Thông
 								báo</a></li>
 						<li class="log"><a class="dropdown-item" href="./search">Tìm
 								kiếm</a></li>
-						<li><a class="dropdown-item" href="./admin">Quản lý</a></li>
+
+						<li><a class="dropdown-item" data-bs-toggle="collapse"
+							data-bs-target="#menu_item1" href="">Quản lý&ensp;<i class="fa-solid fa-caret-down"></i>
+						</a>
+							<ul id="menu_item1" class="submenu collapse">
+								<li><a class="dropdown-item" href="#">Thành viên</a></li>
+								<li><a class="dropdown-item" href="#">Bài viết</a></li>
+								<li><a class="dropdown-item" href="#">Phê duyệt</a></li>
+							</ul></li>
 						<li>
 							<hr class="dropdown-divider">
 						</li>

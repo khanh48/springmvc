@@ -66,7 +66,7 @@ public class PostDao {
 
 	public List<Post> GetPostsUserLimit(String taikhoan, int start, int limit) {
 		try {
-			return jdbcTemplate.query("select * from baiviet where taikhoan=? order by ngaytao desc limit ?, ?",
+			return jdbcTemplate.query("select * from baiviet where taikhoan = ? order by ngaytao desc limit ?, ?",
 					new Object[] { taikhoan, start, limit }, new int[] { Types.CHAR, Types.INTEGER, Types.INTEGER },
 					new PostMapper());
 		} catch (DataAccessException e) {
@@ -91,17 +91,17 @@ public class PostDao {
 		return jdbcTemplate.update("delete from baiviet where taikhoan = ?", taikhoan);
 	}
 
-	public int UpdatePostByID(long id, String tieude, String noidung, String nhom) {
-		return jdbcTemplate.update("update baiviet set tieude = ?, noidung = ?, nhom = ? where mabaiviet = ?", tieude,
+	public int UpdatePostByID(long id, String tieude, String noidung, int nhom) {
+		return jdbcTemplate.update("update baiviet set tieude = ?, noidung = ?, manhom = ? where mabaiviet = ?", tieude,
 				noidung, nhom, id);
 	}
 
-	public int AddPost(long id, String tieude, String noidung, String nhom, String taikhoan) {
+	public int AddPost(long id, String tieude, String noidung, int nhom, String taikhoan) {
 		try {
 			return jdbcTemplate.update(
-					"insert into baiviet(mabaiviet, tieude, noidung, nhom, taikhoan) value(?, ?, ?, ?, ?)",
+					"insert into baiviet(mabaiviet, tieude, noidung, manhom, taikhoan) value(?, ?, ?, ?, ?)",
 					new Object[] { id, tieude, noidung, nhom, taikhoan },
-					new int[] { Types.BIGINT, Types.NVARCHAR, Types.NVARCHAR, Types.NCHAR, Types.CHAR });
+					new int[] { Types.BIGINT, Types.NVARCHAR, Types.NVARCHAR, Types.INTEGER, Types.CHAR });
 		} catch (DataAccessException e) {
 			return 0;
 		}
@@ -110,7 +110,7 @@ public class PostDao {
 	private class PostMapper implements RowMapper<Post> {
 		@Override
 		public Post mapRow(ResultSet rs, int rowNum) throws SQLException {
-			Post post = new Post(rs.getLong(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5),
+			Post post = new Post(rs.getLong(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getInt(5),
 					rs.getString(6));
 			post.setCountLike(BaseController.GetInstance().likeDao.GetTotalLikePost(rs.getLong(1)));
 			post.setCountComment(BaseController.GetInstance().commentDao.GetTotalComment(rs.getLong(1)));

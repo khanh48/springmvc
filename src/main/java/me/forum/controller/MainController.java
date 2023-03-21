@@ -22,17 +22,17 @@ public class MainController extends BaseController {
 
 	@RequestMapping(value = { "/", "/index" })
 	public ModelAndView homePage(HttpSession session, HttpServletRequest request) {
+		setNotification(session);
 		mav.setViewName("index");
 		mav.addObject("posts", postDao.GetPostsLimitDesc(0, 10));
-		if (session.getAttribute("userID") != null)
-			session.setAttribute("listNotify",
-					notificationDao.GetByNguoiNhan(((User) session.getAttribute("userID")).getTaikhoan()));
+		mav.addObject("groups", groupDao.getGroupList());
 		return mav;
 	}
 
 
 	@RequestMapping(value = { "/ho-so/{username}", "/profile/{username}" })
-	public ModelAndView profilePage(@PathVariable("username") String username) {
+	public ModelAndView profilePage(@PathVariable("username") String username, HttpSession session) {
+		setNotification(session);
 		mav.setViewName("profile");
 		User user = userDao.findUserByUserName(username);
 		if(user == null) {
@@ -51,6 +51,7 @@ public class MainController extends BaseController {
 
 	@RequestMapping(value = { "/ho-so", "/profile" })
 	public ModelAndView myProfilePage(HttpSession session) {
+		setNotification(session);
 		mav.setViewName("profile");
 		User user = (User)session.getAttribute("userID");
 		if(user == null) {
@@ -68,6 +69,7 @@ public class MainController extends BaseController {
 	
 	@RequestMapping(value = { "/bai-viet/{id}", "/post/{id}" })
 	public ModelAndView postPage(@PathVariable long id, HttpSession session) {
+		setNotification(session);
 		Post post = postDao.GetPostByID(id);
 			mav.setViewName("post");
 		if(post == null) {
@@ -78,14 +80,12 @@ public class MainController extends BaseController {
 		List<Comment> comments = commentDao.GetPostsLimitDesc(id, 0, 10);
 		mav.addObject("post", post);
 		mav.addObject("comments", comments);
-		if (session.getAttribute("userID") != null)
-			session.setAttribute("listNotify",
-					notificationDao.GetByNguoiNhan(((User) session.getAttribute("userID")).getTaikhoan()));
 		return mav;
 	}
 
 	@RequestMapping(value = { "/bai-viet/{id}/{nid}", "/post/{id}/{nid}" })
-	public ModelAndView postPageReaded(@PathVariable long id, @PathVariable long nid) {
+	public ModelAndView postPageReaded(@PathVariable long id, @PathVariable long nid, HttpSession session) {
+		setNotification(session);
 		notificationDao.MakeAsRead(nid);
 		mav.setViewName("redirect:/bai-viet/" + id);
 		return mav;
@@ -99,8 +99,15 @@ public class MainController extends BaseController {
 			long curTime = System.currentTimeMillis();
 			userDao.UpdateMaBaoMat(uname, MainRestController.encrypt(uname, curTime), curTime);
 			session.removeAttribute("userID");
+			session.removeAttribute("listNotify");
 		}
 		return mav;
 	}
-
+	
+	private void setNotification(HttpSession session) {
+		User user = (User)session.getAttribute("userID");
+		if (user != null) {
+			session.setAttribute("listNotify", notificationDao.GetByNguoiNhan(user.getTaikhoan()));
+		}
+	}
 }

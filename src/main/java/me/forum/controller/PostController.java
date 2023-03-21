@@ -30,10 +30,12 @@ public class PostController extends BaseController {
 
 	@RequestMapping(value = "/loadPost", method = RequestMethod.GET)
 	@ResponseBody
-	public List<String> loadOnScroll(@RequestParam int start, @RequestParam int limit, HttpSession session) {
+	public List<String> loadOnScroll(@RequestParam int start, @RequestParam int limit,
+			@RequestParam(required = false) String uid, HttpSession session) {
 		String numlike, numcmt, uUrl, isliked;
 		List<String> list = new ArrayList<>();
-		List<Post> posts = postDao.GetPostsLimitDesc(start, limit);
+		List<Post> posts;
+		posts = uid != null ? postDao.GetPostsUserLimit(uid, start, limit) : postDao.GetPostsLimitDesc(start, limit);
 		User user = (User) session.getAttribute("userID");
 		for (Post p : posts) {
 			isliked = "";
@@ -48,22 +50,26 @@ public class PostController extends BaseController {
 			String item = "<div class='content' id='" + p.getMabaiviet() + "'>";
 			item += "<div class='d-flex justify-content-between'>";
 			item += "<div class=' c-header'>";
-			item += "<span> <a class='name' href='" + uUrl + "'> <img class='avt' src='" + u.getAnhdaidien()
-					+ "' alt='avatar'></a></span>";
-			item += "<div class='c-name'>";
+			item += "<span> <a class='name' href='" + uUrl + "'>";
+			item += "<img class='avt' src='" + u.getAnhdaidien() + "' alt='avatar'>";
+			item += "</a></span><div class='c-name'>";
 			item += "<span><a class='name' href='" + uUrl + "'>" + u.getHoten() + "</a>";
-			item += "<div class='time'><small class='text-secondary'>" + p.getDateFormated()
-					+ "</small></div> </span></div></div>";
-			item += "<button name='delete-notification' class='btn-close py-1 px-3' ";
-			item += "value='a' data-bs-toggle='modal' data-bs-target='#delete-post' onclick=\"deletePost("
-					+ p.getMabaiviet() + ")\"></button>";
+			item += "<div class='time'>"; 
+			item += "<small class='text-secondary'>" + p.getDateFormated() + "</small>";
+			item += "</div></span></div></div>";
+
+			if (u.getTaikhoan().equals(user.getTaikhoan()) || user.getChucvu().equals("Admin")) {
+				item += "<button name='delete-notification' class='btn-close py-1 px-3' ";
+				item += "value='' data-bs-toggle='modal' data-bs-target='#delete-post' " + "onclick=\"deletePost("
+						+ p.getMabaiviet() + ")\"></button>";
+			}
 			item += "</div><div> <div class='title'>";
 			item += "<div class='name'>" + p.getNhom() + "</div>";
 			item += "<span>></span><div class='name'>" + p.getTieude() + "</div></div></div>";
 			item += "<div class='c-body'>" + p.getNoidung() + "</div>";
 			item += "<div class='m-0 hide wh' style='text-align: end;'>";
 			item += "<span class='read-more'></span></div>";
-			
+
 			List<Image> imgs = p.getImage();
 			if (imgs != null && !imgs.isEmpty()) {
 				item += "<div id='forpost" + p.getMabaiviet()
@@ -94,7 +100,8 @@ public class PostController extends BaseController {
 			item += "<span class='count-like' id='p" + p.getMabaiviet() + "'>" + numlike + "</span></button>";
 			item += "<button type='button' class='comment p-1' onclick=\"window.location.href='/bai-viet/"
 					+ p.getMabaiviet() + "'\">";
-			item += "<i class='fas fa-comment action'></i> <span class='count-comment'>" + numcmt + "</span>";
+			item += "<i class='fas fa-comment action'></i>";
+			item += "<span class='count-comment'>" + numcmt + "</span>";
 			item += "</button><button type='button' class='share p-1'>";
 			item += "<i class='fas fa-share action'></i><span class='count-share'></span>";
 			item += "</button></div></div>";
@@ -105,7 +112,8 @@ public class PostController extends BaseController {
 
 	@RequestMapping(value = "/loadComment", method = RequestMethod.GET)
 	@ResponseBody
-	public List<String> loadCommentOnScroll(@RequestParam long id, @RequestParam int start, @RequestParam int limit, HttpSession session) {
+	public List<String> loadCommentOnScroll(@RequestParam long id, @RequestParam int start, @RequestParam int limit,
+			HttpSession session) {
 		String numlike, uUrl, isliked;
 
 		List<String> list = new ArrayList<>();
@@ -120,21 +128,31 @@ public class PostController extends BaseController {
 				isliked = "fas-liked";
 			}
 
-			String item = "<div class='content rm'>" + "<div class='d-flex justify-content-between $loggedin'>"
-					+ "<div class=' c-header'>" + "<span> <a class='name' href='"+uUrl+"'> <img class='avt' src='"
-					+ u.getAnhdaidien() + "' alt='avatar'></a></span>" + "<div class='c-name'>"
-					+ "<span><a class='name' href='"+uUrl+"'>" + u.getHoten() + "</a>"
-					+ "<div class='time'><small class='text-secondary'>" + cmt.getDateFormated()
-					+ "</small></div> </span></div></div>"
-					+ "<button name='delete-notification' class='btn-close py-1 px-3' "
-					+ "value='a' data-bs-toggle='modal' data-bs-target='#delete-post' onclick=\"deleteCmt("
-					+ cmt.getMabinhluan() + ")\"></button>" + "</div><div class='c-body'>" + cmt.getNoidung() + "</div>"
-					+ "<div class='m-0 hide wh' style='text-align: end;'>" + "<span class='read-more'></span></div>"
-					+ "<hr class='m-0'>" + "<div class='interactive p-1 m-0'>"
-					+ "<button type='button' class='like p-1' onclick=\"like(" + cmt.getMabinhluan() + ",false, '"
-					+ u.getTaikhoan() + "')\">" + "<i class='fas fa-heart action "+isliked+"' id='cl"
-					+ cmt.getMabinhluan() + "'></i> " + "<span class='count-like' id='c" + cmt.getMabinhluan() + "'>"
-					+ numlike + "</span></button>" + "</div></div>";
+			String item = "<div class='content'>";
+			item += "<div class='d-flex justify-content-between'>";
+			item += "<div class='c-header'><span>";
+			item += "<a class='name' href='" + uUrl + "'>";
+			item += "<img class='avt' src='" + u.getAnhdaidien() + "' alt='avatar'>";
+			item += "</a></span><div class='c-name'>";
+			item += "<span><a class='name' href='" + uUrl + "'>" + u.getHoten() + "</a>";
+			item += "<div class='time'>";
+			item += "<small class='text-secondary'>" + cmt.getDateFormated() + "</small>";
+			item += "</div> </span></div></div>";
+
+			if (u.getTaikhoan().equals(user.getTaikhoan()) || user.getChucvu().equals("Admin")) {
+				item += "<button name='delete-notification' class='btn-close py-1 px-3' "
+						+ "value='a' data-bs-toggle='modal' data-bs-target='#delete-post' onclick=\"deleteCmt("
+						+ cmt.getMabinhluan() + ")\"></button>";
+			}
+			item += "</div><div class='c-body'>" + cmt.getNoidung() + "</div>";
+			item += "<div class='m-0 hide wh' style='text-align: end;'>";
+			item += "<span class='read-more'></span></div><hr class='m-0'>";
+			item += "<div class='interactive p-1 m-0'>";
+			item += "<button type='button' class='like p-1' ";
+			item += "onclick=\"like(" + cmt.getMabinhluan() + ",false, '" + u.getTaikhoan() + "')\">";
+			item += "<i class='fas fa-heart action " + isliked + "' id='cl" + cmt.getMabinhluan() + "'>";
+			item += "</i><span class='count-like' id='c" + cmt.getMabinhluan() + "'>";
+			item += numlike + "</span></button>" + "</div></div>";
 			list.add(item);
 		}
 		return list;
@@ -143,12 +161,11 @@ public class PostController extends BaseController {
 	@RequestMapping(value = "/addPost", method = RequestMethod.POST)
 	public ModelAndView addPost(@RequestParam("uploadImg") List<MultipartFile> uploadImg, HttpSession session,
 			HttpServletRequest request) throws IllegalStateException, IOException {
-		String tieude, noidung, nhom;
-
+		String tieude, noidung;
+		int nhom;
 		tieude = request.getParameter("tieude");
 		noidung = request.getParameter("noidung");
-		nhom = request.getParameter("nhom");
-		System.out.println(nhom);
+		nhom = Integer.valueOf(request.getParameter("nhom"));
 		mav.setViewName("redirect:/");
 		User user = (User) session.getAttribute("userID");
 		String rootPath = request.getServletContext().getRealPath("/");
