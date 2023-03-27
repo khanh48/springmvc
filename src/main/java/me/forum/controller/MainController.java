@@ -32,13 +32,25 @@ public class MainController extends BaseController {
 	@RequestMapping(value = { "/manage", "/quan-ly" })
 	public ModelAndView managePage(HttpSession session, HttpServletRequest request) {
 		setNotification(session);
-		mav.setViewName("admin");
+		mav.setViewName("member_manage");
 		User user = (User) session.getAttribute("userID");
 		if(user == null) {
 			return mav;
 		}
 		mav.addObject("userList", userDao.getUserUnderRank(user.getRank()));
 		mav.addObject("ruleList", ruleDao.getAll());
+		return mav;
+	}
+	@RequestMapping(value = { "/posts-manage", "/quan-ly-bai-viet" })
+	public ModelAndView postsManagePage(HttpSession session, HttpServletRequest request) {
+		setNotification(session);
+		mav.setViewName("posts_manage");
+		User user = (User) session.getAttribute("userID");
+		if(user == null) {
+			return mav;
+		}
+		mav.addObject("postList", postDao.GetAll());
+		mav.addObject("groupList", groupDao.getGroupList());
 		return mav;
 	}
 

@@ -913,9 +913,27 @@ caption {
 }
 
 .table-wrapper{
-  max-height: 250px;
+  max-height: 60vh;
   overflow: auto;
 }
+.table-wrapper::-webkit-scrollbar {
+    width: 5px;
+}
+
+.table-wrapper::-webkit-scrollbar-track {
+    background-color: rgba(255, 255, 255);
+    border-radius: 5px;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb {
+    background-color: #bdbbbb;
+    border-radius: 5px;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb:hover {
+    background-color: #a7a5a5;
+}
+
 #searchRow{
 	position: sticky;
 	top: 0;

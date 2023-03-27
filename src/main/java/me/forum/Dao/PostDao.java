@@ -54,6 +54,15 @@ public class PostDao {
 			return null;
 		}
 	}
+	
+
+	public List<Post> GetAll() {
+		try {
+			return jdbcTemplate.query("select * from baiviet", new PostMapper());
+		} catch (DataAccessException e) {
+			return null;
+		}
+	}
 
 	public List<Post> GetPostsLimitDesc(int start, int limit) {
 		try {

@@ -103,6 +103,10 @@ public class Post {
 	public void setTaikhoan(String taikhoan) {
 		this.taikhoan = taikhoan;
 	}
+	
+	public int getManhom() {
+		return nhom;
+	}
 
 	public String getNhom() {
 		return BaseController.GetInstance().groupDao.getById(nhom).getTennhom();
