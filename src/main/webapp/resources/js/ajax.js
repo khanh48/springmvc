@@ -78,6 +78,29 @@ function delComment(id) {
 	})
 }
 
+function findUser() {
+	var taikhoan = $("#fbID").val();
+	var hoten = $("#fbFullName").val();
+	var email = $("#fbEmail").val();
+	var sdt = $("#fbNumber").val();
+	var chucvu = $("#fbRank").val();
+	
+	$.ajax({
+		type: "POST",
+		url: "/findUser",
+		data: {
+			taikhoan: taikhoan,
+			hoten: hoten,
+			email: email,
+			sdt: sdt,
+			chucvu: chucvu
+		},
+		success: function(response) {
+			$("#tableBody").html(response.result)
+		}
+	})
+}
+
 $(document).ready(function() {
 	$("#changePassword").click(function(e) {
 		$.ajax({

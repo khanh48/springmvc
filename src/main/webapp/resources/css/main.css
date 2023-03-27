@@ -911,3 +911,12 @@ caption {
 	padding: 0; 
 	padding-left: 1rem; 
 }
+
+.table-wrapper{
+  max-height: 250px;
+  overflow: auto;
+}
+#searchRow{
+	position: sticky;
+	top: 0;
+}

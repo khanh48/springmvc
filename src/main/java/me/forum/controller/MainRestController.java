@@ -3,6 +3,7 @@ package me.forum.Controller;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -10,6 +11,8 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.servlet.jsp.jstl.core.LoopTagStatus;
+import javax.servlet.jsp.jstl.core.LoopTagSupport;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,10 +25,12 @@ import me.forum.Dao.CommentDao;
 import me.forum.Dao.LikeDao;
 import me.forum.Dao.NotificationDao;
 import me.forum.Dao.PostDao;
+import me.forum.Dao.RuleDao;
 import me.forum.Dao.UserDao;
 import me.forum.Entity.Comment;
 import me.forum.Entity.Notification;
 import me.forum.Entity.Post;
+import me.forum.Entity.Rule;
 import me.forum.Entity.User;
 import me.forum.WebSocketSetup.UserHandler;
 
@@ -44,6 +49,8 @@ public class MainRestController {
 	public CommentDao commentDao;
 	@Autowired
 	public PostDao postDao;
+	@Autowired
+	public RuleDao ruleDao;
 
 	public MainRestController() {
 	}
@@ -184,14 +191,13 @@ public class MainRestController {
 
 	@RequestMapping(value = "/deleteCmt", method = RequestMethod.POST)
 	public Map<String, String> deleteCmt(@RequestParam int cid, HttpSession session) {
-
 		HashMap<String, String> map = new HashMap<>();
 		Comment cmt = commentDao.GetByID(cid);
 		User user = (User) session.getAttribute("userID");
 		if(user == null || cmt == null) {
 			map.put("type", "failed");
 			map.put("message", "null");
-		}else if(!user.equals(cmt.getUser()) && !user.getChucvu().equals("Admin")) {
+		}else if(!user.equals(cmt.getUser()) && user.getRank() < 2) {
 			map.put("type", "failed");
 			map.put("message", "no permission");
 		}else {
@@ -211,7 +217,7 @@ public class MainRestController {
 		if(user == null || post == null) {
 			map.put("type", "failed");
 			map.put("message", "null");
-		}else if(!user.equals(post.getUser()) && !user.getChucvu().equals("Admin")) {
+		}else if(!user.equals(post.getUser()) && user.getRank() < 2) {
 			map.put("type", "failed");
 			map.put("message", "no permission");
 		}else {
@@ -221,6 +227,46 @@ public class MainRestController {
 		}
 		return map;
 	}
+	
+
+	@RequestMapping(value = "/findUser", method = RequestMethod.POST)
+	public Map<String, String> findUser(HttpServletRequest request, HttpSession session) {
+		HashMap<String, String> map = new HashMap<>();
+		String taikhoan, hoten, email, sdt, rank, result = "";
+		int i = 0;
+		taikhoan = request.getParameter("taikhoan");
+		hoten = request.getParameter("hoten");
+		email = request.getParameter("email");
+		sdt = request.getParameter("sdt");
+		rank = request.getParameter("chucvu");
+		
+		List<User> listUser = userDao.FindLikeUser(taikhoan, hoten, email, sdt, rank);
+		User myUser = (User) session.getAttribute("userID");
+		if(myUser == null) return map;
+		for (User user : listUser) {
+			
+			result += "<tr><td><input type='checkbox' name='checkbox' value='"+i+"' /></td>";
+			result += "<td><input class='form-control f-sm' type='text' name='taikhoan' value='"+user.getTaikhoan() +"' readonly /></td>";
+			result += "<td><input class='form-control f-sm' type='text' name='hoten' value='"+user.getHoten() +"' /></td>";
+			result += "<td><input class='form-control f-sm' type='email' name='email' value='"+user.getEmail() + "' /></td>";
+			result += "<td><input type='text' class='form-control f-sm mb-1' name='sdt' value='"+user.getSodienthoai() + "' /></td>";
+
+			result += "<td><select class='form-control f-sm mb-1' name='chucvu'>";
+			for (Rule r : ruleDao.getAll()) {
+				String isSelected = user.getRank() == r.getHang()? "selected":"";
+				if(r.getHang() < myUser.getRank()) {
+					result += "<option value='"+r.getMachucvu() +"' "+isSelected+">"+r.getTenchucvu() +"</option>";				
+				}
+			}
+
+			result += "</select></td></tr>";
+			i++;
+		}
+		
+		map.put("result", result);
+		return map;
+	}
+	
 
 	public static String encrypt(String input, long key) {
 		try {

@@ -29,6 +29,19 @@ public class MainController extends BaseController {
 		return mav;
 	}
 
+	@RequestMapping(value = { "/manage", "/quan-ly" })
+	public ModelAndView managePage(HttpSession session, HttpServletRequest request) {
+		setNotification(session);
+		mav.setViewName("admin");
+		User user = (User) session.getAttribute("userID");
+		if(user == null) {
+			return mav;
+		}
+		mav.addObject("userList", userDao.getUserUnderRank(user.getRank()));
+		mav.addObject("ruleList", ruleDao.getAll());
+		return mav;
+	}
+
 
 	@RequestMapping(value = { "/ho-so/{username}", "/profile/{username}" })
 	public ModelAndView profilePage(@PathVariable("username") String username, HttpSession session) {

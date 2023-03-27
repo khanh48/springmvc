@@ -25,9 +25,12 @@
 										</div> </span>
 								</div>
 							</div>
-							<button name='delete-notification' class='btn-close py-1 px-3'
-								value='a' data-bs-toggle='modal' data-bs-target='#delete-post'
-								onclick="deletePost(${post.getMabaiviet()})"></button>
+							<c:if
+								test="${post.getUser().getTaikhoan() eq userID.getTaikhoan() || userID.getRank() >= 2 }">
+								<button name='delete-notification' class='btn-close py-1 px-3'
+									value='a' data-bs-toggle='modal' data-bs-target='#delete-post'
+									onclick="deletePost(${post.getMabaiviet()})"></button>
+							</c:if>
 						</div>
 						<div>
 							<div class='title'>
@@ -90,9 +93,13 @@
 											</div> </span>
 									</div>
 								</div>
-								<button name='delete-notification' class='btn-close py-1 px-3'
-									value='a' data-bs-toggle='modal' data-bs-target='#delete-cmt'
-									onclick="deleteCmt(${i.getMabinhluan()})"></button>
+
+								<c:if
+									test="${i.getUser().getTaikhoan() eq userID.getTaikhoan() || userID.getRank() >= 2 }">
+									<button name='delete-notification' class='btn-close py-1 px-3'
+										value='a' data-bs-toggle='modal' data-bs-target='#delete-cmt'
+										onclick="deleteCmt(${i.getMabinhluan()})"></button>
+								</c:if>
 							</div>
 							<div class='c-body'>${i.getNoidung() }</div>
 							<div class='m-0 hide wh' style='text-align: end;'>

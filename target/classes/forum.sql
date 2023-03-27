@@ -2,9 +2,8 @@ create database if not exists diendan;
 use diendan;
 
 create table if not exists chucvu(
-	machucvu int not null auto_increment,
+	machucvu int not null,
     tenchucvu nchar(50) not null,
-    hang int not null,
 	constraint pk_chucvu primary key(machucvu)
 );
 
@@ -16,8 +15,9 @@ create table if not exists nguoidung(
     ngaysinh date,
     gioitinh nchar(10),
     sothich text,
-    sodienthoai char(12),
-    machucvu int not null DEFAULT 1,
+    sodienthoai char(12) default "",
+    email char(50) default "",
+    machucvu int not null DEFAULT 0,
     anhdaidien varchar(250) DEFAULT "/resources/images/default_avatar.png",
     lastlogin bigint not null,
     ngaytao timestamp not null default current_timestamp,
@@ -92,10 +92,10 @@ create table if not exists hinhanh(
     constraint fk_images_cmt foreign key(mabinhluan) references binhluan(mabinhluan) on delete cascade
 );
 
-insert into chucvu(tenchucvu, hang) values('Thành viên', 0);
-insert into chucvu(tenchucvu, hang) values('Quản lý nhóm', 1);
-insert into chucvu(tenchucvu, hang) values('Quản lý', 2);
-insert into chucvu(tenchucvu, hang) values('Admin', 5);
+insert into chucvu(machucvu, tenchucvu) values(0, 'Thành viên');
+insert into chucvu(machucvu, tenchucvu) values(1, 'Quản lý nhóm');
+insert into chucvu(machucvu, tenchucvu) values(2, 'Quản lý');
+insert into chucvu(machucvu, tenchucvu) values(5, 'Admin');
 
 insert into nhom(tennhom, mota) values('Tổng hợp', 'Tổng hợp những bài viết về chủ đề phượt.');
 insert into nhom(tennhom, mota) values('Bắc', 'Những bài viết, hình ảnh về các địa điểm phượt miền Bắc.');
@@ -122,7 +122,7 @@ insert into nhom(tennhom, mota) values('Tìm kiếm đồng đội', 'Bạn khô
 -- DELIMITER ;
 -- set global event_scheduler = on;
 
-insert into nguoidung(taikhoan, matkhau, hoten, machucvu) values('admin', '900150983cd24fb0d6963f7d28e17f72', 'ADMIN', 4);
+insert into nguoidung(taikhoan, matkhau, hoten, machucvu) values('admin', '900150983cd24fb0d6963f7d28e17f72', 'ADMIN', 5);
 insert into nguoidung(taikhoan, matkhau, hoten) values('user', '900150983cd24fb0d6963f7d28e17f72', 'User');
 -- alter table users add column date timestamp default current_timestamp() after avatar
 

@@ -3,13 +3,10 @@ package me.forum.Entity;
 public class Rule {
 	private int machucvu;
 	private String tenchucvu;
-	private int hang;
 	
-	public Rule(int machucvu, String tenchucvu, int hang) {
-		super();
+	public Rule(int machucvu, String tenchucvu) {
 		this.machucvu = machucvu;
 		this.tenchucvu = tenchucvu;
-		this.hang = hang;
 	}
 	
 	public int getMachucvu() {
@@ -25,10 +22,7 @@ public class Rule {
 		this.tenchucvu = tenchucvu;
 	}
 	public int getHang() {
-		return hang;
-	}
-	public void setHang(int hang) {
-		this.hang = hang;
+		return machucvu;
 	}
 	
 	

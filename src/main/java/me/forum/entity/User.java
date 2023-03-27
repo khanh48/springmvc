@@ -14,6 +14,7 @@ public class User {
     private String gioitinh;
     private String sothich;
     private String sodienthoai;
+    private String email;
     private Rule chucvu;
     private String anhdaidien;
     private Date ngaytao;
@@ -21,7 +22,7 @@ public class User {
     private String mabaomat;
 
 	public User(String taikhoan, String matkhau, String mabaomat, String hoten, Date ngaysinh, String gioitinh, String sothich,
-			String sodienthoai, int chucvu, String anhdaidien, long lastlogin, Date ngaytao) {
+			String sodienthoai, String email, int chucvu, String anhdaidien, long lastlogin, Date ngaytao) {
 		this.taikhoan = taikhoan;
 		this.matkhau = matkhau;
 		this.hoten = hoten;
@@ -29,6 +30,7 @@ public class User {
 		this.gioitinh = gioitinh;
 		this.sothich = sothich;
 		this.sodienthoai = sodienthoai;
+		this.email = email;
 		this.chucvu = BaseController.GetInstance().ruleDao.getById(chucvu);
 		this.anhdaidien = anhdaidien;
 		this.ngaytao = ngaytao;
@@ -97,10 +99,18 @@ public class User {
 	public String getSodienthoai() {
 		return sodienthoai;
 	}
-
 	public void setSodienthoai(String sodienthoai) {
 		this.sodienthoai = sodienthoai;
 	}
+	
+
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 
 	public Rule getChucvu() {
 		return chucvu;

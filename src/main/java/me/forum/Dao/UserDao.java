@@ -22,16 +22,26 @@ public class UserDao {
 
 	public User findUserByUserName(String userName) {
 		try {
-			return jdbcTemplate.queryForObject("select * from nguoidung where taikhoan=?", new Object[] { userName }, new int[] {Types.CHAR},
-					new UserMapper());
+			return jdbcTemplate.queryForObject("select * from nguoidung where taikhoan=?", new Object[] { userName },
+					new int[] { Types.CHAR }, new UserMapper());
 		} catch (EmptyResultDataAccessException e) {
 			return null;
 		}
 	}
+
+	public List<User> getUserUnderRank(int rank) {
+		try {
+			return jdbcTemplate.query("select * from nguoidung where machucvu < ?", new Object[] { rank },
+					new int[] { Types.INTEGER }, new UserMapper());
+		} catch (EmptyResultDataAccessException e) {
+			return null;
+		}
+	}
+
 	public User findUserByCrypt(String crypt) {
 		try {
-			return jdbcTemplate.queryForObject("select * from nguoidung where mabaomat = ?", new Object[] { crypt }, new int[] {Types.NCHAR},
-					new UserMapper());
+			return jdbcTemplate.queryForObject("select * from nguoidung where mabaomat = ?", new Object[] { crypt },
+					new int[] { Types.NCHAR }, new UserMapper());
 		} catch (EmptyResultDataAccessException e) {
 			return null;
 		}
@@ -46,6 +56,11 @@ public class UserDao {
 		return jdbcTemplate.update("insert into nguoidung(hoten, taikhoan, matkhau) values(?, ?, ?)", hoten, taikhoan,
 				User.MD5(matkhau));
 	}
+	
+
+	public int RemoveUser(String taikhoan) {
+		return jdbcTemplate.update("delete from nguoidung where taikhoan = ?", taikhoan);
+	}
 
 	public List<User> findUserWhere(String query) {
 		try {
@@ -58,7 +73,21 @@ public class UserDao {
 	public List<User> GetLikeUser(String userName) {
 		try {
 			return jdbcTemplate.query("select * from nguoidung where hoten like ?",
-					new Object[] { "%" + userName + "%" }, new int[] {Types.CHAR}, new UserMapper());
+					new Object[] { "%" + userName + "%" }, new int[] { Types.CHAR }, new UserMapper());
+		} catch (EmptyResultDataAccessException e) {
+			return null;
+		}
+	}
+
+	public List<User> FindLikeUser(String taikhoan, String hoten, String email, String sdt, String rank) {
+		String sql = "select * from nguoidung where taikhoan like ? and hoten like ? and email like ? and sodienthoai like ? and machucvu like ?";
+		try {
+			return jdbcTemplate.query(sql, new Object[] { "%" + taikhoan + "%",
+					"%" + hoten + "%",
+					"%" + email + "%",
+					"%" + sdt + "%", 
+					"%" + rank + "%" },
+					new int[] { Types.CHAR, Types.NVARCHAR, Types.CHAR, Types.CHAR, Types.CHAR}, new UserMapper());
 		} catch (EmptyResultDataAccessException e) {
 			return null;
 		}
@@ -72,7 +101,8 @@ public class UserDao {
 	}
 
 	public int UpdateMaBaoMat(String userName, String mabaomat, long lastlogin) {
-		return jdbcTemplate.update("update nguoidung set mabaomat = ?, lastlogin = ? where taikhoan = ?", mabaomat, lastlogin, userName);
+		return jdbcTemplate.update("update nguoidung set mabaomat = ?, lastlogin = ? where taikhoan = ?", mabaomat,
+				lastlogin, userName);
 	}
 
 	public int ChangePassword(String userName, String newPassword) {
@@ -92,10 +122,9 @@ public class UserDao {
 	}
 
 	public int UpdateUser(User user) {
-		return jdbcTemplate.update(
-				"update nguoidung set hoten = ?, gioitinh = ?, ngaysinh = ?, sodienthoai = ?, machucvu = ? where taikhoan = ?",
-				user.getHoten(), user.getGioitinh(), user.getNgaysinh(), user.getSodienthoai(), user.getChucvu().getMachucvu(),
-				user.getTaikhoan());
+		String sql = "update nguoidung set hoten = ?, gioitinh = ?, ngaysinh = ?, sodienthoai = ?, machucvu = ?, email = ?, sothich = ? where taikhoan = ?";
+		return jdbcTemplate.update(sql, user.getHoten(), user.getGioitinh(), user.getNgaysinh(), user.getSodienthoai(),
+				user.getRank(), user.getEmail(), user.getSothich(), user.getTaikhoan());
 	}
 
 	private class UserMapper implements RowMapper<User> {
@@ -103,8 +132,8 @@ public class UserDao {
 		@Override
 		public User mapRow(ResultSet rs, int rowNum) throws SQLException {
 			return new User(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getDate(5),
-					rs.getString(6), rs.getString(7), rs.getString(8), rs.getInt(9), rs.getString(10),
-					rs.getLong(11), rs.getDate(12));
+					rs.getString(6), rs.getString(7), rs.getString(8), rs.getString(9), rs.getInt(10), rs.getString(11),
+					rs.getLong(12), rs.getDate(13));
 		}
 	}
 }

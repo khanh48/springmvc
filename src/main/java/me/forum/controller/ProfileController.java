@@ -17,18 +17,19 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import me.forum.Entity.User;
-@Controller
-public class ProfileController extends BaseController{
 
-	
+@Controller
+public class ProfileController extends BaseController {
+
 	@RequestMapping(value = "/updateProfile", method = RequestMethod.POST)
-	public ModelAndView updateProfile(@RequestParam(name = "avt", required = false) MultipartFile file, HttpServletRequest request, HttpSession session) {
-		
+	public ModelAndView updateProfile(@RequestParam(name = "avt", required = false) MultipartFile file,
+			HttpServletRequest request, HttpSession session) {
+
 		String hoten, gioitinh, sodienthoai, sothich, pathImg, rootPath;
 		Date ngaysinh;
-		User user = (User)session.getAttribute("userID");
+		User user = (User) session.getAttribute("userID");
 		mav.setViewName("redirect:/ho-so");
-		if(user == null) {
+		if (user == null) {
 			return mav;
 		}
 		hoten = request.getParameter("hoten");
@@ -60,6 +61,44 @@ public class ProfileController extends BaseController{
 		session.setAttribute("userID", userDao.findUserByUserName(user.getTaikhoan()));
 		return mav;
 	}
-	
+
+	@RequestMapping(value = "/manage-user", method = RequestMethod.POST)
+	public ModelAndView Test(@RequestParam(name = "checkbox", required = false) int[] checkbox,
+			@RequestParam(name = "chucvu") int[] chucvu, HttpServletRequest request, HttpSession session) {
+		mav.setViewName("redirect:/quan-ly");
+		User user = (User) session.getAttribute("userID");
+
+		if (user != null && checkbox != null) {
+
+			User user2;
+			String[] sdt, hoten, email, taikhoan;
+			sdt = request.getParameterValues("sdt");
+			hoten = request.getParameterValues("hoten");
+			email = request.getParameterValues("email");
+			taikhoan = request.getParameterValues("taikhoan");
+			if (request.getParameter("save") != null) {
+				if (user.getRank() >= 2) {
+
+
+					for (int i : checkbox) {
+						user2 = userDao.findUserByUserName(taikhoan[i]);
+						user2.setSodienthoai(sdt[i]);
+						user2.setHoten(hoten[i]);
+						user2.setEmail(email[i]);
+						if (chucvu[i] < user.getRank()) {
+							user2.setChucvu(ruleDao.getById(chucvu[i]));
+						}
+						userDao.UpdateUser(user2);
+					}
+				}
+
+			} else if(request.getParameter("save") == null){
+				for (int i : checkbox) {
+					userDao.RemoveUser(taikhoan[i]);
+				}
+			}
+		}
+		return mav;
+	}
 
 }

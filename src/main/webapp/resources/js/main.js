@@ -104,7 +104,7 @@ $(document).ready(function() {
 		$("#loadMore").hide();
 	}
 	$("#checkBoxAll").click(function() {
-		$('input[name="checkbox[]"]').prop('checked', $(this).is(":checked"));
+		$('input[name="checkbox"]').prop('checked', $(this).is(":checked"));
 	});
 
 	$("#checkAll").click(function() {

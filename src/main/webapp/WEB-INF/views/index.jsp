@@ -35,8 +35,7 @@
 					</div>
 				</c:if>
 				<div id="listPosts">
-					<c:forEach items="${posts}" var="i">
-
+					<c:forEach items="${posts}" var="i" varStatus="id">
 						<div class='content' id="${i.getMabaiviet() }">
 							<div class='d-flex justify-content-between'>
 								<div class=' c-header'>
@@ -53,7 +52,7 @@
 									</div>
 								</div>
 								<c:if
-									test="${i.getUser().getTaikhoan() eq userID.getTaikhoan() || userID.getChucvu() eq 'Admin' }">
+									test="${i.getUser().getTaikhoan() eq userID.getTaikhoan() || userID.getRank() >= 2 }">
 									<button name='delete-notification' class='btn-close py-1 px-3'
 										value='a' data-bs-toggle='modal' data-bs-target='#delete-post'
 										onclick="deletePost(${i.getMabaiviet()})"></button>
