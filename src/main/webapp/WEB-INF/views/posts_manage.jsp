@@ -9,7 +9,7 @@
 				<div>
 					<h3 class="ms-2">Quản lý bài viết</h3>
 
-					<form action="/manage-user" method="post">
+					<form action="/post-manage" method="post">
 						<div class="mb-2">
 
 							<span class='my-auto'> <input type="checkbox"
@@ -22,7 +22,7 @@
 								name="del">Xoá</button>
 						</div>
 						<div class="table-wrapper mx-2 border-secondary">
-							<table
+							<table style="min-width: 600px"
 								class="mb-0 table table-success table-sm table-striped table-hover table-bordered ">
 								<thead>
 									<tr>
@@ -38,16 +38,16 @@
 									<tr>
 										<td scope="row">Tìm kiếm</td>
 										<td><input class='form-control f-sm' type='text'
-											onkeyup="findUser()" id='fbAuthor' placeholder="Người đăng" /></td>
+											onkeyup="findPost()" id='fbAuthor' placeholder="Người đăng" /></td>
 										<td><input class='form-control f-sm' type='text'
-											onkeyup="findUser()" id='fbID'
+											onkeyup="findPost()" id='fbID'
 											placeholder="Mã bài viết" /></td>
 										<td><input class='form-control f-sm' type='text'
-											onkeyup="findUser()" id='fbTitle' placeholder="Tiêu đề" /></td>
+											onkeyup="findPost()" id='fbTitle' placeholder="Tiêu đề" /></td>
 										<td><input class='form-control f-sm' type='text'
-											onkeyup="findUser()" id='fbContent' placeholder="Nội dung" /></td>
+											onkeyup="findPost()" id='fbContent' placeholder="Nội dung" /></td>
 										<td><select class='form-control f-sm mb-1'
-											onchange="findUser()" id='fbGroup'>
+											onchange="findPost() " id='fbGroup'>
 
 												<option value=''>Tất cả</option>
 												<c:forEach items="${groupList }" var="g">
@@ -67,12 +67,12 @@
 											<td><input class='form-control f-sm' type='text'
 												name='taikhoan' value='${i.getUser().getTaikhoan() }' readonly /></td>
 											<td><input class='form-control f-sm' type='text'
-												name='mabaiviet' value='${i.getMabaiviet() }' /></td>
-											<td><input class='form-control f-sm' type="email"
+												name='mabaiviet' value='${i.getMabaiviet() }' readonly /></td>
+											<td><input class='form-control f-sm' type="text"
 												name='tieude' value='${i.getTieude() }' /></td>
-											<td><input type='text' class='form-control f-sm mb-1'
-												name='noidung' value='${i.getNoidung() }' /></td>
-											<td><select class='form-control f-sm mb-1' name='chucvu'>
+											<td><textarea class='form-control f-sm mb-1'
+												name='noidung'>${i.getNoidung() }</textarea></td>
+											<td><select class='form-control f-sm mb-1' name='nhom'>
 													<c:forEach items="${groupList }" var="g">
 															<option value='${g.getManhom() }'
 																<c:if test="${g.getManhom() == i.getManhom() }">selected</c:if>>${g.getTennhom() }</option>

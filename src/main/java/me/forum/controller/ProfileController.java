@@ -62,8 +62,8 @@ public class ProfileController extends BaseController {
 		return mav;
 	}
 
-	@RequestMapping(value = "/manage-user", method = RequestMethod.POST)
-	public ModelAndView Test(@RequestParam(name = "checkbox", required = false) int[] checkbox,
+	@RequestMapping(value = "/user-manage", method = RequestMethod.POST)
+	public ModelAndView userManage(@RequestParam(name = "checkbox", required = false) int[] checkbox,
 			@RequestParam(name = "chucvu") int[] chucvu, HttpServletRequest request, HttpSession session) {
 		mav.setViewName("redirect:/quan-ly");
 		User user = (User) session.getAttribute("userID");
@@ -76,11 +76,9 @@ public class ProfileController extends BaseController {
 			hoten = request.getParameterValues("hoten");
 			email = request.getParameterValues("email");
 			taikhoan = request.getParameterValues("taikhoan");
-			if (request.getParameter("save") != null) {
-				if (user.getRank() >= 2) {
-
-
-					for (int i : checkbox) {
+			if (user.getRank() >= 2) {
+				for (int i : checkbox) {
+					if (request.getParameter("save") != null) {
 						user2 = userDao.findUserByUserName(taikhoan[i]);
 						user2.setSodienthoai(sdt[i]);
 						user2.setHoten(hoten[i]);
@@ -89,12 +87,9 @@ public class ProfileController extends BaseController {
 							user2.setChucvu(ruleDao.getById(chucvu[i]));
 						}
 						userDao.UpdateUser(user2);
+					} else if(request.getParameter("save") == null){
+						userDao.RemoveUser(taikhoan[i]);
 					}
-				}
-
-			} else if(request.getParameter("save") == null){
-				for (int i : checkbox) {
-					userDao.RemoveUser(taikhoan[i]);
 				}
 			}
 		}

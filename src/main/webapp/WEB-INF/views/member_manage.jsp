@@ -9,7 +9,7 @@
 				<div>
 					<h3 class="ms-2">Quản lý thành viên</h3>
 
-					<form action="/manage-user" method="post">
+					<form action="/user-manage" method="post">
 						<div class="mb-2">
 
 							<span class='my-auto'> <input type="checkbox"
@@ -22,7 +22,8 @@
 								name="del">Xoá</button>
 						</div>
 						<div class="table-wrapper mx-2 border-secondary">
-							<table class="mb-0 table table-success table-sm table-striped table-hover table-bordered ">
+							<table style="min-width: 600px"
+							 class="mb-0 table table-success table-sm table-striped table-hover table-bordered ">
 								<thead>
 									<tr>
 										<th>Chọn</th>

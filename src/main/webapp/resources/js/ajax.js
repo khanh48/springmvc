@@ -101,6 +101,29 @@ function findUser() {
 	})
 }
 
+function findPost() {
+	var taikhoan = $("#fbAuthor").val();
+	var id = $("#fbID").val();
+	var tieude = $("#fbTitle").val();
+	var noidung = $("#fbContent").val();
+	var nhom = $("#fbGroup").val();
+	
+	$.ajax({
+		type: "POST",
+		url: "/findPost",
+		data: {
+			taikhoan: taikhoan,
+			mabaiviet: id,
+			tieude: tieude,
+			noidung: noidung,
+			nhom: nhom
+		},
+		success: function(response) {
+			$("#tableBody").html(response.result)
+		}
+	})
+}
+
 $(document).ready(function() {
 	$("#changePassword").click(function(e) {
 		$.ajax({

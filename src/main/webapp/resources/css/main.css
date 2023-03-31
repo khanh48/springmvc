@@ -918,6 +918,7 @@ caption {
 }
 .table-wrapper::-webkit-scrollbar {
     width: 5px;
+    height: 5px;
 }
 
 .table-wrapper::-webkit-scrollbar-track {

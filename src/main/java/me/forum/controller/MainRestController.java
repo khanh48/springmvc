@@ -11,8 +11,6 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.servlet.jsp.jstl.core.LoopTagStatus;
-import javax.servlet.jsp.jstl.core.LoopTagSupport;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,12 +20,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import me.forum.Dao.CommentDao;
+import me.forum.Dao.GroupDao;
 import me.forum.Dao.LikeDao;
 import me.forum.Dao.NotificationDao;
 import me.forum.Dao.PostDao;
 import me.forum.Dao.RuleDao;
 import me.forum.Dao.UserDao;
 import me.forum.Entity.Comment;
+import me.forum.Entity.Group;
 import me.forum.Entity.Notification;
 import me.forum.Entity.Post;
 import me.forum.Entity.Rule;
@@ -51,6 +51,8 @@ public class MainRestController {
 	public PostDao postDao;
 	@Autowired
 	public RuleDao ruleDao;
+	@Autowired
+	public GroupDao groupDao;
 
 	public MainRestController() {
 	}
@@ -267,6 +269,42 @@ public class MainRestController {
 		return map;
 	}
 	
+
+	@RequestMapping(value = "/findPost", method = RequestMethod.POST)
+	public Map<String, String> findPost(HttpServletRequest request, HttpSession session) {
+		HashMap<String, String> map = new HashMap<>();
+		String taikhoan, tieude, noidung, nhom, mabaiviet, result = "";
+		int i = 0;
+		taikhoan = request.getParameter("taikhoan");
+		tieude = request.getParameter("tieude");
+		noidung = request.getParameter("noidung");
+		nhom = request.getParameter("nhom");
+		mabaiviet = request.getParameter("mabaiviet");
+		
+		List<Post> listPost = postDao.FindLikePost(taikhoan, mabaiviet, tieude, noidung, nhom);
+		User myUser = (User) session.getAttribute("userID");
+		if(myUser == null) return map;
+		for (Post post : listPost) {
+			
+			result += "<tr><td><input type='checkbox' name='checkbox' value='"+i+"' /></td>";
+			result += "<td><input class='form-control f-sm' type='text' name='taikhoan' value='"+post.getTaikhoan() +"' readonly /></td>";
+			result += "<td><input class='form-control f-sm' type='text' name='mabaiviet' value='"+post.getMabaiviet() +"' /></td>";
+			result += "<td><input class='form-control f-sm' type='text' name='tieude' value='"+post.getTieude() + "' /></td>";
+			result += "<td><textarea type='text' class='form-control f-sm mb-1' name='noidung'>"+post.getNoidung() + "</textarea></td>";
+
+			result += "<td><select class='form-control f-sm mb-1' name='nhom'>";
+			for (Group g : groupDao.getGroupList()) {
+				String isSelected = g.getManhom() == post.getManhom()? "selected":"";
+				result += "<option value='"+g.getManhom() +"' "+isSelected+">"+g.getTennhom() +"</option>";
+			}
+
+			result += "</select></td></tr>";
+			i++;
+		}
+		
+		map.put("result", result);
+		return map;
+	}
 
 	public static String encrypt(String input, long key) {
 		try {

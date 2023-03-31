@@ -87,8 +87,8 @@
 							data-bs-target="#menu_item1" href="">Quản lý&ensp;<i class="fa-solid fa-caret-down"></i>
 						</a>
 							<ul id="menu_item1" class="submenu collapse">
-								<li><a class="dropdown-item" href="#">Thành viên</a></li>
-								<li><a class="dropdown-item" href="#">Bài viết</a></li>
+								<li><a class="dropdown-item" href="/quan-ly">Thành viên</a></li>
+								<li><a class="dropdown-item" href="/quan-ly-bai-viet">Bài viết</a></li>
 								<li><a class="dropdown-item" href="#">Phê duyệt</a></li>
 							</ul></li>
 						<li>

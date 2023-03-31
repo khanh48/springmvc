@@ -7,12 +7,14 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import me.forum.Controller.BaseController;
 import me.forum.Entity.Post;
+import me.forum.Entity.User;
 
 @Repository
 public class PostDao {
@@ -103,6 +105,24 @@ public class PostDao {
 	public int UpdatePostByID(long id, String tieude, String noidung, int nhom) {
 		return jdbcTemplate.update("update baiviet set tieude = ?, noidung = ?, manhom = ? where mabaiviet = ?", tieude,
 				noidung, nhom, id);
+	}
+	public int UpdatePost(Post post) {
+		return jdbcTemplate.update("update baiviet set tieude = ?, noidung = ?, manhom = ? where mabaiviet = ?", post.getTieude(),
+				post.getNoidung(), post.getManhom(), post.getMabaiviet());
+	}
+
+	public List<Post> FindLikePost(String taikhoan, String id, String tieude, String noidung, String nhom) {
+		String sql = "select * from baiviet where taikhoan like ? and mabaiviet like ? and tieude like ? and noidung like ? and manhom like ?";
+		try {
+			return jdbcTemplate.query(sql, new Object[] { "%" + taikhoan + "%",
+					"%" + id + "%",
+					"%" + tieude + "%",
+					"%" + noidung + "%", 
+					"%" + nhom + "%" },
+					new int[] { Types.CHAR, Types.CHAR, Types.NVARCHAR, Types.NVARCHAR, Types.NCHAR}, new PostMapper());
+		} catch (EmptyResultDataAccessException e) {
+			return null;
+		}
 	}
 
 	public int AddPost(long id, String tieude, String noidung, int nhom, String taikhoan) {
