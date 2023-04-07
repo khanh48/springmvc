@@ -12,6 +12,8 @@
 	href="https://use.fontawesome.com/releases/v6.2.0/css/all.css"
 	crossorigin="anonymous">
 <link rel="stylesheet" href="/resources/css/main.css">
+<link rel="stylesheet" href="/resources/css/prism.css">
+<script src="/resources/js/prism.js"></script>
 <script src="/webjars/jquery/3.6.3/jquery.min.js"></script>
 <script src="/webjars/bootstrap/5.2.3/js/bootstrap.bundle.min.js"></script>
 <script src="/resources/js/socket.js"></script>

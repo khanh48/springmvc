@@ -6,9 +6,12 @@ import java.util.List;
 
 import javax.websocket.Session;
 
+import me.forum.Module.ChatBot;
+
 public class UserHandler {
 
 	private HashMap<String, Session> clients = new HashMap<>();
+	public static HashMap<String, ChatBot> bots = new HashMap<>();
 	private List<Session> allUser = new ArrayList<>();
 	private static UserHandler instance;
 

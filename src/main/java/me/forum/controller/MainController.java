@@ -92,6 +92,15 @@ public class MainController extends BaseController {
 		return mav;
 	}
 	
+
+
+	@RequestMapping(value = { "/thong-bao", "/notification" })
+	public ModelAndView notificationsPage(HttpSession session) {
+		setNotification(session);
+		mav.setViewName("notification");
+		return mav;
+	}
+	
 	@RequestMapping(value = { "/bai-viet/{id}", "/post/{id}" })
 	public ModelAndView postPage(@PathVariable long id, HttpSession session) {
 		setNotification(session);

@@ -3,6 +3,7 @@ soc.onopen = function() {
 	console.log("connected");
 	auth(sessionStorage.getItem('token'));
 }
+var result = "";
 soc.onmessage = function(response) {
 	var data = JSON.parse(response.data);
 	switch (data.type) {
@@ -10,20 +11,32 @@ soc.onmessage = function(response) {
 			var ntfNum = $("#ntf-num");
 			var a = parseInt(ntfNum.text());
 			var s = "<li>";
-			s += "<a class='dropdown-item text-wrap' href='"+data.url+"'>";
-			s += "<p class='small mb-0'>"+data.date+"</p>";
-			s += "<p class='mb-0 unread'>"+data.message+"</p>";
+			s += "<a class='dropdown-item text-wrap' href='" + data.url + "'>";
+			s += "<p class='small mb-0'>" + data.date + "</p>";
+			s += "<p class='mb-0 unread'>" + data.message + "</p>";
 			s += "</a></li>";
 			if (isNaN(a)) {
-				
+
 				$("#bell-num").html("<span class='badge rounded-pill position-absolute top-0 start-100 translate-middle bg-danger' id='ntf-num'>1</span>");
-			}else if(a < 99){
-				
+			} else if (a < 99) {
+
 				ntfNum.text(a + 1);
-			}else{
+			} else {
 				ntfNum.text("99+");
 			}
 			$("#bell-ntf").prepend(s);
+		case "newResult":
+			if (data.value == null) {
+				result = "";
+				
+				break;
+			} else {
+				result += data.value;
+			}
+			console.log(response.data);
+			document.querySelector("#show-code").innerHTML = marked.parse(result);
+				Prism.highlightAll();
+
 
 	}
 }
