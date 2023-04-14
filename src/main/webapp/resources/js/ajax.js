@@ -1,6 +1,6 @@
 
 function like(id, isPost, toUser) {
-	var token = sessionStorage.getItem("token");
+	var token = localStorage.getItem("phuot.username");
 	var tagID = isPost ? "p" + id : "c" + id;
 	var tagLike = isPost ? "pl" + id : "cl" + id;
 	$.ajax({

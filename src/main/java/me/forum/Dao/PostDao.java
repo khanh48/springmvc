@@ -14,7 +14,6 @@ import org.springframework.stereotype.Repository;
 
 import me.forum.Controller.BaseController;
 import me.forum.Entity.Post;
-import me.forum.Entity.User;
 
 @Repository
 public class PostDao {
@@ -29,7 +28,10 @@ public class PostDao {
 			return 0;
 		}
 	}
-
+	public List<Post> getTopList(){
+		String sql = "SELECT * FROM baiviet GROUP BY manhom ORDER BY MAX(ngaytao) DESC LIMIT 3";
+		return jdbcTemplate.query(sql, new PostMapper());
+	}
 	public Post GetPostByID(long id) {
 		try {
 			return jdbcTemplate.queryForObject("select * from baiviet where mabaiviet=?", new Object[] { id },
@@ -79,6 +81,17 @@ public class PostDao {
 		try {
 			return jdbcTemplate.query("select * from baiviet where taikhoan = ? order by ngaytao desc limit ?, ?",
 					new Object[] { taikhoan, start, limit }, new int[] { Types.CHAR, Types.INTEGER, Types.INTEGER },
+					new PostMapper());
+		} catch (DataAccessException e) {
+			return null;
+		}
+	}
+	
+
+	public List<Post> ByGroupLimit(int manhom, int limit) {
+		try {
+			return jdbcTemplate.query("select * from baiviet where manhom = ? order by ngaytao desc limit ?",
+					new Object[] { manhom, limit }, new int[] {Types.INTEGER, Types.INTEGER },
 					new PostMapper());
 		} catch (DataAccessException e) {
 			return null;

@@ -20,6 +20,7 @@ create table if not exists nguoidung(
     machucvu int not null DEFAULT 0,
     anhdaidien varchar(250) DEFAULT "/resources/images/default_avatar.png",
     lastlogin bigint not null,
+    tructuyen boolean not null default false,
     ngaytao timestamp not null default current_timestamp,
 	constraint pk_nguoidung primary key(taikhoan),
     constraint fk_user_chucvu foreign key(machucvu) references chucvu(machucvu) on delete cascade

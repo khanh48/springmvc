@@ -1,7 +1,7 @@
 var soc = new WebSocket("ws://localhost:8088/websocket");
 soc.onopen = function() {
 	console.log("connected");
-	auth(sessionStorage.getItem('token'));
+	auth(localStorage.getItem("phuot.username"));
 }
 var result = "";
 soc.onmessage = function(response) {
@@ -50,6 +50,27 @@ soc.onclose = function() {
 
 function auth(token) {
 	soc.send(JSON.stringify({ "type": "auth", "token": token }))
+}
+
+function setCookie(cname, cvalue) {
+	console.log(cvalue)
+  document.cookie = cname + "=" + cvalue+";path=/";
+}
+
+function getCookie(cname) {
+  let name = cname + "=";
+  let decodedCookie = decodeURIComponent(document.cookie);
+  let ca = decodedCookie.split(';');
+  for(let i = 0; i <ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
 }
 /*
 

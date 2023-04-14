@@ -211,10 +211,9 @@ public class PostController extends BaseController {
 		User user = (User) session.getAttribute("userID");
 
 		if (user != null && checkbox != null) {
-			String[] tieude, noidung, taikhoan;
+			String[] tieude, noidung;
 			tieude = request.getParameterValues("tieude");
 			noidung = request.getParameterValues("noidung");
-			taikhoan = request.getParameterValues("taikhoan");
 			if (user.getRank() >= 2) {
 				for (int i : checkbox) {
 					if (request.getParameter("save") != null) {

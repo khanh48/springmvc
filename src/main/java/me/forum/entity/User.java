@@ -11,18 +11,20 @@ public class User {
 	private String matkhau;
 	private String hoten;
 	private Date ngaysinh;
-    private String gioitinh;
-    private String sothich;
-    private String sodienthoai;
-    private String email;
-    private Rule chucvu;
-    private String anhdaidien;
-    private Date ngaytao;
-    private long lastlogin;
-    private String mabaomat;
+	private String gioitinh;
+	private String sothich;
+	private String sodienthoai;
+	private String email;
+	private Rule chucvu;
+	private String anhdaidien;
+	private Date ngaytao;
+	private long lastlogin;
+	private String mabaomat;
+	private boolean tructuyen;
 
-	public User(String taikhoan, String matkhau, String mabaomat, String hoten, Date ngaysinh, String gioitinh, String sothich,
-			String sodienthoai, String email, int chucvu, String anhdaidien, long lastlogin, Date ngaytao) {
+	public User(String taikhoan, String matkhau, String mabaomat, String hoten, Date ngaysinh, String gioitinh,
+			String sothich, String sodienthoai, String email, int chucvu, String anhdaidien, long lastlogin,
+			boolean tructuyen, Date ngaytao) {
 		this.taikhoan = taikhoan;
 		this.matkhau = matkhau;
 		this.hoten = hoten;
@@ -36,6 +38,7 @@ public class User {
 		this.ngaytao = ngaytao;
 		this.mabaomat = mabaomat;
 		this.lastlogin = lastlogin;
+		this.tructuyen = tructuyen;
 	}
 
 	public User() {
@@ -52,6 +55,7 @@ public class User {
 	public String getMatkhau() {
 		return matkhau;
 	}
+
 	public void setMabaomat(String mabaomat) {
 		this.mabaomat = mabaomat;
 	}
@@ -99,18 +103,18 @@ public class User {
 	public String getSodienthoai() {
 		return sodienthoai;
 	}
+
 	public void setSodienthoai(String sodienthoai) {
 		this.sodienthoai = sodienthoai;
 	}
-	
 
 	public String getEmail() {
 		return email;
 	}
+
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
 
 	public Rule getChucvu() {
 		return chucvu;
@@ -119,7 +123,7 @@ public class User {
 	public void setChucvu(Rule chucvu) {
 		this.chucvu = chucvu;
 	}
-	
+
 	public int getRank() {
 		return chucvu.getHang();
 	}
@@ -131,12 +135,15 @@ public class User {
 	public void setAnhdaidien(String anhdaidien) {
 		this.anhdaidien = anhdaidien;
 	}
+
 	public void setLastlogin(long lastlogin) {
 		this.lastlogin = lastlogin;
 	}
+
 	public long getLastlogin() {
 		return lastlogin;
 	}
+
 	public Date getNgaytao() {
 		return ngaytao;
 	}
@@ -144,7 +151,7 @@ public class User {
 	public void setNgaytao(Date ngaytao) {
 		this.ngaytao = ngaytao;
 	}
-    
+
 	public static String MD5(String string) {
 		MessageDigest md;
 		try {
@@ -154,19 +161,34 @@ public class User {
 		}
 		byte[] messageDigest = md.digest(string.getBytes());
 		StringBuilder sb = new StringBuilder();
-		
+
 		for (byte b : messageDigest) {
 			sb.append(Integer.toString((b & 0xff) + 0x100, 16).substring(1));
 		}
 		return sb.toString();
 	}
 
+	public void setTructuyen(boolean isOnline) {
+		this.tructuyen = isOnline;
+		BaseController.GetInstance().userDao.UpdateStatus(taikhoan, tructuyen);
+	}
+
+	public boolean getTructuyen() {
+		return tructuyen;
+	}
+
+	@Override
+	public String toString() {
+		String user = "{taikhoan : " + taikhoan + ", hoten : " + hoten + ", email : " + email + ", chucvu : "
+				+ chucvu.getTenchucvu() + "}";
+		return user;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
-		if(this.taikhoan.equals(((User)obj).getTaikhoan()))
+		if (this.taikhoan.equals(((User) obj).getTaikhoan()))
 			return true;
 		return false;
 	}
-	
-	
+
 }

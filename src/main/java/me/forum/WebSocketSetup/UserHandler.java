@@ -44,6 +44,10 @@ public class UserHandler {
 		return clients.containsKey(name);
 	}
 	
+	public HashMap<String, Session> GetAllUsers() {
+		return clients;
+	}
+	
 	public void send(String message) {
 		for (Session session : allUser) {
 			try {

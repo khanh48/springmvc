@@ -105,6 +105,11 @@ public class UserDao {
 				lastlogin, userName);
 	}
 
+
+	public int UpdateStatus(String userName, boolean status) {
+		return jdbcTemplate.update("update nguoidung set tructuyen = ? where taikhoan = ?", status, userName);
+	}
+
 	public int ChangePassword(String userName, String newPassword) {
 		return jdbcTemplate.update("update nguoidung set matkhau = ? where taikhoan = ?", newPassword, userName);
 	}
@@ -133,7 +138,7 @@ public class UserDao {
 		public User mapRow(ResultSet rs, int rowNum) throws SQLException {
 			return new User(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getDate(5),
 					rs.getString(6), rs.getString(7), rs.getString(8), rs.getString(9), rs.getInt(10), rs.getString(11),
-					rs.getLong(12), rs.getDate(13));
+					rs.getLong(12), rs.getBoolean(13), rs.getDate(14));
 		}
 	}
 }

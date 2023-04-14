@@ -13,16 +13,18 @@ import org.springframework.web.servlet.ModelAndView;
 import me.forum.Entity.Comment;
 import me.forum.Entity.Post;
 import me.forum.Entity.User;
+import me.forum.WebSocketSetup.WebSocketConfig;
 
 @Controller
 public class MainController extends BaseController {
 
 	public MainController() {
+		System.out.println("init");
 	}
 
 	@RequestMapping(value = { "/", "/index" })
 	public ModelAndView homePage(HttpSession session, HttpServletRequest request) {
-		setNotification(session);
+
 		mav.setViewName("index");
 		mav.addObject("posts", postDao.GetPostsLimitDesc(0, 10));
 		mav.addObject("groups", groupDao.getGroupList());
@@ -31,7 +33,7 @@ public class MainController extends BaseController {
 
 	@RequestMapping(value = { "/manage", "/quan-ly" })
 	public ModelAndView managePage(HttpSession session, HttpServletRequest request) {
-		setNotification(session);
+
 		mav.setViewName("member_manage");
 		User user = (User) session.getAttribute("userID");
 		if(user == null) {
@@ -43,7 +45,7 @@ public class MainController extends BaseController {
 	}
 	@RequestMapping(value = { "/posts-manage", "/quan-ly-bai-viet" })
 	public ModelAndView postsManagePage(HttpSession session, HttpServletRequest request) {
-		setNotification(session);
+
 		mav.setViewName("posts_manage");
 		User user = (User) session.getAttribute("userID");
 		if(user == null) {
@@ -57,7 +59,7 @@ public class MainController extends BaseController {
 
 	@RequestMapping(value = { "/ho-so/{username}", "/profile/{username}" })
 	public ModelAndView profilePage(@PathVariable("username") String username, HttpSession session) {
-		setNotification(session);
+
 		mav.setViewName("profile");
 		User user = userDao.findUserByUserName(username);
 		if(user == null) {
@@ -76,7 +78,7 @@ public class MainController extends BaseController {
 
 	@RequestMapping(value = { "/ho-so", "/profile" })
 	public ModelAndView myProfilePage(HttpSession session) {
-		setNotification(session);
+
 		mav.setViewName("profile");
 		User user = (User)session.getAttribute("userID");
 		if(user == null) {
@@ -96,14 +98,14 @@ public class MainController extends BaseController {
 
 	@RequestMapping(value = { "/thong-bao", "/notification" })
 	public ModelAndView notificationsPage(HttpSession session) {
-		setNotification(session);
+
 		mav.setViewName("notification");
 		return mav;
 	}
 	
 	@RequestMapping(value = { "/bai-viet/{id}", "/post/{id}" })
 	public ModelAndView postPage(@PathVariable long id, HttpSession session) {
-		setNotification(session);
+
 		Post post = postDao.GetPostByID(id);
 			mav.setViewName("post");
 		if(post == null) {
@@ -119,7 +121,7 @@ public class MainController extends BaseController {
 
 	@RequestMapping(value = { "/bai-viet/{id}/{nid}", "/post/{id}/{nid}" })
 	public ModelAndView postPageReaded(@PathVariable long id, @PathVariable long nid, HttpSession session) {
-		setNotification(session);
+
 		notificationDao.MakeAsRead(nid);
 		mav.setViewName("redirect:/bai-viet/" + id);
 		return mav;
@@ -138,10 +140,4 @@ public class MainController extends BaseController {
 		return mav;
 	}
 	
-	private void setNotification(HttpSession session) {
-		User user = (User)session.getAttribute("userID");
-		if (user != null) {
-			session.setAttribute("listNotify", notificationDao.GetByNguoiNhan(user.getTaikhoan()));
-		}
-	}
 }

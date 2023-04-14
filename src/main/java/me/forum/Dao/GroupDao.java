@@ -26,6 +26,7 @@ public class GroupDao {
 		String sql = "select * from nhom";
 		return jdbcTemplate.query(sql, new GroupMapper());
 	}
+
 	
 	class GroupMapper implements RowMapper<Group>{
 

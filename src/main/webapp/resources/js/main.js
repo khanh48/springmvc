@@ -82,7 +82,8 @@ function login() {
 			}
 			else if (result.message === "success") {
 				$('#err1-log').text("")
-				sessionStorage.setItem('token', result.token);
+				
+				localStorage.setItem("phuot.username", result.username);
 				location.reload();
 			}
 		}

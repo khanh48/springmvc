@@ -19,7 +19,7 @@ import me.forum.Entity.User;
 import me.forum.WebSocketSetup.UserHandler;
 
 public class ChatBot {
-	final static String token = "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";
+	final static String token = "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";
 	OpenAiService service;
 	final List<ChatMessage> messages;
 	User user;
@@ -32,9 +32,9 @@ public class ChatBot {
 		
 		messages = new ArrayList<>();
 		messages.add(new ChatMessage(ChatMessageRole.SYSTEM.value(),
-				"Bạn là trợ lý thông minh của website diễn đàn phượt."));
+				"Tôi là trợ lý thông minh của website diễn đàn phượt."));
 		messages.add(
-				new ChatMessage(ChatMessageRole.SYSTEM.value(), "Bạn đang trò chuyện với người dùng tên: '" + user.getHoten() + "'."));
+				new ChatMessage(ChatMessageRole.SYSTEM.value(), "tôi đang trò chuyện với người dùng tên: '" + user.getHoten() + "'."));
 		messages.add(new ChatMessage(ChatMessageRole.SYSTEM.value(),
 				"Hãy chào người dùng và giới thiệu bản thân khi bắt đầu trò chuyện."));
 
@@ -49,6 +49,7 @@ public class ChatBot {
 				.messages(messages).n(1).maxTokens(1500).logitBias(new HashMap<>()).build();
 		service.streamChatCompletion(chatCompletionRequest).doOnError(Throwable::printStackTrace)
 				.blockingForEach(new Response(user.getTaikhoan()));
+		System.out.println(messages.size());
 	}
 
 	public void stop() {

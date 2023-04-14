@@ -69,8 +69,8 @@ public class MainRestController {
 			userDao.UpdateMaBaoMat(userName, MainRestController.encrypt(userName, curTime), curTime);
 			user = userDao.findUserByUserName(userName);
 			session.setAttribute("userID", user);
-			session.setAttribute("listNotify", notificationDao.GetByNguoiNhan(user.getTaikhoan()));
-			map.put("token", user.getMabaomat());
+			user.setTructuyen(true);
+			map.put("username", user.getTaikhoan());
 		} else {
 			map.put("message", "failed");
 		}
