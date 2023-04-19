@@ -16,7 +16,7 @@ import me.forum.Dao.UserDao;
 @Component
 public class JwtProvider {
 	private static JwtProvider instance;
-	private final String secret = "forum-phuot-ket-noi-trai-tim-viet";
+	private final String secret = ".. .-.. --- ...- . -.-- --- ..-";
 	private final long expired = 3 * 24 * 60 * 60 * 1000;
 	@Autowired
 	UserDao userDao;

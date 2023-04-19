@@ -325,6 +325,7 @@ public class MainRestController {
 		json.put("fromUser", fromUser.getTaikhoan());
 		json.put("toUser", toUsername);
 		json.put("message", message);
+		
 		map.put("type", "success");
 		return map;
 	}
