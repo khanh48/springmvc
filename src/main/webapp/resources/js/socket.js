@@ -1,7 +1,8 @@
 var soc = new WebSocket("ws://localhost:8088/websocket");
+var chat = new WebSocket("ws://localhost:8088/chat/1");
 soc.onopen = function() {
 	console.log("connected");
-	auth(localStorage.getItem("phuot.username"));
+	auth(getCookie("phuot.token"));
 }
 var result = "";
 soc.onmessage = function(response) {
@@ -25,17 +26,21 @@ soc.onmessage = function(response) {
 				ntfNum.text("99+");
 			}
 			$("#bell-ntf").prepend(s);
+			$('#headerToast').text("Thông báo");
+			$('#toastMessage').html("<a href='" + data.url + "'><div class='notify-link'>" + data.message + "</div></a>");
+			const toast = new bootstrap.Toast($('#liveToast'))
+			toast.show()
 		case "newResult":
 			if (data.value == null) {
 				result = "";
-				
+
 				break;
 			} else {
 				result += data.value;
 			}
 			console.log(response.data);
 			document.querySelector("#show-code").innerHTML = marked.parse(result);
-				Prism.highlightAll();
+			Prism.highlightAll();
 
 
 	}
@@ -54,23 +59,23 @@ function auth(token) {
 
 function setCookie(cname, cvalue) {
 	console.log(cvalue)
-  document.cookie = cname + "=" + cvalue+";path=/";
+	document.cookie = cname + "=" + cvalue + ";path=/";
 }
 
 function getCookie(cname) {
-  let name = cname + "=";
-  let decodedCookie = decodeURIComponent(document.cookie);
-  let ca = decodedCookie.split(';');
-  for(let i = 0; i <ca.length; i++) {
-    let c = ca[i];
-    while (c.charAt(0) == ' ') {
-      c = c.substring(1);
-    }
-    if (c.indexOf(name) == 0) {
-      return c.substring(name.length, c.length);
-    }
-  }
-  return "";
+	let name = cname + "=";
+	let decodedCookie = decodeURIComponent(document.cookie);
+	let ca = decodedCookie.split(';');
+	for (let i = 0; i < ca.length; i++) {
+		let c = ca[i];
+		while (c.charAt(0) == ' ') {
+			c = c.substring(1);
+		}
+		if (c.indexOf(name) == 0) {
+			return c.substring(name.length, c.length);
+		}
+	}
+	return "";
 }
 /*
 

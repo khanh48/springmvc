@@ -26,11 +26,8 @@ public class Interceptor implements HandlerInterceptor {
 	GroupDao groupDao;
 	@Autowired
 	PostDao postDao;
-	User currentUser;
-	private static Interceptor instance;
 
 	public Interceptor() {
-		instance = this;
 	}
 
 	@Override
@@ -38,15 +35,8 @@ public class Interceptor implements HandlerInterceptor {
 
 		HttpSession session = request.getSession();
 		User user = (User) session.getAttribute("userID");
-System.out.println("pre");
 		if (user != null) {
 			session.setAttribute("listNotify", notificationDao.GetByNguoiNhan(user.getTaikhoan()));
-		} else {
-			if (currentUser != null) {
-				System.out.println("luu");
-				session.setAttribute("userID", currentUser);
-				return true;
-			}
 		}
 		List<Post> groups = postDao.getTopList();
 		List<List<Post>> allgroup = new ArrayList<>();
@@ -66,13 +56,5 @@ System.out.println("pre");
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
 			ModelAndView modelAndView) throws Exception {
 
-	}
-	
-	public void setUser(User user) {
-		currentUser = user;
-	}
-
-	public static Interceptor GetInstance() {
-		return instance;
 	}
 }

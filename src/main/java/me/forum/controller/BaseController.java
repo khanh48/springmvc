@@ -1,16 +1,9 @@
 package me.forum.Controller;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.RequestContextListener;
-import org.springframework.web.context.request.ServletRequestAttributes;
-import org.springframework.web.filter.RequestContextFilter;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.support.RequestContextUtils;
 
 import me.forum.Dao.CommentDao;
 import me.forum.Dao.GroupDao;
@@ -20,8 +13,6 @@ import me.forum.Dao.NotificationDao;
 import me.forum.Dao.PostDao;
 import me.forum.Dao.RuleDao;
 import me.forum.Dao.UserDao;
-import me.forum.Entity.User;
-import me.forum.WebSocketSetup.WebSocketConfig;
 
 @Controller
 public class BaseController {

@@ -6,23 +6,24 @@ import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
-import org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor;
 
 @Configuration
 @EnableWebSocket
-public class WebSocketConfig implements WebSocketConfigurer{
+public class WebSocketConfig implements WebSocketConfigurer {
 
 	@Override
 	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-		registry.addHandler(myHandler(), "/websocket").addInterceptors(httpSessionHandshakeInterceptor());
+		registry.addHandler(myHandler(), "/websocket").addHandler(chatHandler(), "/chat/{id}");
 	}
-	
+
 	@Bean
 	public WebSocketHandler myHandler() {
 		return new SocketHandler();
 	}
-
-	@Bean HttpSessionHandshakeInterceptor httpSessionHandshakeInterceptor() {
-		return new HttpSessionHandshakeInterceptor();
+	
+	@Bean
+	public ChatHandler chatHandler() {
+		return new ChatHandler();
 	}
+
 }

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import me.forum.Component.JwtProvider;
 import me.forum.Dao.CommentDao;
 import me.forum.Dao.GroupDao;
 import me.forum.Dao.LikeDao;
@@ -66,11 +67,11 @@ public class MainRestController {
 			map.put("message", "success");
 			long curTime = System.currentTimeMillis();
 			user.setLastlogin(curTime);
-			userDao.UpdateMaBaoMat(userName, MainRestController.encrypt(userName, curTime), curTime);
+			userDao.UpdateMaBaoMat(userName, JwtProvider.GetInstance().generate(userName), curTime);
 			user = userDao.findUserByUserName(userName);
 			session.setAttribute("userID", user);
 			user.setTructuyen(true);
-			map.put("username", user.getTaikhoan());
+			map.put("token", user.getMabaomat());
 		} else {
 			map.put("message", "failed");
 		}
@@ -303,6 +304,28 @@ public class MainRestController {
 		}
 		
 		map.put("result", result);
+		return map;
+	}
+	
+	@RequestMapping(value = "/sendMessage", method = RequestMethod.POST)
+	public Map<String, String> sendMessage(HttpServletRequest request, HttpSession session){
+		HashMap<String, String> map = new HashMap<>();
+		String message = request.getParameter("message");
+		String toUsername = request.getParameter("toUser");
+		User toUser, fromUser;
+		toUser = userDao.findUserByUserName(toUsername);
+		fromUser = (User) session.getAttribute("userID");
+		
+		if(toUser == null || fromUser == null || message == null || message.isBlank()) {
+			map.put("type", "failed");
+			return map;
+		}
+		JSONObject json = new JSONObject();
+		
+		json.put("fromUser", fromUser.getTaikhoan());
+		json.put("toUser", toUsername);
+		json.put("message", message);
+		map.put("type", "success");
 		return map;
 	}
 

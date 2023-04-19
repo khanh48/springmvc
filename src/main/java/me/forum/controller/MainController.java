@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import me.forum.Component.JwtProvider;
 import me.forum.Entity.Comment;
 import me.forum.Entity.Post;
 import me.forum.Entity.User;
-import me.forum.WebSocketSetup.WebSocketConfig;
 
 @Controller
 public class MainController extends BaseController {
@@ -24,7 +24,6 @@ public class MainController extends BaseController {
 
 	@RequestMapping(value = { "/", "/index" })
 	public ModelAndView homePage(HttpSession session, HttpServletRequest request) {
-
 		mav.setViewName("index");
 		mav.addObject("posts", postDao.GetPostsLimitDesc(0, 10));
 		mav.addObject("groups", groupDao.getGroupList());
@@ -128,12 +127,11 @@ public class MainController extends BaseController {
 	}
 	@RequestMapping(value = "/logout")
 	public ModelAndView logout(HttpSession session) {
-
 		mav.setViewName("redirect:/");
 		if (session.getAttribute("userID") != null) {
 			String uname = ((User) session.getAttribute("userID")).getTaikhoan();
 			long curTime = System.currentTimeMillis();
-			userDao.UpdateMaBaoMat(uname, MainRestController.encrypt(uname, curTime), curTime);
+			userDao.UpdateMaBaoMat(uname, JwtProvider.GetInstance().generate(uname), curTime);
 			session.removeAttribute("userID");
 			session.removeAttribute("listNotify");
 		}

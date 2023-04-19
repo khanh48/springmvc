@@ -4,7 +4,11 @@
 	<artifactId>forum</artifactId>
 	<version>1.0</version>
 	<packaging>war</packaging>
-	
+
+	<properties>
+		<spring-version>5.3.4</spring-version>
+	</properties>
+
 	<repositories>
 		<repository>
 			<id>apache-tomcat</id>
@@ -13,7 +17,24 @@
 	</repositories>
 
 	<dependencies>
-	
+
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-api</artifactId>
+			<version>0.11.5</version>
+		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-impl</artifactId>
+			<version>0.11.5</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-jackson</artifactId>
+			<version>0.11.5</version>
+			<scope>runtime</scope>
+		</dependency>
 		<dependency>
 			<groupId>com.theokanning.openai-gpt3-java</groupId>
 			<artifactId>service</artifactId>
@@ -71,27 +92,27 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context-support</artifactId>
-			<version>5.3.4</version>
+			<version>${spring-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
-			<version>5.3.4</version>
+			<version>${spring-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-messaging</artifactId>
-			<version>5.3.4</version>
+			<version>${spring-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-jdbc</artifactId>
-			<version>5.3.4</version>
+			<version>${spring-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-websocket</artifactId>
-			<version>5.3.4</version>
+			<version>${spring-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>

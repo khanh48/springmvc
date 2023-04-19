@@ -2,7 +2,6 @@ package me.forum.WebSocketSetup;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.json.JSONObject;
 import org.springframework.web.socket.CloseStatus;
@@ -16,7 +15,7 @@ import me.forum.Dao.UserDao;
 import me.forum.Entity.User;
 import me.forum.Module.ChatBot;
 
-public class SocketHandler extends TextWebSocketHandler {
+public class ChatHandler extends TextWebSocketHandler{
 	private UserHandler handler = UserHandler.GetInstance();
 	private HashMap<String, ChatBot> bots = UserHandler.bots;
 	private UserDao userDao = BaseController.GetInstance().userDao;
@@ -25,31 +24,7 @@ public class SocketHandler extends TextWebSocketHandler {
 	@Override
 	public void handleTextMessage(WebSocketSession session, TextMessage message) throws IOException {
 		String msg = message.getPayload();
-		JSONObject json = new JSONObject(msg);
-		if (json.isNull("token"))
-			return;
-		String token = json.getString("token");
-		if (!authentication(token))
-			return;
-		User user = userDao.findUserByUserName(jwtProvider.extractUsername(token));
-		System.out.println(json.get("type"));
-		switch (json.getString("type")) {
-		case "sendMessage":
-			if (handler.containsClient(json.getString("name"))) {
-				handler.send(json.getString("name"), "hihi");
-			}
-			break;
-		case "requestChat":
-			if (!bots.containsKey(user.getTaikhoan()) || bots.get(user.getTaikhoan()).isStoped()) {
-				bots.put(user.getTaikhoan(), new ChatBot(user));
-			}
-			System.out.println("rq chat");
-			bots.get(user.getTaikhoan()).request(json.get("message").toString());
-			break;
-		default:
-			handler.addClient(user.getTaikhoan(), session);
-		}
-
+		System.out.println(session.getUri().getUserInfo());
 	}
 
 	@Override

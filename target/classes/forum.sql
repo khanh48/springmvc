@@ -93,6 +93,18 @@ create table if not exists hinhanh(
     constraint fk_images_cmt foreign key(mabinhluan) references binhluan(mabinhluan) on delete cascade
 );
 
+create table if not exists tinnhan(
+	matinnhan int not null auto_increment,
+    nguoigui char(13) not null,
+    nguoinhan char(13) not null,
+    noidung text not null,
+    trangthai boolean not null default 0,
+    ngaytao timestamp not null default current_timestamp,
+	constraint pk_messages primary key(matinnhan),
+    constraint fk_messages_from foreign key(nguoigui) references nguoidung(taikhoan) on delete cascade,
+    constraint fk_messages_to foreign key(nguoinhan) references nguoidung(taikhoan) on delete cascade
+);
+
 insert into chucvu(machucvu, tenchucvu) values(0, 'Thành viên');
 insert into chucvu(machucvu, tenchucvu) values(1, 'Quản lý nhóm');
 insert into chucvu(machucvu, tenchucvu) values(2, 'Quản lý');
