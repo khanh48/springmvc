@@ -29,7 +29,7 @@ public class PostDao {
 		}
 	}
 	public List<Post> getTopList(){
-		String sql = "SELECT * FROM baiviet GROUP BY manhom ORDER BY MAX(ngaytao) DESC LIMIT 3";
+		String sql = "SELECT * FROM baiviet INNER JOIN (SELECT manhom, MAX(ngaytao) AS recent_post_date FROM baiviet GROUP BY manhom) AS latest_posts ON baiviet.manhom = latest_posts.manhom AND baiviet.ngaytao = latest_posts.recent_post_date ORDER BY baiviet.ngaytao DESC limit 3;";
 		return jdbcTemplate.query(sql, new PostMapper());
 	}
 	public Post GetPostByID(long id) {
