@@ -19,7 +19,6 @@ import me.forum.Entity.User;
 public class MainController extends BaseController {
 
 	public MainController() {
-		System.out.println("init");
 	}
 
 	@RequestMapping(value = { "/", "/index" })
@@ -30,42 +29,22 @@ public class MainController extends BaseController {
 		return mav;
 	}
 
-	@RequestMapping(value = { "/manage", "/quan-ly" })
-	public ModelAndView managePage(HttpSession session, HttpServletRequest request) {
-
-		mav.setViewName("member_manage");
-		User user = (User) session.getAttribute("userID");
-		if(user == null) {
-			return mav;
-		}
-		mav.addObject("userList", userDao.getUserUnderRank(user.getRank()));
-		mav.addObject("ruleList", ruleDao.getAll());
+	@RequestMapping(value = { "/chat", "/tro-chuyen" })
+	public ModelAndView chatPage(HttpSession session, HttpServletRequest request) {
+		mav.setViewName("chat");
 		return mav;
 	}
-	@RequestMapping(value = { "/posts-manage", "/quan-ly-bai-viet" })
-	public ModelAndView postsManagePage(HttpSession session, HttpServletRequest request) {
-
-		mav.setViewName("posts_manage");
-		User user = (User) session.getAttribute("userID");
-		if(user == null) {
-			return mav;
-		}
-		mav.addObject("postList", postDao.GetAll());
-		mav.addObject("groupList", groupDao.getGroupList());
-		return mav;
-	}
-
 
 	@RequestMapping(value = { "/ho-so/{username}", "/profile/{username}" })
 	public ModelAndView profilePage(@PathVariable("username") String username, HttpSession session) {
 
 		mav.setViewName("profile");
 		User user = userDao.findUserByUserName(username);
-		if(user == null) {
+		if (user == null) {
 			mav.addObject("profile", null);
 			mav.addObject("postOfUser", null);
 			return mav;
-			
+
 		}
 		List<Post> post = postDao.GetPostsByUser(username);
 
@@ -73,18 +52,17 @@ public class MainController extends BaseController {
 		mav.addObject("postOfUser", post);
 		return mav;
 	}
-	
 
 	@RequestMapping(value = { "/ho-so", "/profile" })
 	public ModelAndView myProfilePage(HttpSession session) {
 
 		mav.setViewName("profile");
-		User user = (User)session.getAttribute("userID");
-		if(user == null) {
+		User user = (User) session.getAttribute("userID");
+		if (user == null) {
 			mav.addObject("profile", null);
 			mav.addObject("postOfUser", null);
 			return mav;
-			
+
 		}
 		List<Post> post = postDao.GetPostsByUser(user.getTaikhoan());
 
@@ -92,8 +70,6 @@ public class MainController extends BaseController {
 		mav.addObject("postOfUser", post);
 		return mav;
 	}
-	
-
 
 	@RequestMapping(value = { "/thong-bao", "/notification" })
 	public ModelAndView notificationsPage(HttpSession session) {
@@ -101,13 +77,13 @@ public class MainController extends BaseController {
 		mav.setViewName("notification");
 		return mav;
 	}
-	
+
 	@RequestMapping(value = { "/bai-viet/{id}", "/post/{id}" })
 	public ModelAndView postPage(@PathVariable long id, HttpSession session) {
 
 		Post post = postDao.GetPostByID(id);
-			mav.setViewName("post");
-		if(post == null) {
+		mav.setViewName("post");
+		if (post == null) {
 			mav.addObject("post", null);
 			mav.addObject("comments", null);
 			return mav;
@@ -125,6 +101,7 @@ public class MainController extends BaseController {
 		mav.setViewName("redirect:/bai-viet/" + id);
 		return mav;
 	}
+
 	@RequestMapping(value = "/logout")
 	public ModelAndView logout(HttpSession session) {
 		mav.setViewName("redirect:/");
@@ -137,5 +114,5 @@ public class MainController extends BaseController {
 		}
 		return mav;
 	}
-	
+
 }

@@ -39,6 +39,7 @@ public class BaseController {
 	
 	public BaseController() {
 		instance = this;
+		System.out.println("init");
 		
 	}
 	public static BaseController GetInstance() {

@@ -1,4 +1,4 @@
-package me.forum.Controller;
+package me.forum.RestController;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -247,7 +247,7 @@ public class MainRestController {
 		User myUser = (User) session.getAttribute("userID");
 		if(myUser == null) return map;
 		for (User user : listUser) {
-			
+			if(user.getRank() >= myUser.getRank()) continue;
 			result += "<tr><td><input type='checkbox' name='checkbox' value='"+i+"' /></td>";
 			result += "<td><input class='form-control f-sm' type='text' name='taikhoan' value='"+user.getTaikhoan() +"' readonly /></td>";
 			result += "<td><input class='form-control f-sm' type='text' name='hoten' value='"+user.getHoten() +"' /></td>";

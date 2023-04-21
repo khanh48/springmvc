@@ -204,32 +204,5 @@ public class PostController extends BaseController {
 		return mav;
 	}
 	
-	@RequestMapping(value = "/post-manage", method = RequestMethod.POST)
-	public ModelAndView userManage(@RequestParam(name = "checkbox", required = false) int[] checkbox,
-			@RequestParam(name = "nhom") int[] nhom, @RequestParam(name = "mabaiviet") long[] mabaiviet, HttpServletRequest request, HttpSession session) {
-		mav.setViewName("redirect:/quan-ly-bai-viet");
-		User user = (User) session.getAttribute("userID");
-
-		if (user != null && checkbox != null) {
-			String[] tieude, noidung;
-			tieude = request.getParameterValues("tieude");
-			noidung = request.getParameterValues("noidung");
-			if (user.getRank() >= 2) {
-				for (int i : checkbox) {
-					if (request.getParameter("save") != null) {
-						Post post = postDao.GetPostByID(mabaiviet[i]);
-						post.setTieude(tieude[i]);
-						post.setNoidung(noidung[i]);
-						post.setNhom(nhom[i]);
-						postDao.UpdatePost(post);
-					}else if(request.getParameter("save") == null){
-						postDao.DeletePostByID(mabaiviet[i]);
-					}
-				}
-			}
-
-		}
-		return mav;
-	}
 
 }

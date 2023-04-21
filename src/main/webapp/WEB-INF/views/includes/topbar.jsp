@@ -70,9 +70,10 @@
 				<!-- Avatar -->
 				<div class="dropdown">
 					<a class="dropdown" href="#" id="navbarDropdownMenuAvatar"
-						role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
-						<img src="${userID.anhdaidien }" class="rounded-circle"
-						height="25" alt="avatar">
+						role="button" data-bs-toggle="dropdown"
+						data-bs-auto-close="outside" aria-expanded="false"> <img
+						src="${userID.anhdaidien }" class="rounded-circle" height="25"
+						alt="avatar">
 					</a>
 					<ul class="dropdown-menu dropdown-menu-end"
 						aria-labelledby="navbarDropdownMenuAvatar">
@@ -83,14 +84,20 @@
 						<li class="log"><a class="dropdown-item" href="./search">Tìm
 								kiếm</a></li>
 
-						<li><a class="dropdown-item" data-bs-toggle="collapse"
-							data-bs-target="#menu_item1" href="">Quản lý&ensp;<i class="fa-solid fa-caret-down"></i>
-						</a>
-							<ul id="menu_item1" class="submenu collapse">
-								<li><a class="dropdown-item" href="/quan-ly">Thành viên</a></li>
-								<li><a class="dropdown-item" href="/quan-ly-bai-viet">Bài viết</a></li>
-								<li><a class="dropdown-item" href="#">Phê duyệt</a></li>
-							</ul></li>
+						<c:if test="${userID.getRank() >= 2 }">
+							<li><a class="dropdown-item" data-bs-toggle="collapse"
+								data-bs-target="#menu_item1" href="">Quản lý&ensp;<i
+									class="fa-solid fa-caret-down"></i>
+							</a>
+								<ul id="menu_item1" class="submenu collapse">
+									<li><a class="dropdown-item" href="/quan-ly">Thành
+											viên</a></li>
+									<li><a class="dropdown-item" href="/quan-ly-bai-viet">Bài
+											viết</a></li>
+									<li><a class="dropdown-item" href="#">Phê duyệt</a></li>
+								</ul></li>
+						</c:if>
+
 						<li>
 							<hr class="dropdown-divider">
 						</li>
