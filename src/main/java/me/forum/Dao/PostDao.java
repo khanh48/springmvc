@@ -132,7 +132,7 @@ public class PostDao {
 					"%" + tieude + "%",
 					"%" + noidung + "%", 
 					"%" + nhom + "%" },
-					new int[] { Types.CHAR, Types.CHAR, Types.NVARCHAR, Types.NVARCHAR, Types.NCHAR}, new PostMapper());
+					new int[] { Types.CHAR, Types.CHAR, Types.LONGNVARCHAR, Types.NVARCHAR, Types.NCHAR}, new PostMapper());
 		} catch (EmptyResultDataAccessException e) {
 			return null;
 		}
@@ -143,7 +143,7 @@ public class PostDao {
 			return jdbcTemplate.update(
 					"insert into baiviet(mabaiviet, tieude, noidung, manhom, taikhoan) value(?, ?, ?, ?, ?)",
 					new Object[] { id, tieude, noidung, nhom, taikhoan },
-					new int[] { Types.BIGINT, Types.NVARCHAR, Types.NVARCHAR, Types.INTEGER, Types.CHAR });
+					new int[] { Types.BIGINT, Types.NVARCHAR, Types.LONGNVARCHAR, Types.INTEGER, Types.CHAR });
 		} catch (DataAccessException e) {
 			return 0;
 		}

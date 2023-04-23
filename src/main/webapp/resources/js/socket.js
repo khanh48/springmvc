@@ -1,10 +1,11 @@
 var soc = new WebSocket("ws://localhost:8088/websocket");
-var chat = new WebSocket("ws://localhost:8088/chat/1");
 soc.onopen = function() {
 	console.log("connected");
 	auth(getCookie("phuot.token"));
 }
 var result = "";
+
+var isStart = true;
 soc.onmessage = function(response) {
 	var data = JSON.parse(response.data);
 	switch (data.type) {
@@ -31,15 +32,25 @@ soc.onmessage = function(response) {
 			const toast = new bootstrap.Toast($('#liveToast'))
 			toast.show()
 		case "newResult":
+			if (isStart) {
+				$(".list-message").append("<li class='chat'><div><span><img class='avatar-chat' src='" + data.linkAvatar + "' alt='avatar'></span><div class='chat-content other-chat'></div></div></li>")
+			}
+			/*if(data.isStop){
+				console.log("Stop")
+			}*/
+			if (!data.isStop && isStart) {
+				isStart = false;
+			}
+			if (data.isStop) {
+				isStart = true;
+			}
 			if (data.value == null) {
 				result = "";
-
 				break;
 			} else {
 				result += data.value;
 			}
-			console.log(response.data);
-			document.querySelector("#show-code").innerHTML = marked.parse(result);
+			$(".chat-content").last().html(marked.parse(result.replace(/^null/g, "")));
 			Prism.highlightAll();
 
 

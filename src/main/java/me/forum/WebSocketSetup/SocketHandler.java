@@ -2,7 +2,6 @@ package me.forum.WebSocketSetup;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.json.JSONObject;
 import org.springframework.web.socket.CloseStatus;
@@ -21,6 +20,12 @@ public class SocketHandler extends TextWebSocketHandler {
 	private HashMap<String, ChatBot> bots = UserHandler.bots;
 	private UserDao userDao = BaseController.GetInstance().userDao;
 	private JwtProvider jwtProvider = JwtProvider.GetInstance();
+
+	private static SocketHandler instance;
+
+	public SocketHandler() {
+		instance = this;
+	}
 
 	@Override
 	public void handleTextMessage(WebSocketSession session, TextMessage message) throws IOException {
@@ -43,7 +48,6 @@ public class SocketHandler extends TextWebSocketHandler {
 			if (!bots.containsKey(user.getTaikhoan()) || bots.get(user.getTaikhoan()).isStoped()) {
 				bots.put(user.getTaikhoan(), new ChatBot(user));
 			}
-			System.out.println("rq chat");
 			bots.get(user.getTaikhoan()).request(json.get("message").toString());
 			break;
 		default:
@@ -65,5 +69,9 @@ public class SocketHandler extends TextWebSocketHandler {
 		if (userDao.findUserByCrypt(token) == null)
 			return false;
 		return jwtProvider.validateToken(token);
+	}
+
+	public static SocketHandler GetInstance() {
+		return instance;
 	}
 }

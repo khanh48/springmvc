@@ -10,61 +10,29 @@
 			<%@ include file="/WEB-INF/views/includes/containerleft.jsp"%>
 			<div class="right">
 				<ul class="list-message">
-					<li class="chat">
-						<div>
-							<span><img class='avatar-chat'
-								src="${userID.getAnhdaidien() }" alt='avatar'></span>
-							<div class="chat-content other-chat">hihi</div>
-						</div>
-					</li>
-					<li class="chat">
-						<div>
-							<div class="chat-content my-chat">hihi1hiahisdhaisdhaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</div>
-						</div>
-					</li>
-					<li class="chat">
-						<div>
-							<div class="chat-content my-chat">hihi1hiahisdhaisdhaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</div>
-						</div>
-					</li>
-					<li class="chat">
-						<div>
-							<span><img class='avatar-chat'
-								src="${userID.getAnhdaidien() }" alt='avatar'></span>
-							<div class="chat-content other-chat">hihi1hiahisdhaisdhaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</div>
-						</div>
-					</li>
-					
-					<li class="chat">
-						<div>
-							<span><img class='avatar-chat'
-								src="${userID.getAnhdaidien() }" alt='avatar'></span>
-							<div class="chat-content other-chat">hihi1hiahisdhaisdhaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</div>
-						</div>
-					</li>
-					<li class="chat">
-						<div>
-							<span><img class='avatar-chat'
-								src="${userID.getAnhdaidien() }" alt='avatar'></span>
-							<div class="chat-content other-chat">hihi1hiahisdhaisdhaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</div>
-						</div>
-					</li>
-					<li class="chat">
-						<div>
-							<span><img class='avatar-chat'
-								src="${userID.getAnhdaidien() }" alt='avatar'></span>
-							<div class="chat-content other-chat">hihi1hiahisdhaisdhaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</div>
-						</div>
-					</li>
-					<li class="chat">
-						<div>
-							<span><img class='avatar-chat'
-								src="${userID.getAnhdaidien() }" alt='avatar'></span>
-							<div class="chat-content other-chat">hihi1hiahisdhaisdhaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</div>
-						</div>
-					</li>
+					<c:forEach items="${messageList }" var="msg">
+
+						<li class="chat">
+							<div>
+								<c:if
+									test="${msg.getNguoigui().getTaikhoan() != userID.getTaikhoan() }">
+									<span> <img class='avatar-chat'
+										src="${msg.getNguoigui().getAnhdaidien() }" alt='avatar'></span>
+								</c:if>
+								<div
+									class="chat-content <c:if test="${userID.getTaikhoan() == msg.getNguoigui().getTaikhoan() }">my-chat</c:if>
+									<c:if test="${userID.getTaikhoan() != msg.getNguoigui().getTaikhoan() }">other-chat</c:if>">${msg.getNoidung() }</div>
+							</div>
+						</li>
+					</c:forEach>
+
 				</ul>
-				<div class="text-box-chat">a</div>
+				<div class="text-box-chat">
+					<button onclick="stopBotSession()">stop</button>
+					<div class="chat-text">
+						<div class="chat-input" contenteditable="true"></div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -85,6 +53,10 @@
 	<footer id="ft">
 		<div class="top animated"></div>
 	</footer>
+	<script src="/resources/js/marked.min.js"></script>
 	<script src="/resources/js/filecustom.js"></script>
+	<script>
+		Prism.highlightAll();
+	</script>
 </body>
 </html>

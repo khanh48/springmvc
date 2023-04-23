@@ -1,9 +1,10 @@
-C:\Users\ADMIN\eclipse-workspace-web\forum\src\main\java\me\forum\Controller\MainRestController.java
 C:\Users\ADMIN\eclipse-workspace-web\forum\src\main\java\me\forum\Module\ChatBot.java
 C:\Users\ADMIN\eclipse-workspace-web\forum\src\main\java\me\forum\Dao\RuleDao.java
 C:\Users\ADMIN\eclipse-workspace-web\forum\src\main\java\me\forum\Entity\Message.java
+C:\Users\ADMIN\eclipse-workspace-web\forum\src\main\java\me\forum\RestController\ChatController.java
 C:\Users\ADMIN\eclipse-workspace-web\forum\src\main\java\me\forum\WebSocketSetup\SocketHandler.java
 C:\Users\ADMIN\eclipse-workspace-web\forum\src\main\java\me\forum\Dao\LikeDao.java
+C:\Users\ADMIN\eclipse-workspace-web\forum\src\main\java\me\forum\Controller\ManageController.java
 C:\Users\ADMIN\eclipse-workspace-web\forum\src\main\java\me\forum\Dao\CommentDao.java
 C:\Users\ADMIN\eclipse-workspace-web\forum\src\main\java\me\forum\Controller\BaseController.java
 C:\Users\ADMIN\eclipse-workspace-web\forum\src\main\java\me\forum\Dao\UserDao.java
@@ -24,6 +25,7 @@ C:\Users\ADMIN\eclipse-workspace-web\forum\src\main\java\me\forum\Dao\MessageDao
 C:\Users\ADMIN\eclipse-workspace-web\forum\src\main\java\me\forum\Controller\PostController.java
 C:\Users\ADMIN\eclipse-workspace-web\forum\src\main\java\me\forum\Dao\ImageDao.java
 C:\Users\ADMIN\eclipse-workspace-web\forum\src\main\java\me\forum\Entity\Comment.java
+C:\Users\ADMIN\eclipse-workspace-web\forum\src\main\java\me\forum\RestController\MainRestController.java
 C:\Users\ADMIN\eclipse-workspace-web\forum\src\main\java\me\forum\Entity\Post.java
 C:\Users\ADMIN\eclipse-workspace-web\forum\src\main\java\me\forum\Entity\Rule.java
 C:\Users\ADMIN\eclipse-workspace-web\forum\src\main\java\me\forum\Entity\User.java

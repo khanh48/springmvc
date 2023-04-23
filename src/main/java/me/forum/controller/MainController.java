@@ -34,6 +34,18 @@ public class MainController extends BaseController {
 		mav.setViewName("chat");
 		return mav;
 	}
+	
+
+	@RequestMapping(value = { "/chat/{username}", "/tro-chuyen/{username}" })
+	public ModelAndView chatPageUser(HttpSession session, @PathVariable(name = "username", required = false) String friend) {
+		mav.setViewName("chat");
+		User user = (User) session.getAttribute("userID");
+		if(user == null) {
+			return mav;	
+		}
+		mav.addObject("messageList", messageDao.getAllMessage(user.getTaikhoan(), friend));
+		return mav;
+	}
 
 	@RequestMapping(value = { "/ho-so/{username}", "/profile/{username}" })
 	public ModelAndView profilePage(@PathVariable("username") String username, HttpSession session) {
@@ -89,9 +101,13 @@ public class MainController extends BaseController {
 			return mav;
 		}
 		List<Comment> comments = commentDao.GetPostsLimitDesc(id, 0, 10);
+		for (Comment comment : comments) {
+			comment.setNoidung(comment.getNoidung().replaceAll("\n", "<br>"));
+			System.out.println(comment.getNoidung());
+		}
 		mav.addObject("post", post);
 		mav.addObject("comments", comments);
-		return mav;
+		return mav;	
 	}
 
 	@RequestMapping(value = { "/bai-viet/{id}/{nid}", "/post/{id}/{nid}" })

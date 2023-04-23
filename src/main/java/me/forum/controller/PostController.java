@@ -194,8 +194,8 @@ public class PostController extends BaseController {
 	public ModelAndView addComment(HttpSession session, HttpServletRequest request) {
 		String content;
 		long id;
-
 		content = request.getParameter("comment");
+		System.out.println(content);
 		id = Long.parseLong(request.getParameter("send"));
 		mav.setViewName("redirect:/bai-viet/" + id);
 		User user = (User) session.getAttribute("userID");

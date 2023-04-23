@@ -97,6 +97,33 @@ $(document).ready(function() {
 		content[0].classList.add("mt-0");
 	}
 
+	$(".chat-input").on("keydown", function(e) {
+
+		if (e.which == 13 && !e.shiftKey) {
+			e.preventDefault();
+			if ($(this).text().length == 0) {
+				return;
+			}	
+			var path = location.pathname.split("/");
+			var type = (path[1] === "chat" && path[2] === "chatbot") ? "requestChat" : "sendMessage";
+			$.ajax({
+				type: "POST",
+				url: "/chatHandler",
+				data: {
+					type: type,
+					message: $(this).text(),
+					user: path[2]
+				},
+				success: function(respone) {
+
+				}
+			})
+			
+			$(".list-message").append("<li class='chat'><div><div class='chat-content my-chat'>"+$(this).text()+"</div></div></li>")
+			$(this).text("");
+		}
+	});
+
 	if ($("#listComments > div").length < 10) {
 		$("#loadMoreCmt").hide();
 	}
@@ -146,7 +173,7 @@ $(document).ready(function() {
 			}
 		})
 	});
-	
+
 
 })
 function deletePost(id) {

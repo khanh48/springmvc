@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.json.JSONObject;
 
+import com.fasterxml.jackson.databind.deser.Deserializers.Base;
 import com.theokanning.openai.completion.chat.ChatCompletionChoice;
 import com.theokanning.openai.completion.chat.ChatCompletionChunk;
 import com.theokanning.openai.completion.chat.ChatCompletionRequest;
@@ -15,26 +16,28 @@ import com.theokanning.openai.completion.chat.ChatMessageRole;
 import com.theokanning.openai.service.OpenAiService;
 
 import io.reactivex.functions.Consumer;
+import me.forum.Controller.BaseController;
 import me.forum.Entity.User;
 import me.forum.WebSocketSetup.UserHandler;
 
 public class ChatBot {
-	final static String token = "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";
+	final static String token = "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";
 	OpenAiService service;
 	final List<ChatMessage> messages;
-	User user;
+	User user, chatBot;
 
 	boolean isStoped;
 
 	public ChatBot(User user) {
 		this.user = user;
+		chatBot = BaseController.GetInstance().userDao.findUserByUserName("chatbot");
 		service = new OpenAiService(token, Duration.ofSeconds(30));
-		
+
 		messages = new ArrayList<>();
 		messages.add(new ChatMessage(ChatMessageRole.SYSTEM.value(),
-				"Tôi là trợ lý thông minh của website diễn đàn phượt."));
-		messages.add(
-				new ChatMessage(ChatMessageRole.SYSTEM.value(), "tôi đang trò chuyện với người dùng tên: '" + user.getHoten() + "'."));
+				"Bạn là trợ lý thông minh của website diễn đàn phượt. Hãy trả lời ngắn gọn, đầy đủ nhất có thể."));
+		messages.add(new ChatMessage(ChatMessageRole.SYSTEM.value(),
+				"Bạn đang trò chuyện với người dùng tên: '" + user.getHoten() + "'."));
 		messages.add(new ChatMessage(ChatMessageRole.SYSTEM.value(),
 				"Hãy chào người dùng và giới thiệu bản thân khi bắt đầu trò chuyện."));
 
@@ -47,8 +50,13 @@ public class ChatBot {
 		messages.add(userMessage);
 		ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest.builder().model("gpt-3.5-turbo")
 				.messages(messages).n(1).maxTokens(1500).logitBias(new HashMap<>()).build();
-		service.streamChatCompletion(chatCompletionRequest).doOnError(Throwable::printStackTrace)
-				.blockingForEach(new Response(user.getTaikhoan()));
+		service.streamChatCompletion(chatCompletionRequest).doOnError(new Consumer<Throwable>() {
+
+			@Override
+			public void accept(Throwable t) throws Exception {
+				stop();
+			}
+		}).blockingForEach(new Response(user.getTaikhoan()));
 		System.out.println(messages.size());
 	}
 
@@ -73,14 +81,22 @@ public class ChatBot {
 
 		@Override
 		public void accept(ChatCompletionChunk t) throws Exception {
+			if (isStoped)
+				return;
 			ChatCompletionChoice choice = t.getChoices().get(0);
-			if ("stop".equals(choice.getFinishReason()) || "lenght".equals(choice.getFinishReason())) {
-				messages.add(new ChatMessage(ChatMessageRole.ASSISTANT.value(), response));
-				response = "";
-			}
 			JSONObject json = new JSONObject();
+			json.put("isStop", false);
+			if ("stop".equals(choice.getFinishReason()) || "lenght".equals(choice.getFinishReason())) {
+				response = response.replaceAll("^null", "");
+				messages.add(new ChatMessage(ChatMessageRole.ASSISTANT.value(), response));
+				BaseController.GetInstance().messageDao.AddMessage(chatBot.getTaikhoan(), user, response);
+				response = "";
+				json.put("isStop", true);
+			}
 			json.put("type", "newResult");
 			json.put("value", choice.getMessage().getContent());
+			json.put("linkAvatar", chatBot.getAnhdaidien());
+
 			UserHandler.GetInstance().send(user, json.toString());
 			response += choice.getMessage().getContent();
 

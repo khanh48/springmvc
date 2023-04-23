@@ -6,7 +6,6 @@
 		<%@ include file="/WEB-INF/views/includes/topbar.jsp"%>
 		<div id="show-code"></div>
 	</div>
-	<script src="/resources/js/marked.min.js"></script>
 	<%@ include file="/WEB-INF/views/includes/footer.jsp"%>
 </body>
 </html>

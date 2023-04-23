@@ -9,6 +9,7 @@ import me.forum.Dao.CommentDao;
 import me.forum.Dao.GroupDao;
 import me.forum.Dao.ImageDao;
 import me.forum.Dao.LikeDao;
+import me.forum.Dao.MessageDao;
 import me.forum.Dao.NotificationDao;
 import me.forum.Dao.PostDao;
 import me.forum.Dao.RuleDao;
@@ -32,6 +33,8 @@ public class BaseController {
 	public GroupDao groupDao;
 	@Autowired
 	public RuleDao ruleDao;
+	@Autowired
+	public MessageDao messageDao;
 
 	public ModelAndView mav = new ModelAndView();
 	

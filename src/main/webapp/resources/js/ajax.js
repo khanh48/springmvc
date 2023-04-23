@@ -101,6 +101,19 @@ function findUser() {
 	})
 }
 
+function stopBotSession() {
+	$.ajax({
+		type: "POST",
+		url: "/stopBotSession",
+		data: {
+			stopBot: "true"
+		},
+		success: function(response) {
+			isStart = true;
+		}
+	})
+}
+
 function findPost() {
 	var taikhoan = $("#fbAuthor").val();
 	var id = $("#fbID").val();
