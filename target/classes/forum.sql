@@ -135,6 +135,7 @@ insert into nhom(tennhom, mota) values('Tìm kiếm đồng đội', 'Bạn khô
 -- DELIMITER ;
 -- set global event_scheduler = on;
 
+insert into nguoidung(taikhoan, matkhau, hoten) values('chatbot', '900150983cd24fb0d6963f7d28e17f72', 'Chat Bot');
 insert into nguoidung(taikhoan, matkhau, hoten, machucvu) values('admin', '900150983cd24fb0d6963f7d28e17f72', 'ADMIN', 5);
 insert into nguoidung(taikhoan, matkhau, hoten) values('user', '900150983cd24fb0d6963f7d28e17f72', 'User');
 -- alter table users add column date timestamp default current_timestamp() after avatar
