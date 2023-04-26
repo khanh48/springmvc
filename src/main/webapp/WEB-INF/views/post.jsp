@@ -65,7 +65,7 @@
 							<div>
 								<form action="/addComment" method='post' id='sendCmt'>
 									<div class='form-group p-1'>
-										<textarea class='form-control f-sm' id='cmtContent'
+										<textarea class='form-control f-sm textarea scroll-bar' id='cmtContent'
 											placeholder='Bình luận' name='comment' required></textarea>
 									</div>
 									<button type='submit' value="${post.getMabaiviet() }"
@@ -76,52 +76,11 @@
 					</c:if>
 				</c:if>
 				<div id="listComments">
-					<c:forEach items="${comments}" var="i">
-
-						<div class='content' id="${i.getMabinhluan() }">
-							<div class='d-flex justify-content-between'>
-								<div class=' c-header'>
-									<span> <a class='name'
-										href='/ho-so/${i.getUser().getTaikhoan() }'> <img
-											class='avt' src="${i.getUser().getAnhdaidien() }"
-											alt='avatar'></a></span>
-									<div class='c-name'>
-										<span><a class='name'
-											href='/ho-so/${i.getUser().getTaikhoan() }'>${i.getUser().getHoten() }</a>
-											<div class='time'>
-												<small class='text-secondary'>${i.getDateFormated() }</small>
-											</div> </span>
-									</div>
-								</div>
-
-								<c:if
-									test="${i.getUser().getTaikhoan() eq userID.getTaikhoan() || userID.getRank() >= 2 }">
-									<button name='delete-notification' class='btn-close py-1 px-3'
-										value='a' data-bs-toggle='modal' data-bs-target='#delete-cmt'
-										onclick="deleteCmt(${i.getMabinhluan()})"></button>
-								</c:if>
-							</div>
-							<div class='c-body'>${i.getNoidung() }</div>
-							<div class='m-0 hide wh' style='text-align: end;'>
-								<span class='read-more'></span>
-							</div>
-							<hr class='m-0'>
-							<div class='interactive p-1 m-0'>
-								<button type='button' class='like p-1'
-									onclick="like(${i.getMabinhluan() }, false, '${i.getUser().getTaikhoan()}')">
-									<i
-										class='fas fa-heart action <c:if test="${ i.IsLiked(userID.getTaikhoan()) }">fas-liked</c:if>'
-										id='cl${i.getMabinhluan() }'></i> <span class='count-like'
-										id='c${i.getMabinhluan() }'> <c:if
-											test="${i.getCountLike() > 0}">${i.getCountLike() }</c:if>
-									</span>
-								</button>
-							</div>
-						</div>
-
-					</c:forEach>
+					<script>
+					loadComment(${post.getMabaiviet()});
+					</script>
 				</div>
-				<div id="loadMoreCmt" onclick="loadMore(${post.getMabaiviet()})">Tải
+				<div id="loadMoreCmt" onclick="loadComment(${post.getMabaiviet()})">Tải
 					thêm bình luận</div>
 
 			</div>

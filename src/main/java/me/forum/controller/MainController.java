@@ -29,14 +29,14 @@ public class MainController extends BaseController {
 		return mav;
 	}
 
-	@RequestMapping(value = { "/chat", "/tro-chuyen" })
+	@RequestMapping(value = { "/chat"})
 	public ModelAndView chatPage(HttpSession session, HttpServletRequest request) {
 		mav.setViewName("chat");
 		return mav;
 	}
 	
 
-	@RequestMapping(value = { "/chat/{username}", "/tro-chuyen/{username}" })
+	@RequestMapping(value = { "/chat/{username}"})
 	public ModelAndView chatPageUser(HttpSession session, @PathVariable(name = "username", required = false) String friend) {
 		mav.setViewName("chat");
 		User user = (User) session.getAttribute("userID");

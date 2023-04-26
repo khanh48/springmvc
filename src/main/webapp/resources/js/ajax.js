@@ -28,7 +28,7 @@ function like(id, isPost, toUser) {
 
 }
 
-function loadMore(id) {
+function loadComment(id) {
 
 	var start = $("#listComments > div").length;
 	console.log("click")
@@ -84,7 +84,7 @@ function findUser() {
 	var email = $("#fbEmail").val();
 	var sdt = $("#fbNumber").val();
 	var chucvu = $("#fbRank").val();
-	
+
 	$.ajax({
 		type: "POST",
 		url: "/findUser",
@@ -113,14 +113,35 @@ function stopBotSession() {
 		}
 	})
 }
-
+function loadPost(uid) {
+	var start = $("#listPosts > div").length;
+	console.log(uid)
+	$.ajax({
+		type: "GET",
+		url: "/loadPost",
+		data: {
+			start: start,
+			limit: 10,
+			uid: uid
+		},
+		success: function(response) {
+			if (response.length < 10) {
+				$("#loadMore").hide();
+			}
+			$.each(response, function(index, item) {
+				$("#listPosts").append(item)
+			})
+			removeControl();
+		}
+	})
+}
 function findPost() {
 	var taikhoan = $("#fbAuthor").val();
 	var id = $("#fbID").val();
 	var tieude = $("#fbTitle").val();
 	var noidung = $("#fbContent").val();
 	var nhom = $("#fbGroup").val();
-	
+
 	$.ajax({
 		type: "POST",
 		url: "/findPost",
@@ -138,6 +159,7 @@ function findPost() {
 }
 
 $(document).ready(function() {
+	
 	$("#changePassword").click(function(e) {
 		$.ajax({
 			type: 'POST',
@@ -168,27 +190,7 @@ $(document).ready(function() {
 		})
 	})
 
-	$("#loadMore").click(function() {
-		var start = $("#listPosts > div").length;
-		console.log("click")
-		$.ajax({
-			type: "GET",
-			url: "/loadPost",
-			data: {
-				start: start,
-				limit: 10
-			},
-			success: function(response) {
-				if (response.length < 10) {
-					$("#loadMore").hide();
-				}
-				$.each(response, function(index, item) {
-					$("#listPosts").append(item)
-				})
-				removeControl();
-			}
-		})
-	})
+
 
 	$("#confirm-yes").click(function() {
 		delPost($(this)[0].value)

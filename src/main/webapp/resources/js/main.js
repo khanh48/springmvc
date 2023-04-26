@@ -24,7 +24,27 @@ document.addEventListener("DOMContentLoaded", function() {
 	//         menu.classList.toggle("change");
 	//         document.querySelector('#full-menu').classList.toggle("show");
 	//     };
+	const textarea = document.querySelector("textarea");
+	if (textarea != null) {
+
+		textarea.addEventListener("input", autoResize);
+		var lineHeight = 24;
+	}
+
+	function autoResize() {
+		console.log(this.scrollHeight);
+		const currentRows = Math.ceil(this.scrollHeight / lineHeight) - 1;
+		console.log(currentRows)
+
+
+		if (currentRows < 6) {
+			this.style.height = 'auto';
+			this.style.height = this.scrollHeight + 'px';
+		}
+	}
 })
+
+const path = location.pathname.split("/");
 
 function removeControl() {
 	var inner = $(".carousel-inner");
@@ -91,36 +111,36 @@ function login() {
 }
 $(document).ready(function() {
 	removeControl();
-	var content = $(".content").find(">:first-child");
+	//	var content = $(".content").find(">:first-child");
 
-	if (content.length > 0) {
-		content[0].classList.add("mt-0");
-	}
+	//	if (content.length > 0) {
+	//		content[0].classList.add("mt-0");
+	//	}
+
 
 	$(".chat-input").on("keydown", function(e) {
 
 		if (e.which == 13 && !e.shiftKey) {
 			e.preventDefault();
-			if ($(this).text().length == 0) {
+			if ($(this).val().length == 0) {
 				return;
-			}	
-			var path = location.pathname.split("/");
+			}
 			var type = (path[1] === "chat" && path[2] === "chatbot") ? "requestChat" : "sendMessage";
 			$.ajax({
 				type: "POST",
 				url: "/chatHandler",
 				data: {
 					type: type,
-					message: $(this).text(),
+					message: $(this).val(),
 					user: path[2]
 				},
 				success: function(respone) {
 
 				}
 			})
-			
-			$(".list-message").append("<li class='chat'><div><div class='chat-content my-chat'>"+$(this).text()+"</div></div></li>")
-			$(this).text("");
+
+			$(".list-message").append("<li class='chat'><div><div class='chat-content my-chat'>" + $(this).val() + "</div></div></li>")
+			$(this).val("");
 		}
 	});
 

@@ -30,7 +30,7 @@
 				<div class="text-box-chat">
 					<button onclick="stopBotSession()">stop</button>
 					<div class="chat-text">
-						<div class="chat-input" contenteditable="true"></div>
+						<textarea class="chat-input"></textarea>
 					</div>
 				</div>
 			</div>

@@ -6,8 +6,9 @@
 		<%@ include file="/WEB-INF/views/includes/topbar.jsp"%>
 		<div id="show-code"></div>
 	</div>
-	<textarea class="fixed" rows=1 cols=20>initial content</textarea>
+	<textarea class="scroll-bar" rows=1 cols=20>initial content</textarea>
 
+	<textarea class="scroll-bar" rows=1 cols=20>initial content</textarea>
 
 
 	<script>
@@ -17,7 +18,6 @@
 				.getPropertyValue('line-height'));
 		const padding = parseInt(window.getComputedStyle(textarea)
 				.getPropertyValue('padding-top'));
-
 		function autoResize() {
 			const currentRows = Math.ceil(this.scrollHeight / lineHeight);
 			console.log(currentRows);
@@ -28,9 +28,9 @@
 				this.style.overflowY = 'auto';
 				this.style.resize = 'both';
 				this.style.height = 'auto';
-			this.style.height = this.scrollHeight + 'px';
+				this.style.height = this.scrollHeight + 'px';
 			}
-		} 
+		}
 	</script>
 </body>
 </html>

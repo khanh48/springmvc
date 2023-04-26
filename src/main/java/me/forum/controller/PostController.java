@@ -35,7 +35,7 @@ public class PostController extends BaseController {
 		String numlike, numcmt, uUrl, isliked;
 		List<String> list = new ArrayList<>();
 		List<Post> posts;
-		posts = uid != null ? postDao.GetPostsUserLimit(uid, start, limit) : postDao.GetPostsLimitDesc(start, limit);
+		posts = uid.isEmpty() ? postDao.GetPostsLimitDesc(start, limit) : postDao.GetPostsUserLimit(uid, start, limit);
 		User user = (User) session.getAttribute("userID");
 		for (Post p : posts) {
 			isliked = "";
@@ -58,7 +58,7 @@ public class PostController extends BaseController {
 			item += "<small class='text-secondary'>" + p.getDateFormated() + "</small>";
 			item += "</div></span></div></div>";
 
-			if (u.getTaikhoan().equals(user.getTaikhoan()) || user.getRank() >= 2) {
+			if (user != null && (u.getTaikhoan().equals(user.getTaikhoan()) || user.getRank() >= 2)) {
 				item += "<button name='delete-notification' class='btn-close py-1 px-3' ";
 				item += "value='' data-bs-toggle='modal' data-bs-target='#delete-post' " + "onclick=\"deletePost("
 						+ p.getMabaiviet() + ")\"></button>";
@@ -139,7 +139,7 @@ public class PostController extends BaseController {
 			item += "<small class='text-secondary'>" + cmt.getDateFormated() + "</small>";
 			item += "</div> </span></div></div>";
 
-			if (u.getTaikhoan().equals(user.getTaikhoan()) || user.getRank() >= 2) {
+			if (user != null && (u.getTaikhoan().equals(user.getTaikhoan()) || user.getRank() >= 2)) {
 				item += "<button name='delete-notification' class='btn-close py-1 px-3' "
 						+ "value='a' data-bs-toggle='modal' data-bs-target='#delete-post' onclick=\"deleteCmt("
 						+ cmt.getMabinhluan() + ")\"></button>";

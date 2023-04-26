@@ -982,17 +982,29 @@ caption {
 }
 
 .table-wrapper::-webkit-scrollbar-track {
-	background-color: rgba(255, 255, 255);
+	background-color: #bcd0c7;
 	border-radius: 5px;
 }
 
 .table-wrapper::-webkit-scrollbar-thumb {
-	background-color: #bdbbbb;
+	background-color: #9baca5;
 	border-radius: 5px;
 }
 
 .table-wrapper::-webkit-scrollbar-thumb:hover {
-	background-color: #a7a5a5;
+	background-color: #84918a;
+}
+
+textarea{
+	border: none;
+	resize: none;
+}
+.form-control:focus{
+	box-shadow: none;
+}
+textarea::-webkit-scrollbar{
+	width: 0;
+	height: 0;
 }
 
 #searchRow {
