@@ -32,6 +32,7 @@ public class MainController extends BaseController {
 	@RequestMapping(value = { "/chat"})
 	public ModelAndView chatPage(HttpSession session, HttpServletRequest request) {
 		mav.setViewName("chat");
+		mav.addObject("chatUser", null);
 		return mav;
 	}
 	
@@ -40,10 +41,11 @@ public class MainController extends BaseController {
 	public ModelAndView chatPageUser(HttpSession session, @PathVariable(name = "username", required = false) String friend) {
 		mav.setViewName("chat");
 		User user = (User) session.getAttribute("userID");
-		if(user == null) {
+		User chatUser = userDao.findUserByUserName(friend);
+		if(user == null || chatUser == null) {
 			return mav;	
 		}
-		mav.addObject("messageList", messageDao.getAllMessage(user.getTaikhoan(), friend));
+		mav.addObject("chatUser", chatUser);
 		return mav;
 	}
 
@@ -101,10 +103,6 @@ public class MainController extends BaseController {
 			return mav;
 		}
 		List<Comment> comments = commentDao.GetPostsLimitDesc(id, 0, 10);
-		for (Comment comment : comments) {
-			comment.setNoidung(comment.getNoidung().replaceAll("\n", "<br>"));
-			System.out.println(comment.getNoidung());
-		}
 		mav.addObject("post", post);
 		mav.addObject("comments", comments);
 		return mav;	

@@ -10,23 +10,10 @@
 			<%@ include file="/WEB-INF/views/includes/containerleft.jsp"%>
 			<div class="right">
 				<ul class="list-message">
-					<c:forEach items="${messageList }" var="msg">
-
-						<li class="chat">
-							<div>
-								<c:if
-									test="${msg.getNguoigui().getTaikhoan() != userID.getTaikhoan() }">
-									<span> <img class='avatar-chat'
-										src="${msg.getNguoigui().getAnhdaidien() }" alt='avatar'></span>
-								</c:if>
-								<div
-									class="chat-content <c:if test="${userID.getTaikhoan() == msg.getNguoigui().getTaikhoan() }">my-chat</c:if>
-									<c:if test="${userID.getTaikhoan() != msg.getNguoigui().getTaikhoan() }">other-chat</c:if>">${msg.getNoidung() }</div>
-							</div>
-						</li>
-					</c:forEach>
-
 				</ul>
+				<script>
+				loadMessage("${chatUser.getTaikhoan()}");
+				</script>
 				<div class="text-box-chat">
 					<button onclick="stopBotSession()">stop</button>
 					<div class="chat-text">
@@ -57,6 +44,11 @@
 	<script src="/resources/js/filecustom.js"></script>
 	<script>
 		Prism.highlightAll();
+		window.onscroll = function(e){
+			if(document.documentElement.scrollTop == 0){
+				loadMessage("${chatUser.getTaikhoan()}");
+			}
+		}
 	</script>
 </body>
 </html>

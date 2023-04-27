@@ -52,6 +52,8 @@ soc.onmessage = function(response) {
 			}
 			$(".chat-content").last().html(marked.parse(result.replace(/^null/g, "")));
 			Prism.highlightAll();
+		case "chat":
+			addMessage(data.avatar, data.message, data.sender);
 
 
 	}
@@ -68,6 +70,14 @@ function auth(token) {
 	soc.send(JSON.stringify({ "type": "auth", "token": token }))
 }
 
+function addMessage(avt, message, sender) {
+	let result = "<li class='chat'><div>";
+	if (sender == 'other-chat') {
+		result += "<span> <img class='avatar-chat' src='" + avt + "' alt='avatar'></span>";
+	}
+	result += "<div class='chat-content " + sender + "'>" + marked.parse(message) + "</div></div></li>";
+	return result;
+}
 function setCookie(cname, cvalue) {
 	console.log(cvalue)
 	document.cookie = cname + "=" + cvalue + ";path=/";

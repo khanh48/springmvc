@@ -12,9 +12,11 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import me.forum.Controller.BaseController;
 import me.forum.Dao.GroupDao;
 import me.forum.Dao.NotificationDao;
 import me.forum.Dao.PostDao;
+import me.forum.Entity.Notification;
 import me.forum.Entity.Post;
 import me.forum.Entity.User;
 
@@ -32,11 +34,20 @@ public class Interceptor implements HandlerInterceptor {
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object object) throws Exception {
-
 		HttpSession session = request.getSession();
 		User user = (User) session.getAttribute("userID");
 		if (user != null) {
-			session.setAttribute("listNotify", notificationDao.GetByNguoiNhan(user.getTaikhoan()));
+			int unread = 0;
+			List<Notification> listNotify = notificationDao.GetByNguoiNhan(user.getTaikhoan());
+
+			for (Notification notification : listNotify) {
+				if (!notification.isTrangthai()) {
+					unread++;
+				}
+			}
+			session.setAttribute("unread", unread);
+			session.setAttribute("listNotify", listNotify);
+
 		}
 		List<Post> groups = postDao.getTopList();
 		List<List<Post>> allgroup = new ArrayList<>();

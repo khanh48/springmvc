@@ -1,6 +1,8 @@
 package me.forum.RestController;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,6 +18,7 @@ import org.springframework.web.socket.TextMessage;
 
 import me.forum.Dao.MessageDao;
 import me.forum.Dao.UserDao;
+import me.forum.Entity.Message;
 import me.forum.Entity.User;
 import me.forum.WebSocketSetup.SocketHandler;
 import me.forum.WebSocketSetup.UserHandler;
@@ -51,6 +54,14 @@ public class ChatController {
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
 			}
+		}else if("chat".equals(type)) {
+
+			JSONObject jsonObject = new JSONObject();
+			jsonObject.put("type", type);
+			jsonObject.put("avatar", user.getAnhdaidien());
+			jsonObject.put("message", message);
+			jsonObject.put("sender", "other-chat");
+			UserHandler.GetInstance().send(toUser, jsonObject.toString());
 		}
 		return map;
 	}
@@ -62,6 +73,30 @@ public class ChatController {
 		user = (User) session.getAttribute("userID");
 		if(user == null) return map;
 		UserHandler.bots.get(user.getTaikhoan()).stop();
+		return map;
+	}
+
+	@RequestMapping(value = "/loadMessage", method = RequestMethod.POST)
+	public Map<String, Object> loadMessage(@RequestParam int start, @RequestParam int limit, @RequestParam String uid, HttpSession session) {
+		HashMap<String, Object> map = new HashMap<>();
+		User user, user2;
+		user = (User) session.getAttribute("userID");
+		user2 = userDao.findUserByUserName(uid);
+		if(user == null) return map;
+		List<Map<String, Object>> text = new ArrayList<>();
+		for (Message msg : messageDao.getLimitMessage(user.getTaikhoan(), uid, start, limit)) {
+			Map<String, Object> json = new HashMap<>();
+			if(msg.getNguoigui().equals(user)) {
+				json.put("sender", "my-chat");
+			}else {
+				json.put("sender", "other-chat");
+				json.put("avatar", user2.getAnhdaidien());
+			}
+			json.put("message", msg.getNoidung());
+			json.put("time", msg.getFomattedDate());
+			text.add(json);
+		}
+		map.put("payLoad", text);
 		return map;
 	}
 }

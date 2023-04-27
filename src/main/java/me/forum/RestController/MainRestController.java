@@ -2,6 +2,7 @@ package me.forum.RestController;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -174,9 +175,9 @@ public class MainRestController {
 			ct = user.getHoten() + " đã thích " + (isPost ? "bài viết" : "bình luận") + " của bạn.";
 			url = "/bai-viet/" + urlID + "/"+curTime;
 			likeDao.AddLike(isPost, user.getTaikhoan(), id);
-			if (!user.getTaikhoan().equals(toUser.getTaikhoan())) {
-				notificationDao.AddNotification(curTime, user.getTaikhoan(), ct, toUser.getTaikhoan(), url);
-				Notification ntf = notificationDao.GetById(curTime);
+			if (!user.equals(toUser)) {
+				Notification ntf = new Notification(curTime, user.getTaikhoan(), ct, toUser.getTaikhoan(), url);
+				notificationDao.AddNotification(ntf);
 				JSONObject json = new JSONObject();
 				json.put("type", "newNotification");
 				json.put("message", ct);

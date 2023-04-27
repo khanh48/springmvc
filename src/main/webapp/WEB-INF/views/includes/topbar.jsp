@@ -43,12 +43,12 @@
 						role="button" data-bs-toggle="dropdown" aria-expanded="true">
 
 						<i class="fas fa-bell" id="bell-num"> <c:if
-								test="${listNotify.size() > 0}">
+								test="${unread > 0}">
 								<span
 									class="badge rounded-pill position-absolute top-0 start-100 translate-middle bg-danger"
-									id="ntf-num"> <c:if test="${listNotify.size() < 100}">
-									${ listNotify.size() } 
-									</c:if> <c:if test="${listNotify.size() > 99}">
+									id="ntf-num"> <c:if test="${unread < 100}">
+									${ unread } 
+									</c:if> <c:if test="${unread > 99}">
 									99+ 
 									</c:if>
 								</span>

@@ -8,6 +8,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -18,8 +19,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import me.forum.Entity.Comment;
 import me.forum.Entity.Image;
+import me.forum.Entity.Notification;
 import me.forum.Entity.Post;
 import me.forum.Entity.User;
+import me.forum.WebSocketSetup.UserHandler;
 
 @Controller
 public class PostController extends BaseController {
@@ -38,6 +41,7 @@ public class PostController extends BaseController {
 		posts = uid.isEmpty() ? postDao.GetPostsLimitDesc(start, limit) : postDao.GetPostsUserLimit(uid, start, limit);
 		User user = (User) session.getAttribute("userID");
 		for (Post p : posts) {
+			p.setNoidung(p.getNoidung().replaceAll("\n", "<br>"));
 			isliked = "";
 			User u = p.getUser();
 			uUrl = "/ho-so/" + u.getTaikhoan();
@@ -120,6 +124,7 @@ public class PostController extends BaseController {
 		List<Comment> comments = commentDao.GetPostsLimitDesc(id, start, limit);
 		User user = (User) session.getAttribute("userID");
 		for (Comment cmt : comments) {
+			cmt.setNoidung(cmt.getNoidung().replaceAll("\n", "<br>"));
 			User u = cmt.getUser();
 			isliked = "";
 			uUrl = "/ho-so/" + u.getTaikhoan();
@@ -191,16 +196,32 @@ public class PostController extends BaseController {
 	}
 
 	@RequestMapping(value = "/addComment", method = RequestMethod.POST)
-	public ModelAndView addComment(HttpSession session, HttpServletRequest request) {
+	public ModelAndView addComment(@RequestParam(name = "send") long id,HttpSession session, HttpServletRequest request) {
 		String content;
-		long id;
 		content = request.getParameter("comment");
-		System.out.println(content);
-		id = Long.parseLong(request.getParameter("send"));
 		mav.setViewName("redirect:/bai-viet/" + id);
 		User user = (User) session.getAttribute("userID");
-		if (user != null)
+		Post post = postDao.GetPostByID(id);
+		if (user != null && post != null) {
+			long curTime = System.currentTimeMillis();
 			commentDao.AddComment(content, user.getTaikhoan(), id);
+			if(!user.equals(post.getUser())) {
+			
+				String thongbao, url;
+				thongbao= user.getHoten() + " đã bình luận trong bài viết của bạn.";
+				url= "/bai-viet/" + id + "/" + curTime;
+			
+				Notification notification = new Notification(curTime, user.getTaikhoan(), thongbao, post.getUser().getTaikhoan(), url);
+				notificationDao.AddNotification(notification);
+				JSONObject json = new JSONObject();
+				json.put("type", "newNotification");
+				json.put("message", thongbao);
+				json.put("url", url);
+				json.put("date", notification.getDateFormated());
+				UserHandler.GetInstance().send(post.getUser().getTaikhoan(), json.toString());
+			}
+			
+		}
 		return mav;
 	}
 	

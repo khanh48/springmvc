@@ -186,9 +186,7 @@ public class User {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this.taikhoan.equals(((User) obj).getTaikhoan()))
-			return true;
-		return false;
+		return this.taikhoan.equals(((User) obj).getTaikhoan());
 	}
 
 }

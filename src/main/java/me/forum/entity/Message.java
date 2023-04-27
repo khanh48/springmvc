@@ -69,6 +69,10 @@ public class Message {
 	public Date getNgaytao() {
 		return ngaytao;
 	}
+	
+	public Date getFomattedDate() {
+		return ngaytao;
+	}
 
 	public void setNgaytao(Date ngaytao) {
 		this.ngaytao = ngaytao;

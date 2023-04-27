@@ -36,6 +36,18 @@ public class Notification {
 		 
 	}
 
+	public Notification(long mathongbao, String nguoigui, String noidung, String nguoinhan,
+			String url) {
+
+		this.mathongbao = mathongbao;
+		this.trangthai = false;
+		this.nguoigui = nguoigui;
+		this.noidung = noidung;
+		this.nguoinhan = nguoinhan;
+		this.url = url;
+		this.ngaytao = new Date();
+		 
+	}
 	public long getMathongbao() {
 		return mathongbao;
 	}

@@ -28,6 +28,11 @@ public class MessageDao {
 				new int[] { Types.CHAR, Types.CHAR, Types.CHAR, Types.CHAR }, new MessageMapping());
 	}
 
+	public List<Message> getLimitMessage(String user, String user1, int start, int limit) {
+		String sql = "select * from tinnhan where (nguoinhan = ? and nguoigui = ?) or (nguoinhan = ? and nguoigui = ?) order by ngaytao desc limit ?, ?";
+		return jdbcTemplate.query(sql, new Object[] { user, user1, user1, user, start, limit},
+				new int[] { Types.CHAR, Types.CHAR, Types.CHAR, Types.CHAR, Types.INTEGER, Types.INTEGER }, new MessageMapping());
+	}
 	public Integer AddMessage(String nguoigui, String nguoinhan, String noidung) {
 		try {
 			return jdbcTemplate.update("insert into tinnhan(nguoigui, nguoinhan, noidung) value(?, ?, ?)",

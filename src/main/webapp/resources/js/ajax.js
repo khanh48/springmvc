@@ -27,6 +27,38 @@ function like(id, isPost, toUser) {
 	})
 
 }
+function loadMessage(uid) {
+
+	var start = $(".list-message > li").length;
+	console.log(start)
+	$.ajax({
+		type: "POST",
+		url: "/loadMessage",
+		data: {
+			uid: uid,
+			start: start,
+			limit: 10
+		},
+		success: function(response) {
+			$.each(response.payLoad, function(index, item) {
+
+
+				$(".list-message").prepend(addMessage(item.avatar, item.message, item.sender));
+			})
+			let len = $(".chat").length;
+			let top;
+			if (len > 0) {
+				if (start == 0) {
+					top = $(".chat")[len - 1 - start].offsetTop - 78;
+				} else {
+					top = $(".chat")[len - start].offsetTop - 78;
+				}
+				window.scrollTo({ top: top, behavior: 'smooth' });
+			}
+
+		}
+	})
+}
 
 function loadComment(id) {
 
@@ -159,7 +191,6 @@ function findPost() {
 }
 
 $(document).ready(function() {
-	
 	$("#changePassword").click(function(e) {
 		$.ajax({
 			type: 'POST',

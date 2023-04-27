@@ -32,11 +32,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	}
 
 	function autoResize() {
-		console.log(this.scrollHeight);
 		const currentRows = Math.ceil(this.scrollHeight / lineHeight) - 1;
-		console.log(currentRows)
-
-
 		if (currentRows < 6) {
 			this.style.height = 'auto';
 			this.style.height = this.scrollHeight + 'px';
