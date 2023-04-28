@@ -55,9 +55,11 @@ function loadMessage(uid) {
 				}
 				window.scrollTo({ top: top, behavior: 'smooth' });
 			}
+			Prism.highlightAll();
 
 		}
 	})
+
 }
 
 function loadComment(id) {

@@ -12,14 +12,20 @@
 				<ul class="list-message">
 				</ul>
 				<script>
-				loadMessage("${chatUser.getTaikhoan()}");
+					loadMessage("${chatUser.getTaikhoan()}");
 				</script>
-				<div class="text-box-chat">
-					<button onclick="stopBotSession()">stop</button>
-					<div class="chat-text">
-						<textarea class="chat-input"></textarea>
+				<c:if test="${not empty userID}">
+					<div class="text-box-chat pb-3 pt-2">
+						<div class="chat-text">
+							<c:if test="${chatUser.getTaikhoan() eq 'chatbot' }">
+								<button class="btn btn-chat btn-danger btn-sm me-1 ms-0" onclick="stopBotSession()">Dừng</button>
+							</c:if>
+							<textarea class="chat-input form-control" rows="1"
+								placeholder="Tin nhắn"></textarea>
+							<button class="btn btn-chat btn-success btn-sm">Gửi</button>
+						</div>
 					</div>
-				</div>
+				</c:if>
 			</div>
 		</div>
 	</div>
@@ -43,9 +49,8 @@
 	<script src="/resources/js/marked.min.js"></script>
 	<script src="/resources/js/filecustom.js"></script>
 	<script>
-		Prism.highlightAll();
-		window.onscroll = function(e){
-			if(document.documentElement.scrollTop == 0){
+		window.onscroll = function(e) {
+			if (document.documentElement.scrollTop == 0) {
 				loadMessage("${chatUser.getTaikhoan()}");
 			}
 		}

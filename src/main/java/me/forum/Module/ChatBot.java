@@ -7,7 +7,6 @@ import java.util.List;
 
 import org.json.JSONObject;
 
-import com.fasterxml.jackson.databind.deser.Deserializers.Base;
 import com.theokanning.openai.completion.chat.ChatCompletionChoice;
 import com.theokanning.openai.completion.chat.ChatCompletionChunk;
 import com.theokanning.openai.completion.chat.ChatCompletionRequest;
@@ -21,7 +20,7 @@ import me.forum.Entity.User;
 import me.forum.WebSocketSetup.UserHandler;
 
 public class ChatBot {
-	final static String token = "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";
+	final static String token = "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";
 	OpenAiService service;
 	final List<ChatMessage> messages;
 	User user, chatBot;
@@ -42,7 +41,7 @@ public class ChatBot {
 				"Hãy chào người dùng và giới thiệu bản thân khi bắt đầu trò chuyện."));
 
 		isStoped = false;
-		System.out.println("start");
+		System.out.println(user.getTaikhoan() + " started");
 	}
 
 	public void request(String msg) {
@@ -57,13 +56,12 @@ public class ChatBot {
 				stop();
 			}
 		}).blockingForEach(new Response(user.getTaikhoan()));
-		System.out.println(messages.size());
 	}
 
 	public void stop() {
 		service.shutdownExecutor();
 		isStoped = true;
-		System.out.println("stop");
+		System.out.println(user.getTaikhoan() + " stoped");
 	}
 
 	public boolean isStoped() {

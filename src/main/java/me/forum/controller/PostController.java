@@ -102,7 +102,7 @@ public class PostController extends BaseController {
 					+ u.getTaikhoan() + "')\">";
 			item += "<i class='fas fa-heart action " + isliked + "' id='pl" + p.getMabaiviet() + "'></i> ";
 			item += "<span class='count-like' id='p" + p.getMabaiviet() + "'>" + numlike + "</span></button>";
-			item += "<button type='button' class='comment p-1' onclick=\"window.location.href='/bai-viet/"
+			item += "<button type='button' class='comment-btn p-1' onclick=\"window.location.href='/bai-viet/"
 					+ p.getMabaiviet() + "'\">";
 			item += "<i class='fas fa-comment action'></i>";
 			item += "<span class='count-comment'>" + numcmt + "</span>";

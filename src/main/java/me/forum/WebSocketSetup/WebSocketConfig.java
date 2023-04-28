@@ -13,7 +13,7 @@ public class WebSocketConfig implements WebSocketConfigurer {
 
 	@Override
 	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-		registry.addHandler(myHandler(), "/websocket").addHandler(chatHandler(), "/chat/{id}");
+		registry.addHandler(myHandler(), "/websocket");
 	}
 
 	@Bean
@@ -21,9 +21,4 @@ public class WebSocketConfig implements WebSocketConfigurer {
 		return new SocketHandler();
 	}
 	
-	@Bean
-	public ChatHandler chatHandler() {
-		return new ChatHandler();
-	}
-
 }

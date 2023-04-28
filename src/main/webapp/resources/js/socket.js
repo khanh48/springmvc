@@ -31,6 +31,7 @@ soc.onmessage = function(response) {
 			$('#toastMessage').html("<a href='" + data.url + "'><div class='notify-link'>" + data.message + "</div></a>");
 			const toast = new bootstrap.Toast($('#liveToast'))
 			toast.show()
+			break;
 		case "newResult":
 			if (isStart) {
 				$(".list-message").append("<li class='chat'><div><span><img class='avatar-chat' src='" + data.linkAvatar + "' alt='avatar'></span><div class='chat-content other-chat'></div></div></li>")
@@ -52,8 +53,12 @@ soc.onmessage = function(response) {
 			}
 			$(".chat-content").last().html(marked.parse(result.replace(/^null/g, "")));
 			Prism.highlightAll();
+			break;
 		case "chat":
-			addMessage(data.avatar, data.message, data.sender);
+			console.log(data.sender)
+
+
+			$(".list-message").append(addMessage(data.avatar, data.message, data.sender));
 
 
 	}
@@ -67,7 +72,7 @@ soc.onclose = function() {
 }
 
 function auth(token) {
-	soc.send(JSON.stringify({ "type": "auth", "token": token }))
+	soc.send(JSON.stringify({ "type": "auth", "token": token, "path": location.pathname }))
 }
 
 function addMessage(avt, message, sender) {

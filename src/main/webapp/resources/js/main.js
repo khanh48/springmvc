@@ -121,7 +121,8 @@ $(document).ready(function() {
 			if ($(this).val().length == 0) {
 				return;
 			}
-			var type = (path[1] === "chat" && path[2] === "chatbot") ? "requestChat" : "sendMessage";
+			var type = (path[1] === "chat" && path[2] === "chatbot") ? "requestChat" : "chat";
+			console.log(type)
 			$.ajax({
 				type: "POST",
 				url: "/chatHandler",

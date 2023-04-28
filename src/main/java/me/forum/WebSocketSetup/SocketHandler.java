@@ -37,7 +37,7 @@ public class SocketHandler extends TextWebSocketHandler {
 		if (!authentication(token))
 			return;
 		User user = userDao.findUserByUserName(jwtProvider.extractUsername(token));
-		System.out.println(json.get("type"));
+
 		switch (json.getString("type")) {
 		case "sendMessage":
 			if (handler.containsClient(json.getString("name"))) {
@@ -52,6 +52,10 @@ public class SocketHandler extends TextWebSocketHandler {
 			break;
 		default:
 			handler.addClient(user.getTaikhoan(), session);
+			String[] path = String.valueOf(json.get("path")).split("/");
+			if(path.length >= 3) {
+				handler.addChat(path[2], user.getTaikhoan(), session);
+			}
 		}
 
 	}

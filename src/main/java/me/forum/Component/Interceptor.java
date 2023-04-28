@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-import me.forum.Controller.BaseController;
 import me.forum.Dao.GroupDao;
 import me.forum.Dao.NotificationDao;
 import me.forum.Dao.PostDao;

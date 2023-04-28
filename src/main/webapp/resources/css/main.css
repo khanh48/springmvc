@@ -494,9 +494,12 @@ div.notify::-webkit-scrollbar-thumb:hover {
 
 .text-box-chat{
 	position: sticky;
-	border: 1px solid black;
 	bottom: 0;
 	background-color: white;
+}
+.chat-text{
+	display: flex;
+	position: relative;
 }
 .chat-input{
 	max-height: 7em;
@@ -628,7 +631,7 @@ div.notify::-webkit-scrollbar-thumb:hover {
 	justify-content: center;
 }
 
-.like, .comment, .share {
+.like, .comment-btn, .share {
 	display: flex;
 	background-color: lightblue;
 	justify-content: center;
@@ -639,15 +642,15 @@ div.notify::-webkit-scrollbar-thumb:hover {
 	border: none;
 }
 
-.like:hover, .comment:hover, .share:hover {
+.like:hover, .comment-btn:hover, .share:hover {
 	background-color: rgb(149, 200, 218);
 }
 
-.like:focus, .comment:focus, .share:focus {
+.like:focus, .comment-btn:focus, .share:focus {
 	outline: none;
 }
 
-.like:active, .comment:active, .share:active {
+.like:active, .comment-btn:active, .share:active {
 	background-color: rgb(133, 193, 214);
 }
 
@@ -994,7 +997,26 @@ caption {
 .table-wrapper::-webkit-scrollbar-thumb:hover {
 	background-color: #84918a;
 }
+pre::-webkit-scrollbar {
+	width: 7px;
+	height: 7px;
+}
 
+pre::-webkit-scrollbar-track {
+	background-color: transparent;
+}
+
+pre::-webkit-scrollbar-thumb {
+	background-color: #a9a9a9;
+	border-radius: 5px;
+}
+
+pre::-webkit-scrollbar-thumb:hover {
+	background-color: #9f9f9f;
+}
+pre{
+	border-radius: 5px;
+}
 textarea{
 	border: none;
 	resize: none;
@@ -1007,7 +1029,17 @@ textarea::-webkit-scrollbar{
 	height: 0;
 }
 
+.chat-content p:last-child{
+	margin-bottom: 0;
+}
+
+
 #searchRow {
 	position: sticky;
 	top: 0;
+}
+
+.btn-chat{
+	bottom: 0;
+	max-height: 38px;
 }
