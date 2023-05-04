@@ -20,7 +20,7 @@ import me.forum.Entity.User;
 import me.forum.WebSocketSetup.UserHandler;
 
 public class ChatBot {
-	final static String token = "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";
+	final static String token = "GKRYdLj2HaYwVuG9X9AiT3BlbkFJtbS5IQKLh7L0wrJC2WgN";
 	OpenAiService service;
 	final List<ChatMessage> messages;
 	User user, chatBot;

@@ -27,7 +27,13 @@ public class MessageDao {
 		return jdbcTemplate.query(sql, new Object[] { user, user1, user1, user },
 				new int[] { Types.CHAR, Types.CHAR, Types.CHAR, Types.CHAR }, new MessageMapping());
 	}
-
+	public List<Message> getMessageOfUser(String user) {
+		String sql = "SELECT * FROM tinnhan "
+				+ "WHERE ngaytao IN (SELECT MAX(ngaytao) FROM tinnhan WHERE nguoinhan = ? GROUP BY nguoigui) "
+				+ "ORDER BY ngaytao DESC;";
+		return jdbcTemplate.query(sql, new Object[] { user},
+				new int[] { Types.CHAR }, new MessageMapping());
+	}
 	public List<Message> getLimitMessage(String user, String user1, int start, int limit) {
 		String sql = "select * from tinnhan where (nguoinhan = ? and nguoigui = ?) or (nguoinhan = ? and nguoigui = ?) order by ngaytao desc limit ?, ?";
 		return jdbcTemplate.query(sql, new Object[] { user, user1, user1, user, start, limit},

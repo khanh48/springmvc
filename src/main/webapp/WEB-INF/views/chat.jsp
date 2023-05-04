@@ -10,6 +10,12 @@
 			<%@ include file="/WEB-INF/views/includes/containerleft.jsp"%>
 			<div class="right">
 				<ul class="list-message">
+					<!-- <li class='chat'><div>
+							<span><img class='avatar-chat'
+								src='' alt='avatar'></span>
+							<div class='chat-content other-chat'>aaaa</div>
+							<span>20:18 []</span>
+						</div></li> -->
 				</ul>
 				<script>
 					loadMessage("${chatUser.getTaikhoan()}");
@@ -18,11 +24,13 @@
 					<div class="text-box-chat pb-3 pt-2">
 						<div class="chat-text">
 							<c:if test="${chatUser.getTaikhoan() eq 'chatbot' }">
-								<button class="btn btn-chat btn-danger btn-sm me-1 ms-0" onclick="stopBotSession()">Dừng</button>
+								<button class="btn btn-chat btn-danger btn-sm me-1 ms-0"
+									onclick="stopBotSession()">Dừng</button>
 							</c:if>
 							<textarea class="chat-input form-control" rows="1"
 								placeholder="Tin nhắn"></textarea>
-							<button class="btn btn-chat btn-success btn-sm" onclick="sendMessage()">Gửi</button>
+							<button class="btn btn-chat btn-success btn-sm"
+								onclick="sendMessage()">Gửi</button>
 						</div>
 					</div>
 				</c:if>
