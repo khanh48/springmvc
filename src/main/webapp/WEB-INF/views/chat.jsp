@@ -22,7 +22,7 @@
 							</c:if>
 							<textarea class="chat-input form-control" rows="1"
 								placeholder="Tin nhắn"></textarea>
-							<button class="btn btn-chat btn-success btn-sm">Gửi</button>
+							<button class="btn btn-chat btn-success btn-sm" onclick="sendMessage()">Gửi</button>
 						</div>
 					</div>
 				</c:if>

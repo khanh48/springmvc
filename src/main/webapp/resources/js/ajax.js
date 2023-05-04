@@ -30,7 +30,6 @@ function like(id, isPost, toUser) {
 function loadMessage(uid) {
 
 	var start = $(".list-message > li").length;
-	console.log(start)
 	$.ajax({
 		type: "POST",
 		url: "/loadMessage",

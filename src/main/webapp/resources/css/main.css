@@ -499,7 +499,7 @@ div.notify::-webkit-scrollbar-thumb:hover {
 }
 .chat-text{
 	display: flex;
-	position: relative;
+	align-items: flex-end;
 }
 .chat-input{
 	max-height: 7em;
@@ -816,7 +816,7 @@ div.notify::-webkit-scrollbar-thumb:hover {
 	}
 }
 
-.fa-bell {
+.fa-bell, .fa-comments {
 	color: #212529;
 }
 

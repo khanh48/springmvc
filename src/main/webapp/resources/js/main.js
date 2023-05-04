@@ -42,6 +42,13 @@ document.addEventListener("DOMContentLoaded", function() {
 
 const path = location.pathname.split("/");
 
+function isPC() {
+	if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+		return false;
+	}
+	return true;
+}
+
 function removeControl() {
 	var inner = $(".carousel-inner");
 	if (inner.length > 0) {
@@ -80,6 +87,30 @@ function loadReadMore() {
 	}
 }
 
+function sendMessage() {
+	let chatInput = $(".chat-input");
+	if (chatInput.val().length == 0) {
+		return;
+	}
+	let type = (path[1] === "chat" && path[2] === "chatbot") ? "requestChat" : "chat";
+	$.ajax({
+		type: "POST",
+		url: "/chatHandler",
+		data: {
+			type: type,
+			message: chatInput.val(),
+			user: path[2]
+		},
+		success: function(response) {
+
+		}
+	});
+
+	$(".list-message").append("<li class='chat'><div><div class='chat-content my-chat'>" + chatInput.val() + "</div></div></li>")
+	chatInput.val("");
+	chatInput.css("height", "26.4px");
+}
+
 function login() {
 	this.event.preventDefault();
 
@@ -114,32 +145,15 @@ $(document).ready(function() {
 	//	}
 
 
-	$(".chat-input").on("keydown", function(e) {
+	if (isPC()) {
+		$(".chat-input").on("keydown", function(e) {
 
-		if (e.which == 13 && !e.shiftKey) {
-			e.preventDefault();
-			if ($(this).val().length == 0) {
-				return;
+			if (e.which == 13 && !e.shiftKey) {
+				e.preventDefault();
+				sendMessage();
 			}
-			var type = (path[1] === "chat" && path[2] === "chatbot") ? "requestChat" : "chat";
-			console.log(type)
-			$.ajax({
-				type: "POST",
-				url: "/chatHandler",
-				data: {
-					type: type,
-					message: $(this).val(),
-					user: path[2]
-				},
-				success: function(respone) {
-
-				}
-			})
-
-			$(".list-message").append("<li class='chat'><div><div class='chat-content my-chat'>" + $(this).val() + "</div></div></li>")
-			$(this).val("");
-		}
-	});
+		});
+	}
 
 	if ($("#listComments > div").length < 10) {
 		$("#loadMoreCmt").hide();
