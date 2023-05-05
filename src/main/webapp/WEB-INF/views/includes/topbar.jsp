@@ -67,8 +67,8 @@
 						</c:forEach>
 					</ul>
 				</div>
-				
-				
+
+
 				<div class="dropdown">
 					<a class="me-3 dropdown" href="#" id="navbarDropdownMenuChat"
 						role="button" data-bs-toggle="dropdown" aria-expanded="true">
@@ -90,10 +90,13 @@
 					</a>
 					<ul class="dropdown-menu dropdown-menu-end dropdown-notify"
 						id="bell-ntf">
-						<c:forEach var="i" items="${listNotify}">
-							<li><a class="dropdown-item text-wrap" href="${i.url}">
-									<p class="small mb-0">${i.getDateFormated()}</p>
-									<p class="mb-0 <c:if test="${not i.trangthai }">unread</c:if>">${i.noidung}</p>
+						<c:forEach items="${listMessage }" var="i">
+							<li><a class="dropdown-item text-wrap" style="display: flex;" href="#"> <span><img
+										alt="" height="30" width="30" src="${i.getNguoigui().getAnhdaidien() }"></span>
+									<span style="overflow: hidden; ">
+										<span class="small mb-0">${i.getFomattedDate() }</span>
+										<p class="mb-0 preview-message">${i.getNoidung() }</p>
+									</span>
 							</a></li>
 						</c:forEach>
 					</ul>

@@ -13,7 +13,7 @@ function like(id, isPost, toUser) {
 			"to": toUser
 		},
 		success: function(respone) {
-			var data = respone
+			var data = respone;
 			$('#' + tagID).text(data.count > 0 ? data.count : "");
 			$classLiked = "fas-liked";
 			$tagLikeSelected = $('#' + tagLike);
@@ -24,7 +24,7 @@ function like(id, isPost, toUser) {
 				$('#' + tagLike).removeClass($classLiked);
 			}
 		}
-	})
+	});
 
 }
 function loadMessage(uid) {
@@ -57,14 +57,13 @@ function loadMessage(uid) {
 			Prism.highlightAll();
 
 		}
-	})
+	});
 
 }
 
 function loadComment(id) {
 
 	var start = $("#listComments > div").length;
-	console.log("click")
 	$.ajax({
 		type: "GET",
 		url: "/loadComment",
@@ -78,10 +77,10 @@ function loadComment(id) {
 				$("#loadMoreCmt").hide();
 			}
 			$.each(response, function(index, item) {
-				$("#listComments").append(item)
+				$("#listComments").append(item);
 			})
 		}
-	})
+	});
 }
 
 function delPost(id) {
@@ -95,7 +94,7 @@ function delPost(id) {
 				$("#cancel-delete").click();
 			}
 		}
-	})
+	});
 }
 function delComment(id) {
 	$.ajax({
@@ -108,7 +107,7 @@ function delComment(id) {
 				$("#cancel-delete-1").click();
 			}
 		}
-	})
+	});
 }
 
 function findUser() {
@@ -129,9 +128,9 @@ function findUser() {
 			chucvu: chucvu
 		},
 		success: function(response) {
-			$("#tableBody").html(response.result)
+			$("#tableBody").html(response.result);
 		}
-	})
+	});
 }
 
 function stopBotSession() {
@@ -144,11 +143,10 @@ function stopBotSession() {
 		success: function(response) {
 			isStart = true;
 		}
-	})
+	});
 }
 function loadPost(uid) {
 	var start = $("#listPosts > div").length;
-	console.log(uid)
 	$.ajax({
 		type: "GET",
 		url: "/loadPost",
@@ -162,11 +160,11 @@ function loadPost(uid) {
 				$("#loadMore").hide();
 			}
 			$.each(response, function(index, item) {
-				$("#listPosts").append(item)
+				$("#listPosts").append(item);
 			})
 			removeControl();
 		}
-	})
+	});
 }
 function findPost() {
 	var taikhoan = $("#fbAuthor").val();
@@ -186,9 +184,9 @@ function findPost() {
 			nhom: nhom
 		},
 		success: function(response) {
-			$("#tableBody").html(response.result)
+			$("#tableBody").html(response.result);
 		}
-	})
+	});
 }
 
 $(document).ready(function() {
@@ -212,24 +210,23 @@ $(document).ready(function() {
 					$('#confirmPass').val("");
 					$('#cancelChange').click();
 
-
 					$('#headerToast').text("Thông báo");
 					$('#toastMessage').text(data.message);
-					const toast = new bootstrap.Toast($('#liveToast'))
-					toast.show()
+					const toast = new bootstrap.Toast($('#liveToast'));
+					toast.show();
 				}
 			}
-		})
-	})
+		});
+	});
 
 
 
 	$("#confirm-yes").click(function() {
-		delPost($(this)[0].value)
-	})
+		delPost($(this)[0].value);
+	});
 
 	$("#confirm-yes-1").click(function() {
-		delComment($(this)[0].value)
-	})
-})
+		delComment($(this)[0].value);
+	});
+});
 

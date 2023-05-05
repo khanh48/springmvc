@@ -2,7 +2,7 @@ var soc = new WebSocket("ws://localhost:8088/websocket");
 soc.onopen = function() {
 	console.log("connected");
 	auth(getCookie("phuot.token"));
-}
+};
 var result = "";
 
 var isStart = true;
@@ -29,12 +29,12 @@ soc.onmessage = function(response) {
 			$("#bell-ntf").prepend(s);
 			$('#headerToast').text("Thông báo");
 			$('#toastMessage').html("<a href='" + data.url + "'><div class='notify-link'>" + data.message + "</div></a>");
-			const toast = new bootstrap.Toast($('#liveToast'))
-			toast.show()
+			const toast = new bootstrap.Toast($('#liveToast'));
+			toast.show();
 			break;
 		case "newResult":
 			if (isStart) {
-				$(".list-message").append("<li class='chat'><div><span><img class='avatar-chat' src='" + data.linkAvatar + "' alt='avatar'></span><div class='chat-content other-chat'></div></div></li>")
+				$(".list-message").append("<li class='chat'><div><span><img class='avatar-chat' src='" + data.linkAvatar + "' alt='avatar'></span><div class='chat-content other-chat'></div></div></li>");
 			}
 			/*if(data.isStop){
 				console.log("Stop")
@@ -55,9 +55,6 @@ soc.onmessage = function(response) {
 			Prism.highlightAll();
 			break;
 		case "chat":
-			console.log(data.sender)
-
-
 			$(".list-message").append(addMessage(data.avatar, data.message, data.sender));
 
 
@@ -72,7 +69,7 @@ soc.onclose = function() {
 }
 
 function auth(token) {
-	soc.send(JSON.stringify({ "type": "auth", "token": token, "path": location.pathname }))
+	soc.send(JSON.stringify({ "type": "auth", "token": token, "path": location.pathname }));
 }
 
 function addMessage(avt, message, sender) {
@@ -84,7 +81,6 @@ function addMessage(avt, message, sender) {
 	return result;
 }
 function setCookie(cname, cvalue) {
-	console.log(cvalue)
 	document.cookie = cname + "=" + cvalue + ";path=/";
 }
 

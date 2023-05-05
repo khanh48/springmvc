@@ -13,6 +13,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 import me.forum.Dao.GroupDao;
+import me.forum.Dao.MessageDao;
 import me.forum.Dao.NotificationDao;
 import me.forum.Dao.PostDao;
 import me.forum.Entity.Notification;
@@ -23,6 +24,8 @@ import me.forum.Entity.User;
 public class Interceptor implements HandlerInterceptor {
 	@Autowired
 	NotificationDao notificationDao;
+	@Autowired
+	MessageDao messageDao;
 	@Autowired
 	GroupDao groupDao;
 	@Autowired
@@ -44,6 +47,7 @@ public class Interceptor implements HandlerInterceptor {
 					unread++;
 				}
 			}
+			session.setAttribute("listMessage", messageDao.getMessageOfUser(user.getTaikhoan()));
 			session.setAttribute("unread", unread);
 			session.setAttribute("listNotify", listNotify);
 

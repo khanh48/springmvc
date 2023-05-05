@@ -20,7 +20,6 @@ public class MessageDao {
 
 	@Autowired
 	JdbcTemplate jdbcTemplate;
-	UserDao userDao = BaseController.GetInstance().userDao;
 
 	public List<Message> getAllMessage(String user, String user1) {
 		String sql = "select * from tinnhan where (nguoinhan = ? and nguoigui = ?) or (nguoinhan = ? and nguoigui = ?) order by ngaytao desc";
@@ -50,6 +49,7 @@ public class MessageDao {
 	}
 
 	class MessageMapping implements RowMapper<Message> {
+		UserDao userDao = BaseController.GetInstance().userDao;
 		@Override
 		public Message mapRow(ResultSet rs, int rowNum) throws SQLException {
 			User from, to;

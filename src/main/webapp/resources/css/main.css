@@ -920,8 +920,8 @@ div.notify::-webkit-scrollbar-thumb:hover {
 }
 
 .dropdown-notify {
-	width: 250px;
-	max-height: 300px;
+	width: 300px;
+	max-height: 350px;
 	overflow: auto;
 }
 
@@ -1040,6 +1040,12 @@ textarea::-webkit-scrollbar{
 #searchRow {
 	position: sticky;
 	top: 0;
+}
+
+.preview-message{
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
 }
 
 .btn-chat{

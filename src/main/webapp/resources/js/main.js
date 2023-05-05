@@ -57,7 +57,7 @@ function removeControl() {
 				$(".carousel-control-prev")[index].hidden = true;
 				$(".carousel-control-next")[index].hidden = true;
 			}
-		})
+		});
 	}
 }
 
@@ -106,7 +106,7 @@ function sendMessage() {
 		}
 	});
 
-	$(".list-message").append("<li class='chat'><div><div class='chat-content my-chat'>" + chatInput.val() + "</div></div></li>")
+	$(".list-message").append("<li class='chat'><div><div class='chat-content my-chat'>" + chatInput.val() + "</div></div></li>");
 	chatInput.val("");
 	chatInput.css("height", "26.4px");
 }
@@ -125,15 +125,15 @@ function login() {
 			var result = respone;
 
 			if (result.message === "failed") {
-				$('#err1-log').text("Sai tên tài khoản hoặc mật khẩu.")
+				$('#err1-log').text("Sai tên tài khoản hoặc mật khẩu.");
 			}
 			else if (result.message === "success") {
-				$('#err1-log').text("")
-				setCookie("phuot.token", result.token)
-				location.reload()
+				$('#err1-log').text("");
+				setCookie("phuot.token", result.token);
+				location.reload();
 			}
 		}
-	})
+	});
 	return false;
 }
 $(document).ready(function() {
@@ -171,7 +171,7 @@ $(document).ready(function() {
 
 	$('.notify').on("mouseenter", function() {
 		$(this).removeClass('newNotify');
-	})
+	});
 	$('#register').submit(function(e) {
 		e.preventDefault();
 
@@ -198,8 +198,8 @@ $(document).ready(function() {
 
 					$('#headerToast').text("Thông báo");
 					$('#toastMessage').text(data.message);
-					const toast = new bootstrap.Toast($('#liveToast'))
-					toast.show()
+					const toast = new bootstrap.Toast($('#liveToast'));
+					toast.show();
 				}
 			}
 		})
