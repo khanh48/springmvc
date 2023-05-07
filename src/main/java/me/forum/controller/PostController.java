@@ -41,7 +41,7 @@ public class PostController extends BaseController {
 		posts = uid.isEmpty() ? postDao.GetPostsLimitDesc(start, limit) : postDao.GetPostsUserLimit(uid, start, limit);
 		User user = (User) session.getAttribute("userID");
 		for (Post p : posts) {
-			p.setNoidung(p.getNoidung().replaceAll("\n", "<br>"));
+			p.setNoidung(p.getNoidung().replaceAll("<", "&lt;").replaceAll("\n", "<br>"));
 			isliked = "";
 			User u = p.getUser();
 			uUrl = "/ho-so/" + u.getTaikhoan();
@@ -124,7 +124,7 @@ public class PostController extends BaseController {
 		List<Comment> comments = commentDao.GetPostsLimitDesc(id, start, limit);
 		User user = (User) session.getAttribute("userID");
 		for (Comment cmt : comments) {
-			cmt.setNoidung(cmt.getNoidung().replaceAll("\n", "<br>"));
+			cmt.setNoidung(cmt.getNoidung().replaceAll("<", "&lt;").replaceAll("\n", "<br>"));
 			User u = cmt.getUser();
 			isliked = "";
 			uUrl = "/ho-so/" + u.getTaikhoan();

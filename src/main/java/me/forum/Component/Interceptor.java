@@ -16,6 +16,7 @@ import me.forum.Dao.GroupDao;
 import me.forum.Dao.MessageDao;
 import me.forum.Dao.NotificationDao;
 import me.forum.Dao.PostDao;
+import me.forum.Entity.Message;
 import me.forum.Entity.Notification;
 import me.forum.Entity.Post;
 import me.forum.Entity.User;
@@ -35,19 +36,26 @@ public class Interceptor implements HandlerInterceptor {
 	}
 
 	@Override
-	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object object) throws Exception {
+	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object object, ModelAndView modelAndView) throws Exception {
 		HttpSession session = request.getSession();
 		User user = (User) session.getAttribute("userID");
 		if (user != null) {
-			int unread = 0;
+			int unread = 0, unreadMessage = 0;
 			List<Notification> listNotify = notificationDao.GetByNguoiNhan(user.getTaikhoan());
+			List<Message> listMessage = messageDao.getMessageOfUser(user.getTaikhoan());
 
 			for (Notification notification : listNotify) {
 				if (!notification.isTrangthai()) {
 					unread++;
 				}
 			}
-			session.setAttribute("listMessage", messageDao.getMessageOfUser(user.getTaikhoan()));
+			for (Message message : listMessage) {
+				if (!message.isTrangthai()) {
+					unreadMessage++;
+				}
+			}
+			session.setAttribute("listMessage", listMessage);
+			session.setAttribute("unreadMessage", unreadMessage);
 			session.setAttribute("unread", unread);
 			session.setAttribute("listNotify", listNotify);
 
@@ -58,7 +66,6 @@ public class Interceptor implements HandlerInterceptor {
 			allgroup.add(postDao.ByGroupLimit(post.getManhom(), 3));
 		}
 		session.setAttribute("bestgroups", allgroup);
-		return true;
 	}
 
 	@Override
@@ -67,8 +74,7 @@ public class Interceptor implements HandlerInterceptor {
 	}
 
 	@Override
-	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
-			ModelAndView modelAndView) throws Exception {
-
+	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+		return true;
 	}
 }

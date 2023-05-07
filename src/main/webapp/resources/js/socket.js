@@ -8,11 +8,12 @@ var result = "";
 var isStart = true;
 soc.onmessage = function(response) {
 	var data = JSON.parse(response.data);
+	console.log(data);
 	switch (data.type) {
 		case "newNotification":
-			var ntfNum = $("#ntf-num");
-			var a = parseInt(ntfNum.text());
-			var s = "<li>";
+			let ntfNum = $("#ntf-num");
+			let a = parseInt(ntfNum.text());
+			let s = "<li>";
 			s += "<a class='dropdown-item text-wrap' href='" + data.url + "'>";
 			s += "<p class='small mb-0'>" + data.date + "</p>";
 			s += "<p class='mb-0 unread'>" + data.message + "</p>";
@@ -34,7 +35,7 @@ soc.onmessage = function(response) {
 			break;
 		case "newResult":
 			if (isStart) {
-				$(".list-message").append("<li class='chat'><div><span><img class='avatar-chat' src='" + data.linkAvatar + "' alt='avatar'></span><div class='chat-content other-chat'></div></div></li>");
+				$(".list-message").append(addMessage(data.linkAvatar, "", getTime(), "other-chat"));
 			}
 			/*if(data.isStop){
 				console.log("Stop")
@@ -51,11 +52,35 @@ soc.onmessage = function(response) {
 			} else {
 				result += data.value;
 			}
-			$(".chat-content").last().html(marked.parse(result.replace(/^null/g, "")));
+			$(".text-message").last().html(marked.parse(result.replace(/^null/g, "")));
 			Prism.highlightAll();
 			break;
+		case "newMessage":
+			console.log(data);
+			let msgNum = $("#msg-num");
+			let num = parseInt(msgNum.text());
+			let newChatNode = document.querySelector("#chat-" + data.user);
+
+			if (newChatNode == null) {
+				$("#chat-users").prepend(addNewMessage(data));
+			} else {
+				let pr = newChatNode.parentNode;
+				pr.insertBefore(newChatNode, pr.firstChild);
+				newChatNode.querySelector(".preview-message").classList.add("unread");
+				newChatNode.querySelector(".preview-message").innerText = data.message;
+				newChatNode.querySelector(".small").innerText = data.time;
+
+			}
+			if (isNaN(num)) {
+				$("#bell-msg").html("<span class='badge rounded-pill position-absolute top-0 start-100 translate-middle bg-danger' id='msg-num'>1</span>");
+			} else if (num < 99) {
+				msgNum.text(document.querySelector("#chat-users").querySelectorAll(".unread").length);
+			} else {
+				msgNum.text("99+");
+			}
+			break;
 		case "chat":
-			$(".list-message").append(addMessage(data.avatar, data.message, data.sender));
+			$(".list-message").append(addMessage(data.avatar, data.message, data.time, data.sender));
 
 
 	}
@@ -71,13 +96,37 @@ soc.onclose = function() {
 function auth(token) {
 	soc.send(JSON.stringify({ "type": "auth", "token": token, "path": location.pathname }));
 }
+function addNewMessage(data) {
+	let result = "<li id='chat-" + data.user + "'>";
+	result += "<a class='dropdown-item text-wrap d-flex' href='/chat/" + data.user + "'>";
+	result += "<span><img alt='' class='avt' src='" + data.avatar + "'></span>";
+	result += "<span class='overflow-hidden w-100 ms-1'><span class='d-flex justify-content-between'>";
+	result += "<span class='fw-bold'>" + data.hoten + "</span>";
+	result += "<small class='small'>" + data.time + "</small></span>";
+	result += "<p class='mb-0 preview-message unread'>" + data.message.replaceAll("<", "&lt;") + "</p></span></a></li>";
+	return result;
+}
 
-function addMessage(avt, message, sender) {
+function addMessage(avt, message, time, sender) {
 	let result = "<li class='chat'><div>";
 	if (sender == 'other-chat') {
 		result += "<span> <img class='avatar-chat' src='" + avt + "' alt='avatar'></span>";
 	}
-	result += "<div class='chat-content " + sender + "'>" + marked.parse(message) + "</div></div></li>";
+	result += "<div class='chat-content " + sender + "'>";
+	result += "<div class='text-message'>" + message.replaceAll("<", "&lt;").replaceAll("\n", "<br>") + "</div>";
+	result += "<small class='chat-time'>" + time + "</small>";
+	result += "</div></div></li>";
+	return result;
+}
+function addBotMessage(avt, message, time, sender) {
+	let result = "<li class='chat'><div>";
+	if (sender == 'other-chat') {
+		result += "<span> <img class='avatar-chat' src='" + avt + "' alt='avatar'></span>";
+	}
+	result += "<div class='chat-content " + sender + "'>";
+	result += "<div class='text-message'>" + marked.parse(message) + "</div>";
+	result += "<small class='chat-time'>" + time + "</small>";
+	result += "</div></div></li>";
 	return result;
 }
 function setCookie(cname, cvalue) {
@@ -98,6 +147,21 @@ function getCookie(cname) {
 		}
 	}
 	return "";
+}
+
+function getTime() {
+	let d = new Date();
+	var h, m;
+	h = d.getHours();
+	m = d.getMinutes();
+	if (h < 10) {
+		h = "0" + h;
+	}
+	if (m < 10) {
+		m = "0" + m;
+	}
+
+	return h + ":" + m;
 }
 /*
 

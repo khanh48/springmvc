@@ -45,6 +45,7 @@ public class MainController extends BaseController {
 		if(user == null || chatUser == null) {
 			return mav;	
 		}
+		messageDao.makeAsRead(friend, user.getTaikhoan());
 		mav.addObject("chatUser", chatUser);
 		return mav;
 	}

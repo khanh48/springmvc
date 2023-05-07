@@ -105,8 +105,8 @@ function sendMessage() {
 
 		}
 	});
-
-	$(".list-message").append("<li class='chat'><div><div class='chat-content my-chat'>" + chatInput.val() + "</div></div></li>");
+	const d = new Date();
+	$(".list-message").append(addMessage("", chatInput.val(), getTime(), "my-chat"));
 	chatInput.val("");
 	chatInput.css("height", "26.4px");
 }

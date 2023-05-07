@@ -29,6 +29,12 @@ public class Message {
 			this.ngaytao = null;
 		}
 	}
+	public Message(User nguoigui, User nguoinhan, String noidung) {
+		this.nguoigui = nguoigui;
+		this.nguoinhan = nguoinhan;
+		this.noidung = noidung;
+		this.ngaytao = new Date();
+	}
 
 	public int getMatinnhan() {
 		return matinnhan;
@@ -76,21 +82,42 @@ public class Message {
 	
 	public String getFomattedDate() {
 
-		long days, hours, minutes, seconds;
+		long days, hours, minutes, day, month;
 		String result = "";
 		LocalDateTime now = LocalDateTime.now();
 		LocalDateTime old = LocalDateTime.ofInstant(ngaytao.toInstant(), ZoneId.systemDefault());
 		Duration duration = Duration.between(old, now);
 		days = duration.toDays();
-		hours = duration.toHours();
-		minutes = duration.toMinutes();
-		seconds = duration.getSeconds();
+		hours = old.getHour();
+		minutes = old.getMinute();
+		day = old.getDayOfMonth();
+		month = old.getMonthValue();
+		String h, m, d, mm;
+		h = String.valueOf(hours);
+		m = String.valueOf(minutes);
+		d = String.valueOf(day);
+		mm = String.valueOf(month);
+		if(month < 10) {
+			mm = "0" + month;
+		}
+		if(day < 10) {
+			d = "0" + day;
+		}
+		if(hours < 10) {
+
+			h = "0" + hours;
+		}
+		if(minutes < 10) {
+
+			m = "0" + minutes;
+		}
+		
 		if (now.getYear() > old.getYear())
-			result = old.getDayOfMonth() + "/" + old.getMonthValue() + "/" + old.getYear();
+			result = d + "/" + mm + "/" + old.getYear();
 		else if (days >= 1)
-			result = old.getDayOfMonth() + "/" + old.getMonthValue();
+			result = d + "/" + mm;
 		else
-			result = old.getHour() + ":" + old.getMinute();
+			result = h + ":" + m;
 		return result;
 	}
 

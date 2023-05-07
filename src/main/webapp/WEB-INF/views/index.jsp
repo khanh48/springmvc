@@ -8,6 +8,7 @@
 		<%@ include file="/WEB-INF/views/includes/topbar.jsp"%>
 		<div class="main">
 			<%@ include file="/WEB-INF/views/includes/containerleft.jsp"%>
+
 			<div class="right">
 				<c:if test="${not empty userID }">
 					<div class="content">

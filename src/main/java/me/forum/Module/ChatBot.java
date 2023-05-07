@@ -20,7 +20,7 @@ import me.forum.Entity.User;
 import me.forum.WebSocketSetup.UserHandler;
 
 public class ChatBot {
-	final static String token = "GKRYdLj2HaYwVuG9X9AiT3BlbkFJtbS5IQKLh7L0wrJC2WgN";
+	final static String token = "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";
 	OpenAiService service;
 	final List<ChatMessage> messages;
 	User user, chatBot;
@@ -88,6 +88,7 @@ public class ChatBot {
 				response = response.replaceAll("^null", "");
 				messages.add(new ChatMessage(ChatMessageRole.ASSISTANT.value(), response));
 				BaseController.GetInstance().messageDao.AddMessage(chatBot.getTaikhoan(), user, response);
+				BaseController.GetInstance().messageDao.makeAsRead(chatBot.getTaikhoan(), user);
 				response = "";
 				json.put("isStop", true);
 			}

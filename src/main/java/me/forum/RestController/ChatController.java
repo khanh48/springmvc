@@ -44,11 +44,11 @@ public class ChatController {
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("type", type);
 		jsonObject.put("message", message);
-		
+		Message message2 = new Message(user, user1, message);
 		if ("requestChat".equals(type)) {
 			jsonObject.put("token", user.getMabaomat());
 			try {
-				messageDao.AddMessage(user.getTaikhoan(), toUser, message);
+				messageDao.AddMessage(message2);
 				SocketHandler.GetInstance().handleTextMessage(
 						UserHandler.GetInstance().GetAllUsers().get(user.getTaikhoan()),
 						new TextMessage(jsonObject.toString()));
@@ -58,8 +58,21 @@ public class ChatController {
 		} else if ("chat".equals(type)) {
 			jsonObject.put("avatar", user.getAnhdaidien());
 			jsonObject.put("sender", "other-chat");
-			messageDao.AddMessage(user.getTaikhoan(), toUser, message);
-			UserHandler.GetInstance().sendChat(user.getTaikhoan(), toUser, jsonObject.toString());
+			jsonObject.put("time", message2.getFomattedDate());
+			messageDao.AddMessage(message2);
+			try {
+				UserHandler.GetInstance().sendChat(user.getTaikhoan(), toUser, jsonObject.toString());
+				messageDao.makeAsRead(user.getTaikhoan(), toUser);
+			} catch (Exception e) {
+				jsonObject.clear();
+				jsonObject.put("type", "newMessage");
+				jsonObject.put("user", user.getTaikhoan());
+				jsonObject.put("hoten", user.getHoten());
+				jsonObject.put("avatar", user.getAnhdaidien());
+				jsonObject.put("time", message2.getFomattedDate());
+				jsonObject.put("message", message);
+				UserHandler.GetInstance().send(toUser, jsonObject.toString());
+			}
 		}
 		return map;
 	}

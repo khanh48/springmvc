@@ -73,13 +73,13 @@
 					<a class="me-3 dropdown" href="#" id="navbarDropdownMenuChat"
 						role="button" data-bs-toggle="dropdown" aria-expanded="true">
 
-						<i class="fas fa-comments" id="bell-num"> <c:if
-								test="${unread > 0}">
+						<i class="fas fa-comments" id="bell-msg"> <c:if
+								test="${unreadMessage > 0}">
 								<span
 									class="badge rounded-pill position-absolute top-0 start-100 translate-middle bg-danger"
-									id="ntf-num"> <c:if test="${unread < 100}">
-									${ unread } 
-									</c:if> <c:if test="${unread > 99}">
+									id="msg-num"> <c:if test="${unreadMessage < 100}">
+									${ unreadMessage } 
+									</c:if> <c:if test="${unreadMessage > 99}">
 									99+ 
 									</c:if>
 								</span>
@@ -89,14 +89,21 @@
 
 					</a>
 					<ul class="dropdown-menu dropdown-menu-end dropdown-notify"
-						id="bell-ntf">
+						id="chat-users">
 						<c:forEach items="${listMessage }" var="i">
-							<li><a class="dropdown-item text-wrap" style="display: flex;" href="#"> <span><img
-										alt="" height="30" width="30" src="${i.getNguoigui().getAnhdaidien() }"></span>
-									<span style="overflow: hidden; ">
-										<span class="small mb-0">${i.getFomattedDate() }</span>
-										<p class="mb-0 preview-message">${i.getNoidung() }</p>
+							<li id="chat-${i.getNguoigui().getTaikhoan() }"><a class="dropdown-item text-wrap"
+								style="display: flex;" href="/chat/${i.getNguoigui().getTaikhoan() }"> 
+								<span><img alt="" class="avt" src="${i.getNguoigui().getAnhdaidien() }">
+								</span>
+								<span class="overflow-hidden w-100 ms-1"> 
+									<span class="d-flex justify-content-between"> 
+										<span class="fw-bold">${i.getNguoigui().getHoten() }</span>
+										<small class="small">${i.getFomattedDate() }</small>
 									</span>
+									<p class="mb-0 preview-message <c:if test="${not i.isTrangthai() }">unread</c:if>">
+										<c:out value="${i.getNoidung()}" escapeXml="true" />
+									</p>
+								</span>
 							</a></li>
 						</c:forEach>
 					</ul>

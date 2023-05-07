@@ -40,9 +40,11 @@ function loadMessage(uid) {
 		},
 		success: function(response) {
 			$.each(response.payLoad, function(index, item) {
-
-
-				$(".list-message").prepend(addMessage(item.avatar, item.message, item.sender));
+				let msg = addMessage(item.avatar, item.message, item.time, item.sender);
+				if(uid == "chatbot"){
+					msg = addBotMessage(item.avatar, item.message, item.time, item.sender)
+				}
+				$(".list-message").prepend(msg);
 			})
 			let len = $(".chat").length;
 			let top;

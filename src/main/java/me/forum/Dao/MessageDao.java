@@ -47,7 +47,22 @@ public class MessageDao {
 			return 0;
 		}
 	}
+	
+	public Integer AddMessage(Message message) {
+		try {
+			return jdbcTemplate.update("insert into tinnhan(nguoigui, nguoinhan, noidung, ngaytao) value(?, ?, ?, ?)",
+					new Object[] { message.getNguoigui().getTaikhoan(), message.getNguoinhan().getTaikhoan(), message.getNoidung(), message.getNgaytao() },
+					new int[] { Types.CHAR, Types.CHAR, Types.LONGNVARCHAR, Types.TIMESTAMP });
+		} catch (DataAccessException e) {
+			System.out.println(e.getMessage());
+			return 0;
+		}
+	}
 
+	public int makeAsRead(String nguoigui, String nguoinhan) {
+		return jdbcTemplate.update("update tinnhan set trangthai = 1 where nguoigui = ? and nguoinhan = ?",nguoigui, nguoinhan);
+	}
+	
 	class MessageMapping implements RowMapper<Message> {
 		UserDao userDao = BaseController.GetInstance().userDao;
 		@Override

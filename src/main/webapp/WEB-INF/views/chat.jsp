@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
 <%@ include file="/WEB-INF/views/includes/header.jsp"%>
 <body>
 	<div class="body">
@@ -10,12 +9,14 @@
 			<%@ include file="/WEB-INF/views/includes/containerleft.jsp"%>
 			<div class="right">
 				<ul class="list-message">
-					<!-- <li class='chat'><div>
-							<span><img class='avatar-chat'
-								src='' alt='avatar'></span>
-							<div class='chat-content other-chat'>aaaa</div>
-							<span>20:18 []</span>
+					<!--  <li class='chat'><div>
+							<span><img class='avatar-chat' src='' alt='avatar'></span>
+							<div class='chat-content other-chat'>
+								<div class="text-message">aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</div>
+								<small class="chat-time">20:18</small>
+							</div>
 						</div></li> -->
+						
 				</ul>
 				<script>
 					loadMessage("${chatUser.getTaikhoan()}");

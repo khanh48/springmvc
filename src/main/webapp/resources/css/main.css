@@ -508,11 +508,23 @@ div.notify::-webkit-scrollbar-thumb:hover {
     padding: 5px;
 	
 }
+.small, small{
+	font-size: .8em;
+}
 .content, .chat-content {
 	margin-top: 0px;
 	border-radius: 15px;
 }
-
+.chat-time{
+	display: flex;
+	display: -webkit-flex;
+}
+.other-chat > .chat-time{
+	justify-content: flex-end;
+}
+.my-chat > .chat-time{
+	justify-content: flex-start;
+}
 .c-header {
 	display: inline-flex;
 	display: -webkit-inline-flex;
@@ -606,10 +618,6 @@ div.notify::-webkit-scrollbar-thumb:hover {
 
 .notify-content:hover, .notify-link:hover {
 	cursor: pointer;
-}
-
-.unread {
-	font-weight: 700;
 }
 
 .name, .time {
@@ -1046,7 +1054,13 @@ textarea::-webkit-scrollbar{
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	overflow: hidden;
+	color: #878787;
 }
+.unread {
+	font-weight: 700;
+	color: #2f2f2f;
+}
+
 
 .btn-chat{
 	bottom: 0;

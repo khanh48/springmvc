@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
+import me.forum.Controller.BaseController;
 import me.forum.Module.ChatBot;
 
 public class UserHandler {
@@ -24,7 +25,7 @@ public class UserHandler {
 	public void addClient(WebSocketSession session) {
 		allUser.add(session);
 	}
-	
+
 	public void addChat(String sender, String receiver, WebSocketSession session) {
 		int id = merge(sender, receiver);
 		chats.put(id, session);
@@ -49,17 +50,13 @@ public class UserHandler {
 		}
 	}
 
-	public void sendChat(String sender, String receiver, String message) {
+	public void sendChat(String sender, String receiver, String message) throws Exception {
 		int id = merge(sender, receiver);
 		TextMessage textMessage = new TextMessage(message);
-		try {
-			if (chats.containsKey(id))
-				chats.get(id).sendMessage(textMessage);
-		} catch (Exception e) {
-			System.out.println("Socket send: " + e.getMessage());
-			chats.remove(id);
-		}
+		chats.get(id).sendMessage(textMessage);
+
 	}
+
 	public boolean containsClient(String name) {
 		return clients.containsKey(name);
 	}
@@ -82,7 +79,7 @@ public class UserHandler {
 	private Integer merge(String sender, String receiver) {
 		return (receiver + "-" + sender).hashCode();
 	}
-	
+
 	public static UserHandler GetInstance() {
 		if (instance == null)
 			instance = new UserHandler();
