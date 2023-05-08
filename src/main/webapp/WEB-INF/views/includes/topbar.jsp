@@ -113,7 +113,7 @@
 					<a class="dropdown" href="#" id="navbarDropdownMenuAvatar"
 						role="button" data-bs-toggle="dropdown"
 						data-bs-auto-close="outside" aria-expanded="false"> <img
-						src="${userID.anhdaidien }" class="rounded-circle" height="25"
+						src="${userID.anhdaidien }" class="rounded-circle" height="30" width="30"
 						alt="avatar">
 					</a>
 					<ul class="dropdown-menu dropdown-menu-end"

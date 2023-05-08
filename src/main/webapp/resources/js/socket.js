@@ -62,7 +62,7 @@ soc.onmessage = function(response) {
 			let newChatNode = document.querySelector("#chat-" + data.user);
 
 			if (newChatNode == null) {
-				$("#chat-users").prepend(addNewMessage(data));
+				$("#chat-users").prepend(addNewMessage(data, "unread"));
 			} else {
 				let pr = newChatNode.parentNode;
 				pr.insertBefore(newChatNode, pr.firstChild);
@@ -81,6 +81,7 @@ soc.onmessage = function(response) {
 			break;
 		case "chat":
 			$(".list-message").append(addMessage(data.avatar, data.message, data.time, data.sender));
+			addReadedMessage(data);
 
 
 	}
@@ -96,15 +97,28 @@ soc.onclose = function() {
 function auth(token) {
 	soc.send(JSON.stringify({ "type": "auth", "token": token, "path": location.pathname }));
 }
-function addNewMessage(data) {
+function addNewMessage(data, status) {
 	let result = "<li id='chat-" + data.user + "'>";
 	result += "<a class='dropdown-item text-wrap d-flex' href='/chat/" + data.user + "'>";
 	result += "<span><img alt='' class='avt' src='" + data.avatar + "'></span>";
 	result += "<span class='overflow-hidden w-100 ms-1'><span class='d-flex justify-content-between'>";
 	result += "<span class='fw-bold'>" + data.hoten + "</span>";
 	result += "<small class='small'>" + data.time + "</small></span>";
-	result += "<p class='mb-0 preview-message unread'>" + data.message.replaceAll("<", "&lt;") + "</p></span></a></li>";
+	result += "<p class='mb-0 preview-message " + status + "'>" + data.message.replaceAll("<", "&lt;") + "</p></span></a></li>";
 	return result;
+}
+
+function addReadedMessage(data) {
+	let newChatNode = document.querySelector("#chat-" + data.user);
+	if (newChatNode == null) {
+		$("#chat-users").prepend(addNewMessage(data, ""));
+	} else {
+		let pr = newChatNode.parentNode;
+		pr.insertBefore(newChatNode, pr.firstChild);
+		newChatNode.querySelector(".preview-message").innerText = data.message;
+		newChatNode.querySelector(".small").innerText = data.time;
+
+	}
 }
 
 function addMessage(avt, message, time, sender) {

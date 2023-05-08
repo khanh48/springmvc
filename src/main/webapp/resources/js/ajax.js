@@ -41,22 +41,22 @@ function loadMessage(uid) {
 		success: function(response) {
 			$.each(response.payLoad, function(index, item) {
 				let msg = addMessage(item.avatar, item.message, item.time, item.sender);
-				if(uid == "chatbot"){
+				if(uid == "chatbot" && item.sender == "other-chat"){
 					msg = addBotMessage(item.avatar, item.message, item.time, item.sender)
 				}
 				$(".list-message").prepend(msg);
 			})
 			let len = $(".chat").length;
 			let top;
+			Prism.highlightAll();
 			if (len > 0) {
 				if (start == 0) {
-					top = $(".chat")[len - 1 - start].offsetTop - 78;
+					top = document.documentElement.scrollHeight;
 				} else {
 					top = $(".chat")[len - start].offsetTop - 78;
 				}
 				window.scrollTo({ top: top, behavior: 'smooth' });
 			}
-			Prism.highlightAll();
 
 		}
 	});

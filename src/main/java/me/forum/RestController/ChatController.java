@@ -59,18 +59,14 @@ public class ChatController {
 			jsonObject.put("avatar", user.getAnhdaidien());
 			jsonObject.put("sender", "other-chat");
 			jsonObject.put("time", message2.getFomattedDate());
+			jsonObject.put("user", user.getTaikhoan());
+			jsonObject.put("hoten", user.getHoten());
 			messageDao.AddMessage(message2);
 			try {
 				UserHandler.GetInstance().sendChat(user.getTaikhoan(), toUser, jsonObject.toString());
 				messageDao.makeAsRead(user.getTaikhoan(), toUser);
 			} catch (Exception e) {
-				jsonObject.clear();
 				jsonObject.put("type", "newMessage");
-				jsonObject.put("user", user.getTaikhoan());
-				jsonObject.put("hoten", user.getHoten());
-				jsonObject.put("avatar", user.getAnhdaidien());
-				jsonObject.put("time", message2.getFomattedDate());
-				jsonObject.put("message", message);
 				UserHandler.GetInstance().send(toUser, jsonObject.toString());
 			}
 		}

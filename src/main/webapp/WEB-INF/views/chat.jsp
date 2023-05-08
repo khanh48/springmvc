@@ -19,7 +19,7 @@
 						
 				</ul>
 				<script>
-					loadMessage("${chatUser.getTaikhoan()}");
+					loadMessage("${chatUser.getTaikhoan()}", true);
 				</script>
 				<c:if test="${not empty userID}">
 					<div class="text-box-chat pb-3 pt-2">
@@ -60,7 +60,7 @@
 	<script>
 		window.onscroll = function(e) {
 			if (document.documentElement.scrollTop == 0) {
-				loadMessage("${chatUser.getTaikhoan()}");
+				loadMessage("${chatUser.getTaikhoan()}", false);
 			}
 		}
 	</script>

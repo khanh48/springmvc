@@ -133,7 +133,7 @@ public class PostController extends BaseController {
 				isliked = "fas-liked";
 			}
 
-			String item = "<div class='content'>";
+			String item = "<div class='content' id='" + cmt.getMabinhluan() + "'>";
 			item += "<div class='d-flex justify-content-between'>";
 			item += "<div class='c-header'><span>";
 			item += "<a class='name' href='" + uUrl + "'>";
@@ -146,13 +146,13 @@ public class PostController extends BaseController {
 
 			if (user != null && (u.getTaikhoan().equals(user.getTaikhoan()) || user.getRank() >= 2)) {
 				item += "<button name='delete-notification' class='btn-close py-1 px-3' "
-						+ "value='a' data-bs-toggle='modal' data-bs-target='#delete-post' onclick=\"deleteCmt("
+						+ "value='a' data-bs-toggle='modal' data-bs-target='#delete-cmt' onclick=\"deleteCmt("
 						+ cmt.getMabinhluan() + ")\"></button>";
 			}
 			item += "</div><div class='c-body'>" + cmt.getNoidung() + "</div>";
 			item += "<div class='m-0 hide wh' style='text-align: end;'>";
 			item += "<span class='read-more'></span></div><hr class='m-0'>";
-			item += "<div class='interactive p-1 m-0'>";
+			item += "<div class='interactive p-1 m-0'>"; 
 			item += "<button type='button' class='like p-1' ";
 			item += "onclick=\"like(" + cmt.getMabinhluan() + ",false, '" + u.getTaikhoan() + "')\">";
 			item += "<i class='fas fa-heart action " + isliked + "' id='cl" + cmt.getMabinhluan() + "'>";

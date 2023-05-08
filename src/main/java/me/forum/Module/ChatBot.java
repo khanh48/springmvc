@@ -20,7 +20,7 @@ import me.forum.Entity.User;
 import me.forum.WebSocketSetup.UserHandler;
 
 public class ChatBot {
-	final static String token = "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";
+	final static String token = "j6obJzEvgRghsGY9XMZPT3BlbkFJsllNZII3SVPpKQJxaGw0";
 	OpenAiService service;
 	final List<ChatMessage> messages;
 	User user, chatBot;
@@ -53,6 +53,7 @@ public class ChatBot {
 
 			@Override
 			public void accept(Throwable t) throws Exception {
+				System.out.println("Oops, Error: "+ t.getMessage());
 				stop();
 			}
 		}).blockingForEach(new Response(user.getTaikhoan()));

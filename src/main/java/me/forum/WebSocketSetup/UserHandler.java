@@ -7,7 +7,6 @@ import java.util.List;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
-import me.forum.Controller.BaseController;
 import me.forum.Module.ChatBot;
 
 public class UserHandler {

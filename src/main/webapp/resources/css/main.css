@@ -666,75 +666,6 @@ div.notify::-webkit-scrollbar-thumb:hover {
 	color: #333;
 }
 
-@media ( max-width : 599px) {
-	.main {
-		max-width: 100%;
-	}
-}
-
-@media ( min-width : 600px) {
-	.chat-content{
-		max-width: 80%;
-	}
-	.main {
-		max-width: 95%;
-	}
-	.search-group {
-		display: inline-flex;
-	}
-	.log {
-		display: none;
-	}
-}
-
-@media ( min-width : 768px) {
-	.main {
-		max-width: 93%;
-	}
-	.right {
-		width: 75%;
-		margin-left: 20px;
-	}
-	.left {
-		display: inline;
-	}
-	#menu {
-		display: flex;
-		display: -webkit-flex;
-	}
-	.menu-toggle {
-		width: auto;
-	}
-	#item li {
-		font-size: 40px;
-		margin: 6px;
-		height: 45px;
-	}
-}
-
-@media ( min-width : 992px) {
-	.main {
-		max-width: 91%;
-	}
-	#menu div {
-		display: inline-flex;
-	}
-	#menu ul {
-		width: 52%;
-	}
-}
-
-@media ( min-width : 1200px) {
-	.main {
-		max-width: 88%;
-	}
-}
-
-@media ( min-width : 1600px) {
-	.main {
-		max-width: 1450px;
-	}
-}
 
 .page {
 	display: flex;
@@ -926,9 +857,13 @@ div.notify::-webkit-scrollbar-thumb:hover {
 	cursor: pointer;
 	text-decoration: underline;
 }
-
-.dropdown-notify {
+#bell-ntf{
 	width: 300px;
+}
+#chat-users{
+	width: 300px;
+}
+.dropdown-notify {
 	max-height: 350px;
 	overflow: auto;
 }
@@ -1065,4 +1000,78 @@ textarea::-webkit-scrollbar{
 .btn-chat{
 	bottom: 0;
 	max-height: 38px;
+}
+
+
+@media ( max-width : 599px) {
+	.main {
+		max-width: 100%;
+	}
+	#bell-ntf{
+		width: 250px;
+	}
+}
+
+@media ( min-width : 600px) {
+	.chat-content{
+		max-width: 80%;
+	}
+	.main {
+		max-width: 95%;
+	}
+	.search-group {
+		display: inline-flex;
+	}
+	.log {
+		display: none;
+	}
+}
+
+@media ( min-width : 768px) {
+	.main {
+		max-width: 93%;
+	}
+	.right {
+		width: 75%;
+		margin-left: 20px;
+	}
+	.left {
+		display: inline;
+	}
+	#menu {
+		display: flex;
+		display: -webkit-flex;
+	}
+	.menu-toggle {
+		width: auto;
+	}
+	#item li {
+		font-size: 40px;
+		margin: 6px;
+		height: 45px;
+	}
+}
+
+@media ( min-width : 992px) {
+	.main {
+		max-width: 91%;
+	}
+	#menu div {
+		display: inline-flex;
+	}
+	#menu ul {
+		width: 52%;
+	}
+}
+
+@media ( min-width : 1200px) {
+	.main {
+		max-width: 88%;
+	}
+}
+
+@media ( min-width : 1600px) {
+	.main {
+		max-width: 1450px;
+	}
 }
