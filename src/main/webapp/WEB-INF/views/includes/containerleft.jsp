@@ -29,7 +29,7 @@
 				<div class="ps-1">
 					<div>
 						<a href='/bai-viet/${i.getMabaiviet() }'><div
-								class="notify-content">${i.getTieude() }</div></a>
+								class="notify-content"><c:out value="${i.getTieude() }" escapeXml="true" /></div></a>
 					</div>
 				</div>
 			</c:forEach>

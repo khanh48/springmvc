@@ -88,33 +88,42 @@
 					</i>
 
 					</a>
-					<ul class="dropdown-menu dropdown-menu-end dropdown-notify"
+					<div class="dropdown-menu dropdown-menu-end dropdown-notify"
 						id="chat-users">
+						<div class="chat-menu">
+						<input type="text" id="test" />
+						<ul>
+						<li>a</li>
+						<li>b</li>
+						<li>c</li>
+						</ul>
+						</div>
 						<c:forEach items="${listMessage }" var="i">
-							<li id="chat-${i.getNguoigui().getTaikhoan() }"><a class="dropdown-item text-wrap"
-								style="display: flex;" href="/chat/${i.getNguoigui().getTaikhoan() }"> 
-								<span><img alt="" class="avt" src="${i.getNguoigui().getAnhdaidien() }">
-								</span>
-								<span class="overflow-hidden w-100 ms-1"> 
-									<span class="d-flex justify-content-between"> 
-										<span class="fw-bold">${i.getNguoigui().getHoten() }</span>
-										<small class="small">${i.getFomattedDate() }</small>
+							<a id="chat-${i.getNguoigui().getTaikhoan() }"
+								class="dropdown-item text-wrap" style="display: flex;"
+								href="/chat/${i.getNguoigui().getTaikhoan() }"> <span><img
+										alt="" class="avt" src="${i.getNguoigui().getAnhdaidien() }">
+								</span> <span class="overflow-hidden w-100 ms-1"> <span
+										class="d-flex justify-content-between"> <span
+											class="fw-bold">${i.getNguoigui().getHoten() }</span> <small
+											class="small">${i.getFomattedDate() }</small>
 									</span>
-									<p class="mb-0 preview-message <c:if test="${not i.isTrangthai() }">unread</c:if>">
-										<c:out value="${i.getNoidung()}" escapeXml="true" />
-									</p>
+										<p
+											class="mb-0 preview-message <c:if test="${not i.isTrangthai() }">unread</c:if>">
+											<c:out value="${i.getNoidung()}" escapeXml="true" />
+										</p>
 								</span>
-							</a></li>
+							</a>
 						</c:forEach>
-					</ul>
+					</div>
 				</div>
 				<!-- Avatar -->
 				<div class="dropdown">
 					<a class="dropdown" href="#" id="navbarDropdownMenuAvatar"
 						role="button" data-bs-toggle="dropdown"
 						data-bs-auto-close="outside" aria-expanded="false"> <img
-						src="${userID.anhdaidien }" class="rounded-circle" height="30" width="30"
-						alt="avatar">
+						src="${userID.anhdaidien }" class="rounded-circle" height="30"
+						width="30" alt="avatar">
 					</a>
 					<ul class="dropdown-menu dropdown-menu-end"
 						aria-labelledby="navbarDropdownMenuAvatar">

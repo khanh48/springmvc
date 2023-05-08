@@ -36,7 +36,7 @@
 							<div class='title'>
 								<div class='name'>${post.getNhom() }</div>
 								<span>></span>
-								<div class='name'>${post.getTieude() }</div>
+								<div class='name'><c:out value="${post.getTieude() }" escapeXml="true" /></div>
 							</div>
 						</div>
 						<div class='c-body'>${post.getNoidung() }</div>

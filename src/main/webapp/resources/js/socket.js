@@ -8,7 +8,6 @@ var result = "";
 var isStart = true;
 soc.onmessage = function(response) {
 	var data = JSON.parse(response.data);
-	console.log(data);
 	switch (data.type) {
 		case "newNotification":
 			let ntfNum = $("#ntf-num");
@@ -98,13 +97,12 @@ function auth(token) {
 	soc.send(JSON.stringify({ "type": "auth", "token": token, "path": location.pathname }));
 }
 function addNewMessage(data, status) {
-	let result = "<li id='chat-" + data.user + "'>";
-	result += "<a class='dropdown-item text-wrap d-flex' href='/chat/" + data.user + "'>";
+	let result = "<a id='chat-" + data.user + "' class='dropdown-item text-wrap d-flex' href='/chat/" + data.user + "'>";
 	result += "<span><img alt='' class='avt' src='" + data.avatar + "'></span>";
 	result += "<span class='overflow-hidden w-100 ms-1'><span class='d-flex justify-content-between'>";
 	result += "<span class='fw-bold'>" + data.hoten + "</span>";
 	result += "<small class='small'>" + data.time + "</small></span>";
-	result += "<p class='mb-0 preview-message " + status + "'>" + data.message.replaceAll("<", "&lt;") + "</p></span></a></li>";
+	result += "<p class='mb-0 preview-message " + status + "'>" + data.message.replaceAll("<", "&lt;") + "</p></span></a>";
 	return result;
 }
 

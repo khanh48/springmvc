@@ -104,6 +104,7 @@ public class MainController extends BaseController {
 			return mav;
 		}
 		List<Comment> comments = commentDao.GetPostsLimitDesc(id, 0, 10);
+		post.setNoidung(post.getNoidung().replaceAll("<", "&lt;").replaceAll("\n", "<br>"));
 		mav.addObject("post", post);
 		mav.addObject("comments", comments);
 		return mav;	

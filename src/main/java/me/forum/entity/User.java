@@ -2,6 +2,11 @@ package me.forum.Entity;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.Period;
+import java.time.ZoneId;
 import java.util.Date;
 
 import me.forum.Controller.BaseController;
@@ -175,6 +180,43 @@ public class User {
 
 	public boolean getTructuyen() {
 		return tructuyen;
+	}
+
+	public String getLastLogin() {
+		long hours, minutes, day, month;
+		String result = "";
+		LocalDateTime now = LocalDateTime.now();
+		LocalDateTime old = LocalDateTime.ofInstant(Instant.ofEpochMilli(lastlogin), ZoneId.systemDefault());
+		hours = old.getHour();
+		minutes = old.getMinute();
+		day = old.getDayOfMonth();
+		month = old.getMonthValue();
+		String h, m, d, mm;
+		h = String.valueOf(hours);
+		m = String.valueOf(minutes);
+		d = String.valueOf(day);
+		mm = String.valueOf(month);
+		if(month < 10) {
+			mm = "0" + month;
+		}
+		if(day < 10) {
+			d = "0" + day;
+		}
+		if(hours < 10) {
+
+			h = "0" + hours;
+		}
+		if(minutes < 10) {
+
+			m = "0" + minutes;
+		}
+		result = h + ":" + m + " " + d + " Th" + mm;
+		if (now.getYear() > old.getYear())
+			 result += ", " + old.getYear();
+		return result;
+	}
+	public String getStatus() {
+		return tructuyen ? "online" : "offline";
 	}
 
 	@Override

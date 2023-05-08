@@ -29,6 +29,7 @@ public class CheckStatus {
 			User user = userDao.findUserByUserName(session.getKey());
 			if (!session.getValue().isOpen()) {
 				user.setTructuyen(false);
+				userDao.SetLastLogin(user.getTaikhoan());
 				iterators.remove();
 			} else {
 				user.setTructuyen(true);

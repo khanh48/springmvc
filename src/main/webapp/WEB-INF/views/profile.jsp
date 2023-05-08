@@ -16,7 +16,7 @@
 								<img class='avt-profile rounded-circle'
 									src='${profile.getAnhdaidien() }'>
 								<div>
-									<div class='name'>${profile.getHoten() }</div>
+									<div class='name'>${profile.getHoten() }<i class="fas fa-circle ${profile.getStatus() }"></i></div>
 									<p class='ps-2 mb-0'>Bài viết: ${postOfUser.size() }</p>
 									<p class='ps-2 mb-0'>Giới tính: ${profile.getGioitinh() }</p>
 									<p class='ps-2 mb-0'>Ngày sinh: ${profile.getNgaysinh() }</p>

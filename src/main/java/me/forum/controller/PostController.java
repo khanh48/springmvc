@@ -41,6 +41,7 @@ public class PostController extends BaseController {
 		posts = uid.isEmpty() ? postDao.GetPostsLimitDesc(start, limit) : postDao.GetPostsUserLimit(uid, start, limit);
 		User user = (User) session.getAttribute("userID");
 		for (Post p : posts) {
+			p.setTieude(p.getTieude().replaceAll("<", "&lt;"));
 			p.setNoidung(p.getNoidung().replaceAll("<", "&lt;").replaceAll("\n", "<br>"));
 			isliked = "";
 			User u = p.getUser();

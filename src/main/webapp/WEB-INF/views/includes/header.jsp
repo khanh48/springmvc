@@ -21,3 +21,5 @@
 <script src="/resources/js/main.js"></script>
 <script src="/resources/js/ajax.js"></script>
 </head>
+
+<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-SY0vnxYmlxoeaLmv/C6qjtVjb9pOs9L6i8FmrT+s2wLZMeqln8AkqXi9+IKoHyqUihHMC6go60Q+sQw/ykTgQQ==" crossorigin="anonymous" referrerpolicy="no-referrer" /> -->

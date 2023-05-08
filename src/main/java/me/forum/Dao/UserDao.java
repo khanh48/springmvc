@@ -132,6 +132,11 @@ public class UserDao {
 				user.getRank(), user.getEmail(), user.getSothich(), user.getTaikhoan());
 	}
 
+	public int SetLastLogin(String user) {
+		String sql = "update nguoidung set lastlogin = ? where taikhoan = ?";
+		return jdbcTemplate.update(sql, System.currentTimeMillis(), user);
+	}
+
 	private class UserMapper implements RowMapper<User> {
 
 		@Override
