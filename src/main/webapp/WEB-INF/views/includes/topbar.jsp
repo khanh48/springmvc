@@ -91,17 +91,18 @@
 					<div class="dropdown-menu dropdown-menu-end dropdown-notify"
 						id="chat-users">
 						<div class="chat-menu">
-						<input type="text" id="test" />
-						<ul>
-						<li>a</li>
-						<li>b</li>
-						<li>c</li>
-						</ul>
+							<input type="text" id="test" />
+							<div>
+								<a class="dropdown-item">a</a>
+								<a class="dropdown-item">b</a>
+								<a class="dropdown-item">c</a>
+							</div>
 						</div>
-						<c:forEach items="${listMessage }" var="i">
-							<a id="chat-${i.getNguoigui().getTaikhoan() }"
-								class="dropdown-item text-wrap" style="display: flex;"
-								href="/chat/${i.getNguoigui().getTaikhoan() }"> <span><img
+						<div class="chat-container">
+							<c:forEach items="${listMessage }" var="i">
+								<a id="chat-${i.getNguoigui().getTaikhoan() }"
+									class="dropdown-item text-wrap" style="display: flex;"
+									href="/chat/${i.getNguoigui().getTaikhoan() }"> <span><img
 										alt="" class="avt" src="${i.getNguoigui().getAnhdaidien() }">
 								</span> <span class="overflow-hidden w-100 ms-1"> <span
 										class="d-flex justify-content-between"> <span
@@ -113,8 +114,10 @@
 											<c:out value="${i.getNoidung()}" escapeXml="true" />
 										</p>
 								</span>
-							</a>
-						</c:forEach>
+								</a>
+							</c:forEach>
+
+						</div>
 					</div>
 				</div>
 				<!-- Avatar -->

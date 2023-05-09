@@ -61,7 +61,7 @@ soc.onmessage = function(response) {
 			let newChatNode = document.querySelector("#chat-" + data.user);
 
 			if (newChatNode == null) {
-				$("#chat-users").prepend(addNewMessage(data, "unread"));
+				$("#chat-container").prepend(addNewMessage(data, "unread"));
 			} else {
 				let pr = newChatNode.parentNode;
 				pr.insertBefore(newChatNode, pr.firstChild);
@@ -73,7 +73,7 @@ soc.onmessage = function(response) {
 			if (isNaN(num)) {
 				$("#bell-msg").html("<span class='badge rounded-pill position-absolute top-0 start-100 translate-middle bg-danger' id='msg-num'>1</span>");
 			} else if (num < 99) {
-				msgNum.text(document.querySelector("#chat-users").querySelectorAll(".unread").length);
+				msgNum.text(document.querySelector("#chat-container").querySelectorAll(".unread").length);
 			} else {
 				msgNum.text("99+");
 			}
@@ -109,7 +109,7 @@ function addNewMessage(data, status) {
 function addReadedMessage(data) {
 	let newChatNode = document.querySelector("#chat-" + data.user);
 	if (newChatNode == null) {
-		$("#chat-users").prepend(addNewMessage(data, ""));
+		$("#chat-container").prepend(addNewMessage(data, ""));
 	} else {
 		let pr = newChatNode.parentNode;
 		pr.insertBefore(newChatNode, pr.firstChild);
