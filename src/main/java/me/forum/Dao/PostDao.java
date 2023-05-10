@@ -148,6 +148,34 @@ public class PostDao {
 			return 0;
 		}
 	}
+	
+	
+	public Post getHotPost(int manhom) {
+		String sql = "SELECT baiviet.*, COUNT(luotthich.maluotthich) AS total_likes "
+				+ "FROM baiviet "
+				+ "INNER JOIN luotthich ON baiviet.mabaiviet = luotthich.mabaiviet and baiviet.manhom = ? "
+				+ "GROUP BY baiviet.mabaiviet "
+				+ "ORDER BY total_likes DESC "
+				+ "LIMIT 1;";
+		try {
+			return jdbcTemplate.queryForObject(sql, new Object[] {manhom}, new int[] {Types.INTEGER}, new PostMapper());
+		}catch (DataAccessException e) {
+			return null;
+		}
+	}
+	public Post getExaltedPost(int manhom) {
+		String sql = "SELECT baiviet.*, COUNT(binhluan.mabinhluan) AS total_comments "
+				+ "FROM baiviet "
+				+ "INNER JOIN binhluan ON baiviet.mabaiviet = binhluan.mabaiviet and baiviet.manhom = ? "
+				+ "GROUP BY baiviet.mabaiviet "
+				+ "ORDER BY total_comments DESC "
+				+ "LIMIT 1;";
+		try {
+			return jdbcTemplate.queryForObject(sql, new Object[] {manhom}, new int[] {Types.INTEGER}, new PostMapper());
+		}catch (DataAccessException e) {
+			return null;
+		}
+	}
 
 	private class PostMapper implements RowMapper<Post> {
 		@Override

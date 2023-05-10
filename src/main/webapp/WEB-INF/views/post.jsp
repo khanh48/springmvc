@@ -75,6 +75,7 @@
 						</div>
 					</c:if>
 				</c:if>
+				<hr>
 				<div id="listComments">
 					<script>
 					loadComment(${post.getMabaiviet()});

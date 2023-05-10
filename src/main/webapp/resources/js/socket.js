@@ -1,4 +1,6 @@
 var soc = new WebSocket("ws://localhost:8088/websocket");
+//15.235.131.9
+//localhost
 soc.onopen = function() {
 	console.log("connected");
 	auth(getCookie("phuot.token"));
@@ -55,7 +57,6 @@ soc.onmessage = function(response) {
 			Prism.highlightAll();
 			break;
 		case "newMessage":
-			console.log(data);
 			let msgNum = $("#msg-num");
 			let num = parseInt(msgNum.text());
 			let newChatNode = document.querySelector("#chat-" + data.user);
@@ -73,7 +74,7 @@ soc.onmessage = function(response) {
 			if (isNaN(num)) {
 				$("#bell-msg").html("<span class='badge rounded-pill position-absolute top-0 start-100 translate-middle bg-danger' id='msg-num'>1</span>");
 			} else if (num < 99) {
-				msgNum.text(document.querySelector("#chat-container").querySelectorAll(".unread").length);
+				msgNum.text(document.querySelector(".chat-container").querySelectorAll(".unread").length);
 			} else {
 				msgNum.text("99+");
 			}

@@ -83,6 +83,34 @@ public class ChatController {
 		UserHandler.bots.get(user.getTaikhoan()).stop();
 		return map;
 	}
+	
+	@RequestMapping(value = "/searchToChat", method = RequestMethod.GET)
+	public Map<String, Object> searchToChat(@RequestParam(name = "input") String input, HttpSession session) {
+		HashMap<String, Object> json, map = new HashMap<>();
+		User user;
+		user = (User) session.getAttribute("userID");
+		if (user == null)
+			return map;
+		
+		List<User> result = userDao.SearchUser(input);
+		List<HashMap<String, Object>> results = new ArrayList<>();
+		for (User user2 : result) {
+			if(!user2.equals(user)) {
+				json = new HashMap<>();
+				json.put("id", user2.getTaikhoan());
+				json.put("hoten", user2.getHoten());
+				json.put("lastlogin", user2.getLastLogin());
+				json.put("avatar", user2.getAnhdaidien());
+				results.add(json);
+			}
+		}
+		
+		map.put("type", "searchToChat");
+		map.put("result", results);
+		
+		
+		return map;
+	}
 
 	@RequestMapping(value = "/loadMessage", method = RequestMethod.POST)
 	public Map<String, Object> loadMessage(@RequestParam int start, @RequestParam int limit, @RequestParam String uid,

@@ -1,5 +1,6 @@
 package me.forum.Controller;
 
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import me.forum.Component.JwtProvider;
 import me.forum.Entity.Comment;
+import me.forum.Entity.Group;
 import me.forum.Entity.Post;
 import me.forum.Entity.User;
 
@@ -115,6 +117,40 @@ public class MainController extends BaseController {
 
 		notificationDao.MakeAsRead(nid);
 		mav.setViewName("redirect:/bai-viet/" + id);
+		return mav;
+	}
+	
+	@RequestMapping(value = { "/nhom/{id}", "/group/{id}" })
+	public ModelAndView groupIDPage(@PathVariable int id, HttpSession session) {
+		mav.addObject("entities", null);
+		mav.addObject("group", groupDao.getById(id));
+		mav.setViewName("group");
+		return mav;
+	}
+
+	@RequestMapping(value = { "/nhom", "/group" })
+	public ModelAndView groupPage(HttpSession session) {
+
+		mav.setViewName("group");
+		HashMap<String, Object> map = new HashMap<>();
+		List<Group> groups = groupDao.getGroupList();
+		map.put("group", groups);
+		int[] countPost = new int[groups.size()];
+		Post[] hotPost, exaltedPost;
+		hotPost = new Post[groups.size()];
+		exaltedPost = new Post[groups.size()];
+		
+		for (int i = 0; i < groups.size(); i++) {
+			Group group = groups.get(i);
+			exaltedPost[i] = postDao.getExaltedPost(group.getManhom());
+			hotPost[i] = postDao.getHotPost(group.getManhom());
+			countPost[i] = groupDao.getCountPost(group.getManhom());
+		}
+		
+		map.put("hot", hotPost);
+		map.put("exalted", exaltedPost);
+		map.put("count", countPost);
+		mav.addObject("entities", map);
 		return mav;
 	}
 

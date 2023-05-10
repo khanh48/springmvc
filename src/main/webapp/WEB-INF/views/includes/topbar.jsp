@@ -71,7 +71,7 @@
 
 				<div class="dropdown">
 					<a class="me-3 dropdown" href="#" id="navbarDropdownMenuChat"
-						role="button" data-bs-toggle="dropdown" aria-expanded="true">
+						role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="true">
 
 						<i class="fas fa-comments" id="bell-msg"> <c:if
 								test="${unreadMessage > 0}">
@@ -89,15 +89,26 @@
 
 					</a>
 					<div class="dropdown-menu dropdown-menu-end dropdown-notify"
-						id="chat-users">
+						id="chat-users" >
 						<div class="chat-menu">
-							<input type="text" id="test" />
-							<div>
-								<a class="dropdown-item">a</a>
-								<a class="dropdown-item">b</a>
-								<a class="dropdown-item">c</a>
+							<div class="input-group">
+								<input class="form-control" type="text" placeholder="ID hoặc tên" aria-describedby="button-addon1" autocomplete="off" id="searchToChat" />
+								<a class="btn btn-outline-secondary" href="/chat/chatbot" type="button" id="button-addon1">
+						<i class="fas fa-robot"></i></a>
+							</div>
+							<div id="schat-result">
+							<!-- 
+								<a class='dropdown-item d-flex' href='/chat/admin'>
+									<img class='rounded-circle' height="40" width="40" src='/resources/images/default_avatar.png'>
+									<span class="ms-1">
+										<span class="fw-bold" style="font-size: 0.9em">ADMIN</span>
+										<small class="d-block">Đang hoạt động</small>
+									</span>
+								</a>
+								 -->
 							</div>
 						</div>
+						<hr class="dropdown-divider">
 						<div class="chat-container">
 							<c:forEach items="${listMessage }" var="i">
 								<a id="chat-${i.getNguoigui().getTaikhoan() }"

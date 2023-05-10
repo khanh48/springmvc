@@ -183,6 +183,9 @@ public class User {
 	}
 
 	public String getLastLogin() {
+		if(tructuyen) {
+			return "Đang trực tuyến";
+		}
 		long hours, minutes, day, month;
 		String result = "";
 		LocalDateTime now = LocalDateTime.now();

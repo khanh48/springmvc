@@ -41,7 +41,7 @@ function loadMessage(uid) {
 		success: function(response) {
 			$.each(response.payLoad, function(index, item) {
 				let msg = addMessage(item.avatar, item.message, item.time, item.sender);
-				if(uid == "chatbot" && item.sender == "other-chat"){
+				if (uid == "chatbot" && item.sender == "other-chat") {
 					msg = addBotMessage(item.avatar, item.message, item.time, item.sender)
 				}
 				$(".list-message").prepend(msg);
@@ -168,6 +168,34 @@ function loadPost(uid) {
 		}
 	});
 }
+
+
+function searchToChat(input) {
+	if(input == "") {
+		$("#schat-result").html("");
+		return;
+	}
+	$.ajax({
+		type: "GET",
+		url: "/searchToChat",
+		data: {
+			input: input
+		},
+		success: function(response) {
+			$("#schat-result").html("");
+			let result = "";
+			$.each(response.result, function(index, item) {
+				result += "<a class='dropdown-item d-flex' href='/chat/" + item.id + "'>";
+				result += "<img class='rounded-circle' height='40' width='40' src='" + item.avatar + "'>";
+				result += "<span class='ms-1'>";
+				result += "<span class='fw-bold' style='font-size: 0.9em;'>" + item.hoten + "</span>";
+				result += "<small class='d-block'>" + item.lastlogin + "</small></span></a>";
+				
+			});
+			$("#schat-result").html(result);
+		}
+	});
+}
 function findPost() {
 	var taikhoan = $("#fbAuthor").val();
 	var id = $("#fbID").val();
@@ -192,6 +220,10 @@ function findPost() {
 }
 
 $(document).ready(function() {
+	$("#searchToChat").on("input keyup", function(e) {
+		searchToChat($(this).val());
+	});
+
 	$("#changePassword").click(function(e) {
 		$.ajax({
 			type: 'POST',

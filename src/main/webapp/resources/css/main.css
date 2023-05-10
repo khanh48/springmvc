@@ -1002,6 +1002,24 @@ textarea::-webkit-scrollbar{
 	max-height: 38px;
 }
 
+.online, .offline{
+	font-size: 10px;
+	margin: 0 5px 0 5px;
+	vertical-align: middle;
+}
+
+.online{
+	color: green;
+}
+.offline{
+	color: gray;
+}
+
+.chat-menu{
+}
+.h20{
+	height: 20px;
+}
 
 @media ( max-width : 599px) {
 	.main {
@@ -1052,22 +1070,6 @@ textarea::-webkit-scrollbar{
 	}
 }
 
-.online, .offline{
-	font-size: 10px;
-	margin: 0 5px 0 5px;
-	vertical-align: middle;
-}
-
-.online{
-	color: green;
-}
-.offline{
-	color: gray;
-}
-
-.chat-menu{
-	border: 1px solid black;
-}
 @media ( min-width : 992px) {
 	.main {
 		max-width: 91%;

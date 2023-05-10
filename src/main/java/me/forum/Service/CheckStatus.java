@@ -20,7 +20,7 @@ public class CheckStatus {
 	@Autowired
 	UserDao userDao;
 
-	@Scheduled(fixedRate = 2000)
+	@Scheduled(fixedRate = 1000)
 	public void checkOffline() {
 		Set<Entry<String, WebSocketSession>> allUser = UserHandler.GetInstance().GetAllUsers().entrySet();
 		Iterator<Entry<String, WebSocketSession>> iterators = allUser.iterator();

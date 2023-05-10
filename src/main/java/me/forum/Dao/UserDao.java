@@ -29,14 +29,6 @@ public class UserDao {
 		}
 	}
 
-	public List<User> getUserUnderRank(int rank) {
-		try {
-			return jdbcTemplate.query("select * from nguoidung where machucvu < ?", new Object[] { rank },
-					new int[] { Types.INTEGER }, new UserMapper());
-		} catch (EmptyResultDataAccessException e) {
-			return null;
-		}
-	}
 
 	public User findUserByCrypt(String crypt) {
 		try {
@@ -46,7 +38,25 @@ public class UserDao {
 			return null;
 		}
 	}
+	public List<User> SearchUser(String input) {
+		try {
+			return jdbcTemplate.query("select * from nguoidung where taikhoan like ? or hoten like ? group by taikhoan order by hoten asc limit 3",
+					new Object[] { "%" + input + "%",
+							"%" + input + "%"},
+					new int[] { Types.CHAR, Types.NVARCHAR }, new UserMapper());
+		} catch (EmptyResultDataAccessException e) {
+			return null;
+		}
+	}
 
+	public List<User> getUserUnderRank(int rank) {
+		try {
+			return jdbcTemplate.query("select * from nguoidung where machucvu < ?", new Object[] { rank },
+					new int[] { Types.INTEGER }, new UserMapper());
+		} catch (EmptyResultDataAccessException e) {
+			return null;
+		}
+	}
 	public int AddUser(User user) {
 		return jdbcTemplate.update("insert into nguoidung(hoten, taikhoan, matkhau) values(?, ?, ?)", user.getHoten(),
 				user.getTaikhoan(), User.MD5(user.getMatkhau()));
