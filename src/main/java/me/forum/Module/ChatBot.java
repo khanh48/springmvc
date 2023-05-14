@@ -21,7 +21,7 @@ import me.forum.WebSocketSetup.UserHandler;
 
 public class ChatBot {
 	//bQ1qIbHMvw94j8NmkjTmT3BlbkFJHAEMc7eqcqvcDDIUW1bm
-	final static String token = "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";
+	final static String token = "GxOI3NCNi1MUzx6OrIpnT3BlbkFJm9SqYc50ThV8sb1jdETS";
 	OpenAiService service;
 	final List<ChatMessage> messages;
 	User user, chatBot;
