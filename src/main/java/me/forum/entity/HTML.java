@@ -31,26 +31,32 @@ public class HTML {
 		item += "<span><a class='name' href='" + uUrl + "'>" + u.getHoten() + "</a>";
 		item += "<div class='time'>";
 		item += "<small class='text-secondary'>" + p.getDateFormated() + "</small>";
-		item += "</div></span></div></div>";
+		item += "</div></span></div></div><div>";
 		
-		if(isInGroup) {
-			item += "<div><span class='me-3'>";
-			item += "<i class='fas fa-link-slash text-center'></i>";
-			item += "</span>";
+		if(p.getGhim()) {
+			item += "<button class='btn-pinned me-2'></button>";
+		}
+		
+		if(isInGroup && user != null && user.getRank() >= 1) {
+			if(p.getGhim()) {
+				item += "<button class='btn-unpin me-2' onclick='pinPost(this, "+p.getMabaiviet()+");'></button>";
+			}else {
+				item += "<button class='btn-pin me-2' onclick='pinPost(this, "+p.getMabaiviet()+");' ></button>";
+			}
 		}
 		
 		if (user != null && (u.getTaikhoan().equals(user.getTaikhoan()) || user.getRank() >= 2)) {
-			item += "<button name='delete-notification' class='btn-close me-3' ";
+			item += "<button name='delete-notification' class='btn-close me-2' ";
 			item += "value='' data-bs-toggle='modal' data-bs-target='#delete-post' " + "onclick=\"deletePost("
 					+ p.getMabaiviet() + ")\"></button>";
 		}
 
-		if(isInGroup) {
-			item += "</div>";
+		item += "</div></div><div> <div class='title'>";
+		if(!isInGroup) {
+			item += "<div class='name'>" + p.getNhom() + "</div>";
+			item += "<span>></span>";
 		}
-		item += "</div><div> <div class='title'>";
-		item += "<div class='name'>" + p.getNhom() + "</div>";
-		item += "<span>></span><div class='name'>" + p.getTieude() + "</div></div></div>";
+		item += "<div class='name'>" + p.getTieude() + "</div></div></div>";
 		item += "<div class='c-body'>" + p.getNoidung() + "</div>";
 		item += "<div class='m-0 hide wh' style='text-align: end;'>";
 		item += "<span class='read-more'></span></div>";

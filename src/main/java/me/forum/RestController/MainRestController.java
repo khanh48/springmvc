@@ -113,7 +113,34 @@ public class MainRestController {
 		return map;
 	}
 	
+	@RequestMapping(value = "/editGroup", method = RequestMethod.GET)
+	public Map<String, String> editGroup(@RequestParam int id, @RequestParam String mota, HttpSession session) {
+		HashMap<String, String> map = new HashMap<>();
+		
+		User user = (User) session.getAttribute("userID");
+		if(user == null || user.getRank() < 1) {
+			map.put("result", groupDao.getById(id).getMota());
+			return map;
+		}
 
+		groupDao.UpdateDescription(id, mota);
+		map.put("result", groupDao.getById(id).getMota());
+		return map;
+	}
+	
+	@RequestMapping(value = "/pinPost", method = RequestMethod.GET)
+	public String pinPost(@RequestParam long id ,HttpSession session) {
+		String result = "fail";
+		User user = (User) session.getAttribute("userID");
+		if(user == null || user.getRank() < 1) {
+			return result;
+		}
+		boolean status = postDao.GetPostByID(id).getGhim();
+		if(postDao.PinStatus(id, !status) > 0) {
+			result = status?"unpinned":"pinned";
+		}
+		return result;
+	}
 	
 	@RequestMapping(value = "/changePass", method = RequestMethod.POST)
 	public Map<String, String> changePass(HttpSession session, HttpServletRequest request) {

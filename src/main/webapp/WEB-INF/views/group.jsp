@@ -13,9 +13,7 @@
 			<c:forEach items="${entities.get('group') }" var="i" varStatus="idx">
 				<div class="content">
 					<div class="c-body">
-						<div class="d-flex justify-content-between">
-							<a class="fs-4" href="/nhom/${i.getManhom() }">${i.getTennhom()}</a> <i class="fas fa-link-slash"></i>
-						</div>
+						<a class="fs-4" href="/nhom/${i.getManhom() }">${i.getTennhom()}</a>
 						<div>
 							<span>Mô tả:</span> <span><c:out value="${i.getMota()}"></c:out></span>
 						</div>
@@ -34,28 +32,40 @@
 				</c:forEach>
 				
 				<c:if test="${ empty entities}">
-				
 				<div class="content">
 					<div class="c-body">
-						<div class="d-flex justify-content-between">
-							<span class="fs-4" href="/nhom/${group.getManhom() }">${group.getTennhom()}</span> <i class="fas fa-link-slash"></i>
+						<span class="fs-4" href="/nhom/${group.getManhom() }">${group.getTennhom()}</span>
+						<c:if test="${userID.getRank() >= 1 }">
+							<button class="btn-edit" value="${group.getManhom() }" onclick="editGroup(this);"></button>
+						</c:if>
+						<div>
+							<span>Mô tả:</span> <span id="group-description"><c:out value="${group.getMota()}"></c:out></span>
+							<textarea class="form-control" style="display: none;" id="group-description-edit">aaa</textarea>
 						</div>
 						<div>
-							<span>Mô tả:</span> <span><c:out value="${group.getMota()}"></c:out></span>
+						<span>Sắp xếp:</span>
+						<form id="sortting" value="${group.getManhom() }">
+  							<input class="form-check-input" type="radio" value="0" name="sortting" id="byDate" checked>
+  							<label class="form-check-label" for="byDate">Theo ngày</label>
+  							<input class="form-check-input" type="radio" value="1" name="sortting" id="byLike">
+  							<label class="form-check-label" for="byLike">Theo lượt thích</label>
+  							<input class="form-check-input" type="radio" value = 2 name="sortting" id="byComment">
+  							<label class="form-check-label" for="byComment">Theo bình luận</label>
+							<input class="form-check-input" type="checkbox" value="" id="ascendingCbx">
+	  						<label class="form-check-label" for="ascendingCbx">Tăng dần</label>
+  						</form>
 						</div>
 					</div>
 				</div>
 				<hr>
-				<div class="content">
-					<div class="c-body">
-						<div class="d-flex justify-content-between">
-							<span class="fs-4" href="/nhom/${group.getManhom() }">${group.getTennhom()}</span> <i class="fas fa-link-slash"></i>
-						</div>
-						<div>
-							<span>Mô tả:</span> <span><c:out value="${group.getMota()}"></c:out></span>
-						</div>
-					</div>
-				</div>
+				<div id="listPosts"></div>
+				<script>
+					loadPostWithSort(${group.getManhom()}, true);
+					$("#sortting").on("change", function(e) {
+						loadPostWithSort(${group.getManhom()}, true);
+					});
+				</script>
+				<div id="loadMore" style="display: none;" onclick="loadPostWithSort(${group.getManhom()}, false);">Tải thêm bài viết</div>
 				</c:if>
 			</div>
 		</div>
@@ -83,7 +93,6 @@
 			</div>
 		</div>
 	</div>
-
 	<%@ include file="/WEB-INF/views/includes/footer.jsp"%>
 </body>
 </html>

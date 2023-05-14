@@ -3,18 +3,14 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <div class="left">
 	<div class="info">
-		<a href="/ho-so">
-			<div class="info-top">Hồ sơ cá nhân</div>
-		</a>
-		<div class="thongbao">
-			<a href="/notification">
-				<div class="tb">Thông báo</div>
+		<div class="d-flex">
+			<a href="/ho-so">
+				<img class="avt" alt="" src="${userID.getAnhdaidien() }">
 			</a>
-			<div class="notify">
-				<a href=''>
-					<div class='notify-content unread'>noidung</div>
-				</a>
-			</div>
+			<span class="ms-2">
+				<a class="text-black" href="/ho-so"><span class="d-block">${userID.getHoten() }</span></a>
+				<small>ID: ${userID.getTaikhoan() }</small>
+			</span>
 		</div>
 	</div>
 
@@ -28,8 +24,9 @@
 				</c:if>
 				<div class="ps-1">
 					<div>
-						<a href='/bai-viet/${i.getMabaiviet() }'><div
-								class="notify-content"><c:out value="${i.getTieude() }" escapeXml="true" /></div></a>
+						<a href='/bai-viet/${i.getMabaiviet() }'>
+						<div class="notify-content"><c:out value="${i.getTieude() }" escapeXml="true" /></div>
+						</a>
 					</div>
 				</div>
 			</c:forEach>

@@ -27,9 +27,9 @@
 										<option value="${gr.getManhom() }">${gr.getTennhom() }</option>
 									</c:forEach>
 								</select> <input type="file" id="file-1" class="inputfile inputfile-1"
-									name="uploadImg" data-multiple-caption="{count} files selected"
+									name="uploadImg" data-multiple-caption="{count} ảnh"
 									accept="image/*" multiple /> <label for="file-1"> <i
-									class="fas fa-images"></i> <span>Choose images&hellip;</span></label>
+									class="fas fa-images"></i> <span>Chọn ảnh&hellip;</span></label>
 								<button type="submit" name="post" class="btn btn-danger btn-sm">Đăng</button>
 							</div>
 						</form>
@@ -39,7 +39,7 @@
 				<script>
 					loadPost(null);
 				</script>
-				<div id="loadMore" onclick="loadPost(null);">Tải thêm bài viết</div>
+				<div id="loadMore" style="display: none;" onclick="loadPost(null);">Tải thêm bài viết</div>
 			</div>
 		</div>
 	</div>

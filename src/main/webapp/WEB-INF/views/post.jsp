@@ -81,7 +81,7 @@
 					loadComment(${post.getMabaiviet()});
 					</script>
 				</div>
-				<div id="loadMoreCmt" onclick="loadComment(${post.getMabaiviet()})">Tải
+				<div id="loadMoreCmt" style="display: none;"  onclick="loadComment(${post.getMabaiviet()})">Tải
 					thêm bình luận</div>
 
 			</div>

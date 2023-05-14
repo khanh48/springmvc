@@ -19,7 +19,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import me.forum.Entity.Comment;
 import me.forum.Entity.HTML;
-import me.forum.Entity.Image;
 import me.forum.Entity.Notification;
 import me.forum.Entity.Post;
 import me.forum.Entity.User;
@@ -34,14 +33,44 @@ public class PostController extends BaseController {
 
 	@RequestMapping(value = "/loadPost", method = RequestMethod.GET)
 	@ResponseBody
-	public List<String> loadOnScroll(@RequestParam int start, @RequestParam int limit,
-			@RequestParam(required = false) String uid, HttpSession session) {
+	public List<String> loadOnScroll(@RequestParam int start, @RequestParam int limit, @RequestParam String uid,
+			HttpSession session) {
 
 		List<String> list = new ArrayList<>();
 		List<Post> posts;
-		posts = uid.isEmpty() ? postDao.GetPostsLimitDesc(start, limit) : postDao.GetPostsUserLimit(uid, start, limit);
 		User user = (User) session.getAttribute("userID");
+		posts = uid.isEmpty() ? postDao.GetPostsLimitDesc(start, limit) : postDao.GetPostsUserLimit(uid, start, limit);
 		for (Post p : posts) {
+			list.add(HTML.GetPost(user, p, false));
+		}
+		return list;
+	}
+
+	@RequestMapping(value = "/loadPostSortting", method = RequestMethod.GET)
+	@ResponseBody
+	public List<String> loadPostSortting(@RequestParam int gid, @RequestParam int sortOption,
+			@RequestParam boolean isAscending, @RequestParam int start, @RequestParam int limit,
+			@RequestParam boolean reset, HttpSession session) {
+		String[] option = { "ngaytao", "luotthich", "binhluan" };
+		List<String> list = new ArrayList<>();
+		List<Post> posts, pins = null;
+		User user = (User) session.getAttribute("userID");
+		String asc = isAscending ? "asc" : "desc";
+		if (sortOption == 0) {
+			posts = postDao.GetPostsLimit(gid, asc, start, limit);
+		} else {
+			posts = postDao.getCustom(option[sortOption], asc, gid, start, limit);
+		}
+		pins = postDao.PinOfGroup(gid);
+		if(reset) {
+			for (Post p : pins) {
+				list.add(HTML.GetPost(user, p, true));
+			}
+		}
+		for (Post p : posts) {
+			if (pins != null && pins.contains(p)) {
+				continue;
+			}
 			list.add(HTML.GetPost(user, p, true));
 		}
 		return list;
@@ -94,7 +123,8 @@ public class PostController extends BaseController {
 	}
 
 	@RequestMapping(value = "/addComment", method = RequestMethod.POST)
-	public ModelAndView addComment(@RequestParam(name = "send") long id,HttpSession session, HttpServletRequest request) {
+	public ModelAndView addComment(@RequestParam(name = "send") long id, HttpSession session,
+			HttpServletRequest request) {
 		String content;
 		content = request.getParameter("comment");
 		mav.setViewName("redirect:/bai-viet/" + id);
@@ -103,13 +133,14 @@ public class PostController extends BaseController {
 		if (user != null && post != null) {
 			long curTime = System.currentTimeMillis();
 			commentDao.AddComment(content, user.getTaikhoan(), id);
-			if(!user.equals(post.getUser())) {
-			
+			if (!user.equals(post.getUser())) {
+
 				String thongbao, url;
-				thongbao= user.getHoten() + " đã bình luận trong bài viết của bạn.";
-				url= "/bai-viet/" + id + "/" + curTime;
-			
-				Notification notification = new Notification(curTime, user.getTaikhoan(), thongbao, post.getUser().getTaikhoan(), url);
+				thongbao = user.getHoten() + " đã bình luận trong bài viết của bạn.";
+				url = "/bai-viet/" + id + "/" + curTime;
+
+				Notification notification = new Notification(curTime, user.getTaikhoan(), thongbao,
+						post.getUser().getTaikhoan(), url);
 				notificationDao.AddNotification(notification);
 				JSONObject json = new JSONObject();
 				json.put("type", "newNotification");
@@ -118,10 +149,9 @@ public class PostController extends BaseController {
 				json.put("date", notification.getDateFormated());
 				UserHandler.GetInstance().send(post.getUser().getTaikhoan(), json.toString());
 			}
-			
+
 		}
 		return mav;
 	}
-	
 
 }

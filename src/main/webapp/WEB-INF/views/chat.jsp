@@ -29,7 +29,7 @@
 									onclick="stopBotSession()">Dừng</button>
 							</c:if>
 							<textarea class="chat-input form-control" rows="1"
-								placeholder="Tin nhắn"></textarea>
+								placeholder="Tin nhắn" autofocus="autofocus"></textarea>
 							<button class="btn btn-chat btn-success btn-sm"
 								onclick="sendMessage()">Gửi</button>
 						</div>

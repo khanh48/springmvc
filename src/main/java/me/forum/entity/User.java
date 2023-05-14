@@ -2,10 +2,8 @@ package me.forum.Entity;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.Period;
 import java.time.ZoneId;
 import java.util.Date;
 
@@ -213,9 +211,9 @@ public class User {
 
 			m = "0" + minutes;
 		}
-		result = h + ":" + m + " " + d + " Th" + mm;
+		result = h + ":" + m + " " + d + "/" + mm;
 		if (now.getYear() > old.getYear())
-			 result += ", " + old.getYear();
+			 result += "/" + old.getYear();
 		return result;
 	}
 	public String getStatus() {

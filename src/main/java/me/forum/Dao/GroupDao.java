@@ -37,6 +37,15 @@ public class GroupDao {
 		}
 	}
 	
+
+	public int UpdateDescription(int id, String description) {
+		try {
+			return jdbcTemplate.update("update nhom set mota = ? where manhom = ?", description, id);
+		}catch (DataAccessException e) {
+			return 0;
+		}
+	}
+	
 	class GroupMapper implements RowMapper<Group>{
 
 		@Override

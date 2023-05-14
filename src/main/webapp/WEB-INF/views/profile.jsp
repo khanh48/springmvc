@@ -16,7 +16,15 @@
 								<img class='avt-profile rounded-circle'
 									src='${profile.getAnhdaidien() }'>
 								<div>
-									<div class='name'>${profile.getHoten() }<i class="fas fa-circle ${profile.getStatus() }"></i></div>
+									<div>
+										<i class="fas fa-circle ${profile.getStatus() }"></i>
+										<span class='name ps-0'>${profile.getHoten() }</span>
+										<small>ID: ${profile.getTaikhoan() }</small>
+										<c:if test="${ not empty userID and !profile.equals(userID)}">
+										
+											<a href="/chat/${profile.getTaikhoan() }"><i class="fas fa-comments text-muted ms-1"></i></a>
+										</c:if>
+									</div>
 									<p class='ps-2 mb-0'>Bài viết: ${postOfUser.size() }</p>
 									<p class='ps-2 mb-0'>Giới tính: ${profile.getGioitinh() }</p>
 									<p class='ps-2 mb-0'>Ngày sinh: ${profile.getNgaysinh() }</p>
@@ -87,7 +95,7 @@
 					loadPost("${profile.getTaikhoan()}");
 					</script>
 				</div>
-				<div id="loadMore" onclick="loadPost('${profile.getTaikhoan()}');">Tải thêm bài viết</div>
+				<div id="loadMore"  style="display: none;"  onclick="loadPost('${profile.getTaikhoan()}');">Tải thêm bài viết</div>
 			</div>
 		</div>
 	</div>

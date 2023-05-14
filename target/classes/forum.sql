@@ -39,6 +39,7 @@ create table if not exists baiviet(
     noidung text not null,
     taikhoan char(13) not null,
     manhom int not null,
+    ghim boolean default 0,
     ngaytao timestamp not null default current_timestamp,
     constraint pk_posts primary key(mabaiviet),
     constraint fk_posts foreign key(taikhoan) references nguoidung(taikhoan) on delete cascade,

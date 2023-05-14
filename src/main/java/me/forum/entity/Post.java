@@ -18,10 +18,11 @@ public class Post {
 	private String taikhoan;
 	private int nhom;
 	private int countLike, countComment;
+	private boolean ghim;
 	private Date ngaytao;
 	private User user;
 
-	public Post(long mabaiviet, String tieude, String noidung, String taikhoan, int nhom, String ngaytao) {
+	public Post(long mabaiviet, String tieude, String noidung, String taikhoan, int nhom, boolean ghim, String ngaytao) {
 		this.mabaiviet = mabaiviet;
 		this.tieude = tieude;
 		this.noidung = noidung;
@@ -35,6 +36,7 @@ public class Post {
 		}
 		countLike = 0;
 		countComment = 0;
+		this.ghim = ghim;
 		this.user = null;
 	}
 
@@ -149,6 +151,19 @@ public class Post {
 
 	public void setNgaytao(Date ngaytao) {
 		this.ngaytao = ngaytao;
+	}
+	public boolean getGhim() {
+		return ghim;
+	}
+
+	public void setGhim(boolean ghim) {
+		this.ghim = ghim;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		
+		return this.mabaiviet == ((Post) obj).getMabaiviet();
 	}
 
 }

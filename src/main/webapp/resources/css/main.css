@@ -118,7 +118,7 @@ body::-webkit-scrollbar-thumb:hover {
 
 .logo {
 	display: flex;
-	padding-left: 20px;
+	padding-left: 10px;
 	align-items: center;
 	height: 100%;
 }
@@ -131,9 +131,11 @@ body::-webkit-scrollbar-thumb:hover {
 }
 
 .search-btn {
+	width: 35px;
 	border-top-right-radius: 15px;
 	border-bottom-right-radius: 15px;
 	border: none;
+	background: transparent url(/resources/images/search_icon.png) center/26px no-repeat;
 	background-color: rgb(180, 180, 180);
 	outline: none;
 }
@@ -292,8 +294,6 @@ body::-webkit-scrollbar-thumb:hover {
 
 .info {
 	height: 200px;
-	background-color: #95c8da;
-	border-radius: 15px;
 	margin-top: 5px;
 	overflow: hidden;
 }
@@ -626,6 +626,10 @@ div.notify::-webkit-scrollbar-thumb:hover {
 	font-weight: 600;
 	padding-left: 5px;
 	line-height: 1.2;
+}
+
+.time{
+	
 }
 
 .name:hover {
@@ -1015,12 +1019,50 @@ textarea::-webkit-scrollbar{
 	color: gray;
 }
 
-.chat-menu{
-}
 .h20{
 	height: 20px;
 }
-
+label{
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
+}
+.btn-edit, .btn-save{
+    box-sizing: content-box;
+    width: calc(1.275rem + .3vw)!important;
+    height: calc(1.275rem + .3vw)!important;
+    padding: 0;
+    color: #000;
+    border: 0;
+    border-radius: .375rem;
+    opacity: .7;
+    background: transparent url("/resources/images/edit_icon.png") center/calc(1.275rem + .3vw) auto no-repeat;
+}
+.btn-edit{
+    background: transparent url("/resources/images/edit_icon.png") center/calc(1.275rem + .3vw) auto no-repeat;
+}
+.btn-save{
+    background: transparent url("/resources/images/save.png") center/calc(1.275rem + .3vw) auto no-repeat;
+}
+.btn-pin, .btn-unpin, .btn-pinned{
+    box-sizing: content-box;
+    width: 1em;
+    height: 1em;
+    padding: .25em .25em;
+    color: #000;
+    border: 0;
+    border-radius: .375rem;
+    opacity: .7;
+}
+.btn-pinned{
+    background: transparent url("/resources/images/pinned.png") center/1em auto no-repeat;
+}
+.btn-pin{
+    background: transparent url("/resources/images/pin.png") center/1em auto no-repeat;
+}
+.btn-unpin{
+    background: transparent url("/resources/images/unpin.png") center/1em auto no-repeat;
+}
 @media ( max-width : 599px) {
 	.main {
 		max-width: 100%;

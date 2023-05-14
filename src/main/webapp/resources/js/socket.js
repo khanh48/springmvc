@@ -1,98 +1,107 @@
-var soc = new WebSocket("ws://localhost:8088/websocket");
-//15.235.131.9
-//localhost
-soc.onopen = function() {
-	console.log("connected");
-	auth(getCookie("phuot.token"));
-};
+
 var result = "";
-
 var isStart = true;
-soc.onmessage = function(response) {
-	var data = JSON.parse(response.data);
-	switch (data.type) {
-		case "newNotification":
-			let ntfNum = $("#ntf-num");
-			let a = parseInt(ntfNum.text());
-			let s = "<li>";
-			s += "<a class='dropdown-item text-wrap' href='" + data.url + "'>";
-			s += "<p class='small mb-0'>" + data.date + "</p>";
-			s += "<p class='mb-0 unread'>" + data.message + "</p>";
-			s += "</a></li>";
-			if (isNaN(a)) {
-
-				$("#bell-num").html("<span class='badge rounded-pill position-absolute top-0 start-100 translate-middle bg-danger' id='ntf-num'>1</span>");
-			} else if (a < 99) {
-
-				ntfNum.text(a + 1);
-			} else {
-				ntfNum.text("99+");
-			}
-			$("#bell-ntf").prepend(s);
-			$('#headerToast').text("Thông báo");
-			$('#toastMessage').html("<a href='" + data.url + "'><div class='notify-link'>" + data.message + "</div></a>");
-			const toast = new bootstrap.Toast($('#liveToast'));
-			toast.show();
-			break;
-		case "newResult":
-			if (isStart) {
-				$(".list-message").append(addMessage(data.linkAvatar, "", getTime(), "other-chat"));
-			}
-			/*if(data.isStop){
-				console.log("Stop")
-			}*/
-			if (!data.isStop && isStart) {
-				isStart = false;
-			}
-			if (data.isStop) {
-				isStart = true;
-			}
-			if (data.value == null) {
-				result = "";
+var soc;
+function connect(){
+	 soc = new WebSocket("ws://localhost:8088/websocket");
+	//15.235.131.9
+	//localhost
+	soc.onopen = function() {
+		console.log("connected");
+		auth(getCookie("phuot.token"));
+	};
+	
+	soc.onmessage = function(response) {
+		let data = JSON.parse(response.data);
+		switch (data.type) {
+			case "newNotification":
+				let ntfNum = $("#ntf-num");
+				let a = parseInt(ntfNum.text());
+				let s = "<li>";
+				s += "<a class='dropdown-item text-wrap' href='" + data.url + "'>";
+				s += "<p class='small mb-0'>" + data.date + "</p>";
+				s += "<p class='mb-0 unread'>" + data.message + "</p>";
+				s += "</a></li>";
+				if (isNaN(a)) {
+	
+					$("#bell-num").html("<span class='badge rounded-pill position-absolute top-0 start-100 translate-middle bg-danger' id='ntf-num'>1</span>");
+				} else if (a < 99) {
+	
+					ntfNum.text(a + 1);
+				} else {
+					ntfNum.text("99+");
+				}
+				$("#bell-ntf").prepend(s);
+				$('#headerToast').text("Thông báo");
+				$('#toastMessage').html("<a href='" + data.url + "'><div class='notify-link'>" + data.message + "</div></a>");
+				const toast = new bootstrap.Toast($('#liveToast'));
+				toast.show();
 				break;
-			} else {
-				result += data.value;
-			}
-			$(".text-message").last().html(marked.parse(result.replace(/^null/g, "")));
-			Prism.highlightAll();
-			break;
-		case "newMessage":
-			let msgNum = $("#msg-num");
-			let num = parseInt(msgNum.text());
-			let newChatNode = document.querySelector("#chat-" + data.user);
-
-			if (newChatNode == null) {
-				$("#chat-container").prepend(addNewMessage(data, "unread"));
-			} else {
-				let pr = newChatNode.parentNode;
-				pr.insertBefore(newChatNode, pr.firstChild);
-				newChatNode.querySelector(".preview-message").classList.add("unread");
-				newChatNode.querySelector(".preview-message").innerText = data.message;
-				newChatNode.querySelector(".small").innerText = data.time;
-
-			}
-			if (isNaN(num)) {
-				$("#bell-msg").html("<span class='badge rounded-pill position-absolute top-0 start-100 translate-middle bg-danger' id='msg-num'>1</span>");
-			} else if (num < 99) {
-				msgNum.text(document.querySelector(".chat-container").querySelectorAll(".unread").length);
-			} else {
-				msgNum.text("99+");
-			}
-			break;
-		case "chat":
-			$(".list-message").append(addMessage(data.avatar, data.message, data.time, data.sender));
-			addReadedMessage(data);
-
-
+			case "newResult":
+				if (isStart) {
+					$(".list-message").append(addMessage(data.linkAvatar, "", getTime(), "other-chat"));
+				}
+				/*if(data.isStop){
+					console.log("Stop")
+				}*/
+				if (!data.isStop && isStart) {
+					isStart = false;
+				}
+				if (data.isStop) {
+					isStart = true;
+				}
+				if (data.value == null) {
+					result = "";
+					break;
+				} else {
+					result += data.value;
+				}
+				$(".text-message").last().html(marked.parse(result.replace(/^null/g, "")));
+				Prism.highlightAll();
+				break;
+			case "newMessage":
+				let msgNum = $("#msg-num");
+				let num = parseInt(msgNum.text());
+				let newChatNode = document.querySelector("#chat-" + data.user);
+	
+				if (newChatNode == null) {
+					$("#chat-container").prepend(addNewMessage(data, "unread"));
+				} else {
+					let pr = newChatNode.parentNode;
+					pr.insertBefore(newChatNode, pr.firstChild);
+					newChatNode.querySelector(".preview-message").classList.add("unread");
+					newChatNode.querySelector(".preview-message").innerText = data.message;
+					newChatNode.querySelector(".small").innerText = data.time;
+	
+				}
+				if (isNaN(num)) {
+					$("#bell-msg").html("<span class='badge rounded-pill position-absolute top-0 start-100 translate-middle bg-danger' id='msg-num'>1</span>");
+				} else if (num < 99) {
+					msgNum.text(document.querySelector(".chat-container").querySelectorAll(".unread").length);
+				} else {
+					msgNum.text("99+");
+				}
+				break;
+			case "chat":
+				$(".list-message").append(addMessage(data.avatar, data.message, data.time, data.sender));
+				addReadedMessage(data);
+	
+	
+		}
+	}
+	soc.onerror = function() {
+		console.log("failed");
+	}
+	
+	soc.onclose = function() {
+		console.log("closed");
+		console.log("reconnect...");
+		setTimeout(function() {
+	      connect();
+	    }, 1000);
 	}
 }
-soc.onerror = function() {
-	console.log("failed");
-}
-
-soc.onclose = function() {
-	console.log("closed");
-}
+connect();
 
 function auth(token) {
 	soc.send(JSON.stringify({ "type": "auth", "token": token, "path": location.pathname }));

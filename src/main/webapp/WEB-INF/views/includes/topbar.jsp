@@ -17,7 +17,6 @@
 					<input class="search" type="text" name="find"
 						placeholder="Tìm kiếm" />
 					<button type="submit" name="go" class="search-btn">
-						<img src="/resources/images/search_icon.png">
 					</button>
 				</div>
 			</form>
@@ -145,6 +144,7 @@
 
 						<li><a class="dropdown-item" href="./notification">Thông
 								báo</a></li>
+						<li><a class="dropdown-item" href="/nhom">Nhóm</a></li>
 						<li class="log"><a class="dropdown-item" href="./search">Tìm
 								kiếm</a></li>
 

@@ -50,10 +50,10 @@ public class PostDao {
 		}
 	}
 
-	public List<Post> GetPostsLimit(int start, int limit) {
+	public List<Post> GetPostsLimit(int manhom, String type, int start, int limit) {
 		try {
-			return jdbcTemplate.query("select * from baiviet order by ngaytao asc limit ?, ?",
-					new Object[] { start, limit }, new int[] { Types.INTEGER, Types.INTEGER }, new PostMapper());
+			return jdbcTemplate.query("select * from baiviet where manhom = ? order by ngaytao " +type+ " limit ?, ?",
+					new Object[] { manhom, start, limit }, new int[] { Types.INTEGER, Types.INTEGER, Types.INTEGER }, new PostMapper());
 		} catch (DataAccessException e) {
 			return null;
 		}
@@ -88,10 +88,10 @@ public class PostDao {
 	}
 	
 
-	public List<Post> ByGroupLimit(int manhom, int limit) {
+	public List<Post> ByGroupLimit(int manhom, int start, int limit) {
 		try {
-			return jdbcTemplate.query("select * from baiviet where manhom = ? order by ngaytao desc limit ?",
-					new Object[] { manhom, limit }, new int[] {Types.INTEGER, Types.INTEGER },
+			return jdbcTemplate.query("select * from baiviet where manhom = ? order by ngaytao desc limit ?, ?",
+					new Object[] { manhom, start, limit }, new int[] {Types.INTEGER, Types.INTEGER, Types.INTEGER },
 					new PostMapper());
 		} catch (DataAccessException e) {
 			return null;
@@ -106,6 +106,15 @@ public class PostDao {
 			return null;
 		}
 	}
+	public List<Post> PinOfGroup(int manhom) {
+		try {
+			return jdbcTemplate.query("select * from baiviet where manhom = ? and ghim = true order by ngaytao desc limit 3", new Object[] { manhom },
+					new int[] { Types.INTEGER }, new PostMapper());
+		} catch (DataAccessException e) {
+			return null;
+		}
+	}
+
 
 	public int DeletePostByID(long id) {
 		return jdbcTemplate.update("delete from baiviet where mabaiviet = ?", id);
@@ -124,6 +133,9 @@ public class PostDao {
 				post.getNoidung(), post.getManhom(), post.getMabaiviet());
 	}
 
+	public int PinStatus(long mabaiviet, boolean sts) {
+		return jdbcTemplate.update("update baiviet set ghim = ? where mabaiviet = ?", sts, mabaiviet);
+	}
 	public List<Post> FindLikePost(String taikhoan, String id, String tieude, String noidung, String nhom) {
 		String sql = "select * from baiviet where taikhoan like ? and mabaiviet like ? and tieude like ? and noidung like ? and manhom like ?";
 		try {
@@ -151,28 +163,33 @@ public class PostDao {
 	
 	
 	public Post getHotPost(int manhom) {
-		String sql = "SELECT baiviet.*, COUNT(luotthich.maluotthich) AS total_likes "
-				+ "FROM baiviet "
-				+ "INNER JOIN luotthich ON baiviet.mabaiviet = luotthich.mabaiviet and baiviet.manhom = ? "
-				+ "GROUP BY baiviet.mabaiviet "
-				+ "ORDER BY total_likes DESC "
-				+ "LIMIT 1;";
 		try {
-			return jdbcTemplate.queryForObject(sql, new Object[] {manhom}, new int[] {Types.INTEGER}, new PostMapper());
-		}catch (DataAccessException e) {
+			return getCustom("luotthich", "desc", manhom, 0, 1).get(0);
+		}catch (Exception e) {
 			return null;
 		}
 	}
-	public Post getExaltedPost(int manhom) {
-		String sql = "SELECT baiviet.*, COUNT(binhluan.mabinhluan) AS total_comments "
+	
+	public List<Post> getCustom(String option, String type, int manhom, int start, int limit){
+
+		String sql = "SELECT baiviet.*, COUNT(" + option + ".ma" + option + ") AS total_comments "
 				+ "FROM baiviet "
-				+ "INNER JOIN binhluan ON baiviet.mabaiviet = binhluan.mabaiviet and baiviet.manhom = ? "
-				+ "GROUP BY baiviet.mabaiviet "
-				+ "ORDER BY total_comments DESC "
-				+ "LIMIT 1;";
+				+ "INNER JOIN "+option+" ON baiviet.mabaiviet = " + option + ".mabaiviet and baiviet.manhom = " + manhom
+				+ " GROUP BY baiviet.mabaiviet "
+				+ "ORDER BY total_comments " + type
+				+ " LIMIT "+start+", "+limit+";";
 		try {
-			return jdbcTemplate.queryForObject(sql, new Object[] {manhom}, new int[] {Types.INTEGER}, new PostMapper());
-		}catch (DataAccessException e) {
+			return jdbcTemplate.query(sql, new PostMapper());
+			
+		} catch (DataAccessException e) {
+			return null;
+		}
+		
+	}
+	public Post getExaltedPost(int manhom) {
+		try {
+			return getCustom("binhluan", "desc", manhom, 0, 1).get(0);
+		}catch (Exception e) {
 			return null;
 		}
 	}
@@ -180,8 +197,8 @@ public class PostDao {
 	private class PostMapper implements RowMapper<Post> {
 		@Override
 		public Post mapRow(ResultSet rs, int rowNum) throws SQLException {
-			Post post = new Post(rs.getLong(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getInt(5),
-					rs.getString(6));
+			Post post = new Post(rs.getLong(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getInt(5), rs.getBoolean(6),
+					rs.getString(7));
 			post.setCountLike(BaseController.GetInstance().likeDao.GetTotalLikePost(rs.getLong(1)));
 			post.setCountComment(BaseController.GetInstance().commentDao.GetTotalComment(rs.getLong(1)));
 			post.setUser(BaseController.GetInstance().userDao.findUserByUserName(rs.getString(4)));

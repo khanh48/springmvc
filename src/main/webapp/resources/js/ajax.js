@@ -75,7 +75,9 @@ function loadComment(id) {
 			limit: 10
 		},
 		success: function(response) {
-			if (response.length < 10) {
+			if (response.length >= 10) {
+				$("#loadMoreCmt").show();
+			}else{
 				$("#loadMoreCmt").hide();
 			}
 			$.each(response, function(index, item) {
@@ -158,7 +160,9 @@ function loadPost(uid) {
 			uid: uid
 		},
 		success: function(response) {
-			if (response.length < 10) {
+			if (response.length >= 10) {
+				$("#loadMore").show();
+			}else{
 				$("#loadMore").hide();
 			}
 			$.each(response, function(index, item) {
@@ -169,6 +173,85 @@ function loadPost(uid) {
 	});
 }
 
+
+function loadPostWithSort(gid, reset) {
+	let sortOption = $('input[name=sortting]:checked', '#sortting').val();
+	let isAscending = $("#ascendingCbx").is(":checked");
+	
+	if(reset == true){
+		$("#listPosts").html("");
+	}
+	var start = $("#listPosts > div").length;
+	$.ajax({
+		type: "GET",
+		url: "/loadPostSortting",
+		data: {
+			gid: gid,
+			sortOption: sortOption,
+			isAscending: isAscending,
+			start: start,
+			limit: 10,
+			reset: reset
+		},
+		success: function(response) {
+			$.each(response, function(index, item) {
+				$("#listPosts").append(item);
+			})
+			removeControl();
+			if (response.length >= 10) {
+				$("#loadMore").show();
+			}else{
+				$("#loadMore").hide();
+			}
+		}
+	});
+}
+
+function editGroup(e){
+	e.classList.replace("btn-edit","btn-save");
+	e.setAttribute("onclick","saveGroup(this);");
+	$("#group-description-edit").val($("#group-description").text());
+	$("#group-description").hide();
+	$("#group-description-edit").show();
+	
+}
+
+function saveGroup(e){
+	e.classList.replace("btn-save","btn-edit");
+	e.setAttribute("onclick","editGroup(this);");
+	$("#group-description").show();
+	$("#group-description-edit").hide();
+	$.ajax({
+		type: "GET",
+		url: "/editGroup",
+		data: {
+			id: e.value,
+			mota: $("#group-description-edit").val()
+		},
+		success: function(response) {
+			$("#group-description").text(response.result);
+		}
+	});
+}
+
+function pinPost(e, id) {
+	$.ajax({
+		type: "GET",
+		url: "/pinPost",
+		data: {
+			id: id
+		},
+		success: function(response) {
+			console.log(response);
+			if(response == "pinned"){
+				e.classList.replace("btn-pin","btn-unpin");
+			}
+			else if(response == "unpinned"){
+				e.classList.replace("btn-unpin","btn-pin");
+			}
+		}
+	});
+}
 
 function searchToChat(input) {
 	if(input == "") {
@@ -220,6 +303,8 @@ function findPost() {
 }
 
 $(document).ready(function() {
+	
+	
 	$("#searchToChat").on("input keyup", function(e) {
 		searchToChat($(this).val());
 	});

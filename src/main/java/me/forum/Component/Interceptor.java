@@ -63,7 +63,7 @@ public class Interceptor implements HandlerInterceptor {
 		List<Post> groups = postDao.getTopList();
 		List<List<Post>> allgroup = new ArrayList<>();
 		for (Post post : groups) {
-			allgroup.add(postDao.ByGroupLimit(post.getManhom(), 3));
+			allgroup.add(postDao.ByGroupLimit(post.getManhom(), 0, 3));
 		}
 		session.setAttribute("bestgroups", allgroup);
 	}
