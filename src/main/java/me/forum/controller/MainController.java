@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import me.forum.Component.JwtProvider;
@@ -89,9 +90,26 @@ public class MainController extends BaseController {
 	}
 
 	@RequestMapping(value = { "/thong-bao", "/notification" })
-	public ModelAndView notificationsPage(HttpSession session) {
+	public ModelAndView notificationsPage(@RequestParam(name = "makeAsRead", required = false) Object ids,
+			@RequestParam(name = "deleteNotifications", required = false) Object dn, HttpSession session) {
 
 		mav.setViewName("notification");
+		User user = (User) session.getAttribute("userID");
+		boolean flag = false;
+
+		if(user == null) return mav;
+		
+		if(ids != null) {
+			flag = true;
+			notificationDao.MakeAsReadAll(user.getTaikhoan());
+		}
+		if(dn != null) {
+			flag = true;
+			notificationDao.RemoveReaded(user.getTaikhoan());
+		}
+		if(flag) {
+			mav.setViewName("redirect:/thong-bao");
+		}
 		return mav;
 	}
 

@@ -1,6 +1,5 @@
 
 var result = "";
-var isStart = true;
 var soc;
 function connect(){
 	 soc = new WebSocket("ws://localhost:8088/websocket");
@@ -38,26 +37,18 @@ function connect(){
 				toast.show();
 				break;
 			case "newResult":
-				if (isStart) {
+				if (data.isStart) {
 					$(".list-message").append(addMessage(data.linkAvatar, "", getTime(), "other-chat"));
 				}
 				/*if(data.isStop){
 					console.log("Stop")
 				}*/
-				if (!data.isStop && isStart) {
-					isStart = false;
-				}
-				if (data.isStop) {
-					isStart = true;
-				}
-				if (data.value == null) {
-					result = "";
-					break;
-				} else {
-					result += data.value;
-				}
+				result += data.value;
 				$(".text-message").last().html(marked.parse(result.replace(/^null/g, "")));
 				Prism.highlightAll();
+				if(data.isStop){
+					result = "";
+				}
 				break;
 			case "newMessage":
 				let msgNum = $("#msg-num");

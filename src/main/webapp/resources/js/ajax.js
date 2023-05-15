@@ -113,6 +113,18 @@ function delComment(id) {
 		}
 	});
 }
+function deleteNotification(id) {
+	$.ajax({
+		type: "POST",
+		url: "/deleteNofity",
+		data: { id: id },
+		success: function(response) {
+			if (response == "success") {
+				$("#ntf-"+id).text("Đã xóa thông báo.");
+			}
+		}
+	});
+}
 
 function findUser() {
 	var taikhoan = $("#fbID").val();
@@ -145,7 +157,6 @@ function stopBotSession() {
 			stopBot: "true"
 		},
 		success: function(response) {
-			isStart = true;
 		}
 	});
 }

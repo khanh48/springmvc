@@ -25,14 +25,15 @@ public class CheckStatus {
 		Set<Entry<String, WebSocketSession>> allUser = UserHandler.GetInstance().GetAllUsers().entrySet();
 		Iterator<Entry<String, WebSocketSession>> iterators = allUser.iterator();
 		while (iterators.hasNext()) {
+			
 			Entry<String, WebSocketSession> session = iterators.next();
 			User user = userDao.findUserByUserName(session.getKey());
-			if (!session.getValue().isOpen()) {
+			if (session.getValue().isOpen()) {
+				user.setTructuyen(true);
+			} else {
 				user.setTructuyen(false);
 				userDao.SetLastLogin(user.getTaikhoan());
 				iterators.remove();
-			} else {
-				user.setTructuyen(true);
 			}
 
 		}

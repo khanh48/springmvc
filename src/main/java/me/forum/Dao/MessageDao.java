@@ -22,7 +22,7 @@ public class MessageDao {
 	JdbcTemplate jdbcTemplate;
 
 	public List<Message> getAllMessage(String user, String user1) {
-		String sql = "select * from tinnhan where (nguoinhan = ? and nguoigui = ?) or (nguoinhan = ? and nguoigui = ?) order by ngaytao desc";
+		String sql = "select * from tinnhan where (nguoinhan = ? and nguoigui = ?) or (nguoinhan = ? and nguoigui = ?) order by matinnhan desc";
 		return jdbcTemplate.query(sql, new Object[] { user, user1, user1, user },
 				new int[] { Types.CHAR, Types.CHAR, Types.CHAR, Types.CHAR }, new MessageMapping());
 	}
@@ -34,7 +34,7 @@ public class MessageDao {
 				new int[] { Types.CHAR }, new MessageMapping());
 	}
 	public List<Message> getLimitMessage(String user, String user1, int start, int limit) {
-		String sql = "select * from tinnhan where (nguoinhan = ? and nguoigui = ?) or (nguoinhan = ? and nguoigui = ?) order by ngaytao desc limit ?, ?";
+		String sql = "select * from tinnhan where (nguoinhan = ? and nguoigui = ?) or (nguoinhan = ? and nguoigui = ?) order by matinnhan desc limit ?, ?";
 		return jdbcTemplate.query(sql, new Object[] { user, user1, user1, user, start, limit},
 				new int[] { Types.CHAR, Types.CHAR, Types.CHAR, Types.CHAR, Types.INTEGER, Types.INTEGER }, new MessageMapping());
 	}

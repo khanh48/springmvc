@@ -45,7 +45,6 @@ public class UserHandler {
 				clients.get(name).sendMessage(textMessage);
 		} catch (Exception e) {
 			System.out.println("Socket send: " + e.getMessage());
-			clients.remove(name);
 		}
 	}
 

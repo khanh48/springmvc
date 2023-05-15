@@ -21,12 +21,12 @@ import me.forum.WebSocketSetup.UserHandler;
 
 public class ChatBot {
 	//bQ1qIbHMvw94j8NmkjTmT3BlbkFJHAEMc7eqcqvcDDIUW1bm
-	final static String token = "GxOI3NCNi1MUzx6OrIpnT3BlbkFJm9SqYc50ThV8sb1jdETS";
+	final static String token = "";
 	OpenAiService service;
 	final List<ChatMessage> messages;
 	User user, chatBot;
 
-	boolean isStoped;
+	boolean isStoped, startReason, stopReason;;
 
 	public ChatBot(User user) {
 		this.user = user;
@@ -46,6 +46,8 @@ public class ChatBot {
 	}
 
 	public void request(String msg) {
+		startReason = true;
+		stopReason = false;
 		ChatMessage userMessage = new ChatMessage(ChatMessageRole.USER.value(), msg);
 		messages.add(userMessage);
 		ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest.builder().model("gpt-3.5-turbo")
@@ -54,26 +56,44 @@ public class ChatBot {
 
 			@Override
 			public void accept(Throwable t) throws Exception {
-				System.out.println("Oops, Error: "+ t.getMessage());
+				System.out.println(t.getMessage().hashCode() + " Oops, Error: "+ t.getMessage());
 				stop();
+				
 			}
 		}).blockingForEach(new Response(user.getTaikhoan()));
 	}
 
 	public void stop() {
+		String response = "Phiên trò chuyện đã dừng, vui lòng bắt đầu phiên mới.";
+		stop(response);
+	}
+	
+	public void stop(String message) {
 		service.shutdownExecutor();
 		isStoped = true;
+		startReason = stopReason = true;
+		SendMessage(user.getTaikhoan(), message);
+		BaseController.GetInstance().messageDao.AddMessage(chatBot.getTaikhoan(), user.getTaikhoan(), message);
+		BaseController.GetInstance().messageDao.makeAsRead(chatBot.getTaikhoan(), user.getTaikhoan());
 		System.out.println(user.getTaikhoan() + " stoped");
 	}
 
 	public boolean isStoped() {
 		return isStoped;
 	}
-
+	
+	public void SendMessage(String user, String message){
+		JSONObject json = new JSONObject();
+		json.put("type", "newResult");
+		json.put("value", message);
+		json.put("linkAvatar", chatBot.getAnhdaidien());
+		json.put("isStop", stopReason);
+		json.put("isStart", startReason);
+		UserHandler.GetInstance().send(user, json.toString());
+	}
 	class Response implements Consumer<ChatCompletionChunk> {
 		String user;
 		String response;
-
 		public Response(String user) {
 			this.user = user;
 			response = "";
@@ -84,21 +104,17 @@ public class ChatBot {
 			if (isStoped)
 				return;
 			ChatCompletionChoice choice = t.getChoices().get(0);
-			JSONObject json = new JSONObject();
-			json.put("isStop", false);
 			if ("stop".equals(choice.getFinishReason()) || "lenght".equals(choice.getFinishReason())) {
 				response = response.replaceAll("^null", "");
 				messages.add(new ChatMessage(ChatMessageRole.ASSISTANT.value(), response));
 				BaseController.GetInstance().messageDao.AddMessage(chatBot.getTaikhoan(), user, response);
 				BaseController.GetInstance().messageDao.makeAsRead(chatBot.getTaikhoan(), user);
 				response = "";
-				json.put("isStop", true);
+				stopReason = true;
 			}
-			json.put("type", "newResult");
-			json.put("value", choice.getMessage().getContent());
-			json.put("linkAvatar", chatBot.getAnhdaidien());
-
-			UserHandler.GetInstance().send(user, json.toString());
+			SendMessage(user, choice.getMessage().getContent());
+			if(startReason) 
+				startReason = false;
 			response += choice.getMessage().getContent();
 
 		}

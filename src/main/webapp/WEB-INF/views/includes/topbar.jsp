@@ -142,7 +142,7 @@
 						aria-labelledby="navbarDropdownMenuAvatar">
 						<li><a class="dropdown-item" href="/ho-so">Trang cá nhân</a></li>
 
-						<li><a class="dropdown-item" href="./notification">Thông
+						<li><a class="dropdown-item" href="/thong-bao">Thông
 								báo</a></li>
 						<li><a class="dropdown-item" href="/nhom">Nhóm</a></li>
 						<li class="log"><a class="dropdown-item" href="./search">Tìm

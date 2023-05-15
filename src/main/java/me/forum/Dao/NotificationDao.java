@@ -57,10 +57,32 @@ public class NotificationDao {
 				notification.getMathongbao(), notification.getNguoigui(), notification.getNoidung(),
 				notification.getNguoinhan(), notification.getUrl());
 	}
+	public int RemoveReaded(String user) {
+		try {
+			return jdbcTemplate.update("delete from thongbao where trangthai = 1 and nguoinhan = ?", user);
+		} catch (Exception e) {
+			return 0;
+		}
+	}
+	public int Remove(long id) {
+		try {
+			return jdbcTemplate.update("delete from thongbao where mathongbao = ?", id);
+		} catch (Exception e) {
+			return 0;
+		}
+	}
 
 	public int MakeAsRead(long id) {
 		try {
 			return jdbcTemplate.update("update thongbao set trangthai = 1 where mathongbao = ?", id);
+		} catch (Exception e) {
+			return 0;
+		}
+	}
+
+	public int MakeAsReadAll(String user) {
+		try {
+			return jdbcTemplate.update("update thongbao set trangthai = 1 where nguoinhan = ?", user);
 		} catch (Exception e) {
 			return 0;
 		}

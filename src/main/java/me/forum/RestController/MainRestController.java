@@ -141,6 +141,20 @@ public class MainRestController {
 		}
 		return result;
 	}
+
+	@RequestMapping(value = "/deleteNofity", method = RequestMethod.POST)
+	public String updateNofity(@RequestParam long id, HttpSession session) {
+		String result = "fail";
+		User user = (User) session.getAttribute("userID");
+		if(user == null || !notificationDao.GetById(id).getNguoinhan().equals(user.getTaikhoan()))
+			return result;
+		
+		if(notificationDao.Remove(id) > 0) {
+			result = "success";
+		}
+		
+		return result;
+	}
 	
 	@RequestMapping(value = "/changePass", method = RequestMethod.POST)
 	public Map<String, String> changePass(HttpSession session, HttpServletRequest request) {
