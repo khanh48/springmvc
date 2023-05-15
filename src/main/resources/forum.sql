@@ -21,7 +21,7 @@ create table if not exists nguoidung(
     anhdaidien varchar(250) DEFAULT "/resources/images/default_avatar.png",
     lastlogin bigint,
     tructuyen boolean not null default false,
-    ngaytao timestamp not null default current_timestamp,
+    ngaytao datetime not null default now(),
 	constraint pk_nguoidung primary key(taikhoan),
     constraint fk_user_chucvu foreign key(machucvu) references chucvu(machucvu) on delete cascade
 );
@@ -30,7 +30,7 @@ create table if not exists nhom(
 	manhom int not null auto_increment,
     tennhom nvarchar(150) not null,
     mota nvarchar(200) not null,
-    ngaytao timestamp not null default current_timestamp,
+    ngaytao datetime not null default now(),
 	constraint pk_nhom primary key(manhom)
 );
 create table if not exists baiviet(
@@ -40,7 +40,7 @@ create table if not exists baiviet(
     taikhoan char(13) not null,
     manhom int not null,
     ghim boolean default 0,
-    ngaytao timestamp not null default current_timestamp,
+    ngaytao datetime not null default now(),
     constraint pk_posts primary key(mabaiviet),
     constraint fk_posts foreign key(taikhoan) references nguoidung(taikhoan) on delete cascade,
     constraint fk_posts_nhom foreign key(manhom) references nhom(manhom) on delete cascade
@@ -51,7 +51,7 @@ create table if not exists binhluan(
     noidung text not null,
     taikhoan char(13) not null,
     mabaiviet bigint not null,
-    ngaytao timestamp not null default current_timestamp,
+    ngaytao datetime not null default now(),
 	constraint pk_comments primary key(mabinhluan),
     constraint fk_comments_user foreign key(taikhoan) references nguoidung(taikhoan) on delete cascade,
     constraint fk_comments_post foreign key(mabaiviet) references baiviet(mabaiviet) on delete cascade
@@ -75,7 +75,7 @@ create table if not exists thongbao(
     noidung nvarchar(200) not null,
     nguoinhan char(13) not null,
 	`url` varchar(200),
-    ngaytao timestamp not null default current_timestamp,
+    ngaytao datetime not null default now(),
 	constraint pk_notify primary key(mathongbao),
     constraint fk_notify_from foreign key(nguoigui) references nguoidung(taikhoan) on delete cascade,
     constraint fk_notify_to foreign key(nguoinhan) references nguoidung(taikhoan) on delete cascade
@@ -87,7 +87,7 @@ create table if not exists hinhanh(
 	`url` varchar(200) not null,
     mabaiviet bigint,
     mabinhluan int,
-    ngaytao timestamp not null default current_timestamp,
+    ngaytao datetime not null default now(),
 	constraint pk_images primary key(mahinhanh),
     constraint fk_images_owner foreign key(taikhoan) references nguoidung(taikhoan) on delete cascade,
     constraint fk_images_post foreign key(mabaiviet) references baiviet(mabaiviet) on delete cascade,
@@ -100,7 +100,7 @@ create table if not exists tinnhan(
     nguoinhan char(13) not null,
     noidung text not null,
     trangthai boolean not null default 0,
-    ngaytao timestamp not null default current_timestamp,
+    ngaytao datetime not null default now(),
 	constraint pk_messages primary key(matinnhan),
     constraint fk_messages_from foreign key(nguoigui) references nguoidung(taikhoan) on delete cascade,
     constraint fk_messages_to foreign key(nguoinhan) references nguoidung(taikhoan) on delete cascade

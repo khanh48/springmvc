@@ -33,7 +33,6 @@ public class CheckStatus {
 			} else {
 				user.setTructuyen(false);
 				userDao.SetLastLogin(user.getTaikhoan());
-				iterators.remove();
 			}
 
 		}

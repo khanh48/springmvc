@@ -37,13 +37,7 @@ public class SocketHandler extends TextWebSocketHandler {
 		if (!authentication(token))
 			return;
 		User user = userDao.findUserByUserName(jwtProvider.extractUsername(token));
-
 		switch (json.getString("type")) {
-		case "sendMessage":
-			if (handler.containsClient(json.getString("name"))) {
-				handler.send(json.getString("name"), "hihi");
-			}
-			break;
 		case "requestChat":
 			if (!bots.containsKey(user.getTaikhoan()) || bots.get(user.getTaikhoan()).isStoped()) {
 				bots.put(user.getTaikhoan(), new ChatBot(user));

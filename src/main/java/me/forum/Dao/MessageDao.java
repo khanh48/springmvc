@@ -26,10 +26,17 @@ public class MessageDao {
 		return jdbcTemplate.query(sql, new Object[] { user, user1, user1, user },
 				new int[] { Types.CHAR, Types.CHAR, Types.CHAR, Types.CHAR }, new MessageMapping());
 	}
+	
+
+	public List<Message> getMotto() {
+		String sql = "select * from tinnhan where nguoinhan = ? and nguoigui = ? and noidung not like ?";
+		return jdbcTemplate.query(sql, new Object[] { "chatbot", "chatbot", "%:%" },
+				new int[] { Types.CHAR, Types.CHAR, Types.CHAR }, new MessageMapping());
+	}
 	public List<Message> getMessageOfUser(String user) {
 		String sql = "SELECT * FROM tinnhan "
-				+ "WHERE ngaytao IN (SELECT MAX(ngaytao) FROM tinnhan WHERE nguoinhan = ? GROUP BY nguoigui) "
-				+ "ORDER BY ngaytao DESC;";
+				+ "WHERE matinnhan IN (SELECT MAX(matinnhan) FROM tinnhan WHERE nguoinhan = ? GROUP BY nguoigui) "
+				+ "ORDER BY matinnhan DESC;";
 		return jdbcTemplate.query(sql, new Object[] { user},
 				new int[] { Types.CHAR }, new MessageMapping());
 	}

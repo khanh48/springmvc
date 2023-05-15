@@ -38,11 +38,16 @@ function connect(){
 				break;
 			case "newResult":
 				if (data.isStart) {
+					console.log("create");
 					$(".list-message").append(addMessage(data.linkAvatar, "", getTime(), "other-chat"));
 				}
 				/*if(data.isStop){
 					console.log("Stop")
 				}*/
+				if(data.value == null){
+					result = "";
+					break;
+				}
 				result += data.value;
 				$(".text-message").last().html(marked.parse(result.replace(/^null/g, "")));
 				Prism.highlightAll();

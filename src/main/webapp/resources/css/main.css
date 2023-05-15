@@ -293,7 +293,7 @@ body::-webkit-scrollbar-thumb:hover {
 }
 
 .info {
-	height: 200px;
+	height: 230px;
 	margin-top: 5px;
 	overflow: hidden;
 }
@@ -359,7 +359,7 @@ div.notify::-webkit-scrollbar-thumb:hover {
 }
 
 .group {
-	height: 100px;
+	height: 90px;
 	background-color: rgb(149, 200, 218);
 	border-radius: 15px;
 	margin-top: 5px;

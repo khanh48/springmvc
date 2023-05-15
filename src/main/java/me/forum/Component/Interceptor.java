@@ -2,6 +2,9 @@ package me.forum.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -54,6 +57,13 @@ public class Interceptor implements HandlerInterceptor {
 					unreadMessage++;
 				}
 			}
+			String input = messageDao.getMotto().get(GenerateInt(0, messageDao.getMotto().size() - 1)).getNoidung();
+			Pattern pattern = Pattern.compile("\\-\\s.*.\\.");
+			Matcher matcher = pattern.matcher(input);
+			if (matcher.find()) {
+			    String result = matcher.group();
+			    System.out.println(result);
+			}
 			session.setAttribute("listMessage", listMessage);
 			session.setAttribute("unreadMessage", unreadMessage);
 			session.setAttribute("unread", unread);
@@ -76,5 +86,11 @@ public class Interceptor implements HandlerInterceptor {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 		return true;
+	}
+	
+	static int GenerateInt(int min, int max) {
+		Random random = new Random();
+		int range = max - min + 1;
+		return random.nextInt(range) + min;
 	}
 }
