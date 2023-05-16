@@ -38,7 +38,7 @@ function connect(){
 				break;
 			case "newResult":
 				if (data.isStart) {
-					console.log("create");
+					result = "";
 					$(".list-message").append(addMessage(data.linkAvatar, "", getTime(), "other-chat"));
 				}
 				/*if(data.isStop){

@@ -172,6 +172,12 @@ public class MainController extends BaseController {
 		return mav;
 	}
 
+	@RequestMapping(value = { "/tim-kiem" })
+	public ModelAndView searchPage(HttpSession session) {
+		mav.setViewName("search");
+		
+		return mav;
+	}
 	@RequestMapping(value = "/logout")
 	public ModelAndView logout(HttpSession session) {
 		mav.setViewName("redirect:/");

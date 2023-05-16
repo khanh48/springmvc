@@ -69,8 +69,8 @@ public class ChatBot {
 	}
 	
 	public void stop(String message) {
-		service.shutdownExecutor();
 		isStoped = true;
+		service.shutdownExecutor();
 		startReason = stopReason = true;
 		SendMessage(user.getTaikhoan(), message);
 		BaseController.GetInstance().messageDao.AddMessage(chatBot.getTaikhoan(), user.getTaikhoan(), message);

@@ -39,6 +39,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     //lấy thông tin địa chỉ từ api thành json
     function getResults(query) {
+	//http://api.openweathermap.org/geo/1.0/reverse?lat=16.4637&lon=107.5909&limit=5&appid=2637a837694dd68e21a996ee176b3092
         fetch(`${api.base}/geo/1.0/direct?q=${query}&limit=5&appid=${api.key}`)
             .then(location => {
                 return location.json();
