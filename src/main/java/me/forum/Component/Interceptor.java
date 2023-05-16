@@ -35,6 +35,11 @@ public class Interceptor implements HandlerInterceptor {
 	@Autowired
 	PostDao postDao;
 
+
+    private static final long MIN_TIME = 1000L;
+    private static final String LOGIN_URL = "/login";
+    private static final String LAST_ACCESS_TIME = "lastAccessTime";
+    
 	public Interceptor() {
 	}
 
@@ -57,13 +62,14 @@ public class Interceptor implements HandlerInterceptor {
 					unreadMessage++;
 				}
 			}
+			/*
 			String input = messageDao.getMotto().get(GenerateInt(0, messageDao.getMotto().size() - 1)).getNoidung();
 			Pattern pattern = Pattern.compile("\\-\\s.*.\\.");
 			Matcher matcher = pattern.matcher(input);
 			if (matcher.find()) {
 			    String result = matcher.group();
 			    System.out.println(result);
-			}
+			}*/
 			session.setAttribute("listMessage", listMessage);
 			session.setAttribute("unreadMessage", unreadMessage);
 			session.setAttribute("unread", unread);
@@ -85,6 +91,21 @@ public class Interceptor implements HandlerInterceptor {
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+
+        final HttpSession session = request.getSession(true);
+
+        if (request.getRequestURI().equals(LOGIN_URL)) {
+            final long lastAccessTime = getLastAccessTime(session);
+            final long currentTime = System.currentTimeMillis();
+            final long elapsedTime = currentTime - lastAccessTime;
+
+            if (elapsedTime < MIN_TIME) {
+                //response.sendError(429, "Too many requests");
+                return false;
+            }
+            updateLastAccessTime(session, currentTime);
+        }
+		
 		return true;
 	}
 	
@@ -93,4 +114,13 @@ public class Interceptor implements HandlerInterceptor {
 		int range = max - min + 1;
 		return random.nextInt(range) + min;
 	}
+	
+	private long getLastAccessTime(final HttpSession session) {
+        final Long lastAccessTime = (Long) session.getAttribute(LAST_ACCESS_TIME);
+        return lastAccessTime != null ? lastAccessTime : 0L;
+    }
+
+    private void updateLastAccessTime(final HttpSession session, final long time) {
+        session.setAttribute(LAST_ACCESS_TIME, time);
+    }
 }

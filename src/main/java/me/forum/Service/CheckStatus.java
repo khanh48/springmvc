@@ -1,8 +1,6 @@
 package me.forum.Service;
 
-import java.util.Iterator;
 import java.util.Map.Entry;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -22,11 +20,8 @@ public class CheckStatus {
 
 	@Scheduled(fixedRate = 1000)
 	public void checkOffline() {
-		Set<Entry<String, WebSocketSession>> allUser = UserHandler.GetInstance().GetAllUsers().entrySet();
-		Iterator<Entry<String, WebSocketSession>> iterators = allUser.iterator();
-		while (iterators.hasNext()) {
+		for (Entry<String, WebSocketSession> session : UserHandler.GetInstance().GetAllUsers().entrySet()) {
 			
-			Entry<String, WebSocketSession> session = iterators.next();
 			User user = userDao.findUserByUserName(session.getKey());
 			if (session.getValue().isOpen()) {
 				user.setTructuyen(true);

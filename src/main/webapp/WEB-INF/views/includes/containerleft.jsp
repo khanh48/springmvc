@@ -12,6 +12,8 @@
 				<small>ID: ${userID.getTaikhoan() }</small>
 			</span>
 		</div>
+		<div id="citySelect">
+		</div>
 	</div>
 
 	<c:forEach items="${bestgroups }" var="group">

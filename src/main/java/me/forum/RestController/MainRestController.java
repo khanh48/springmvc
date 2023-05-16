@@ -194,11 +194,11 @@ public class MainRestController {
 	}
 
 	@RequestMapping(value = "/sendLike", method = RequestMethod.POST)
-	public Map<String, Object> like(@RequestParam long id, @RequestParam boolean isPost, @RequestParam String token,
-			@RequestParam String to) {
+	public Map<String, Object> like(@RequestParam long id, @RequestParam boolean isPost,
+			@RequestParam String to, HttpSession session) {
 
 		Map<String, Object> map = new HashMap<>();
-		User user = userDao.findUserByCrypt(token);
+		User user = (User) session.getAttribute("userID");
 		User toUser = userDao.findUserByUserName(to);
 		boolean liked;
 		int count = 0;

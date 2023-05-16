@@ -3,7 +3,6 @@ package me.forum.WebSocketSetup;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
@@ -12,7 +11,7 @@ import me.forum.Module.ChatBot;
 
 public class UserHandler {
 
-	private ConcurrentHashMap<String, WebSocketSession> clients = new ConcurrentHashMap<>();
+	private HashMap<String, WebSocketSession> clients = new HashMap<>();
 	private HashMap<Integer, WebSocketSession> chats = new HashMap<>();
 	public static HashMap<String, ChatBot> bots = new HashMap<>();
 	private List<WebSocketSession> allUser = new ArrayList<>();
@@ -31,10 +30,6 @@ public class UserHandler {
 		chats.put(id, session);
 	}
 
-	public void removeClient(String name) {
-		clients.remove(name);
-	}
-
 	public void removeClient(WebSocketSession session) {
 		allUser.remove(session);
 	}
@@ -42,8 +37,11 @@ public class UserHandler {
 	public void send(String name, String message) {
 		TextMessage textMessage = new TextMessage(message);
 		try {
-			if (clients.containsKey(name))
-				clients.get(name).sendMessage(textMessage);
+			if (clients.containsKey(name)) {
+				WebSocketSession session = clients.get(name);
+				if(session.isOpen())
+					session.sendMessage(textMessage);
+			}
 		} catch (Exception e) {
 			System.out.println("Socket send: " + e.getMessage());
 		}
@@ -52,7 +50,10 @@ public class UserHandler {
 	public void sendChat(String sender, String receiver, String message) throws Exception {
 		int id = merge(sender, receiver);
 		TextMessage textMessage = new TextMessage(message);
-		chats.get(id).sendMessage(textMessage);
+		WebSocketSession session = chats.get(id);
+		if(session.isOpen()) {
+			session.sendMessage(textMessage);
+		}
 
 	}
 
@@ -60,7 +61,7 @@ public class UserHandler {
 		return clients.containsKey(name);
 	}
 
-	public ConcurrentHashMap<String, WebSocketSession> GetAllUsers() {
+	public HashMap<String, WebSocketSession> GetAllUsers() {
 		return clients;
 	}
 

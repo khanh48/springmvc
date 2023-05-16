@@ -1,6 +1,5 @@
 
 function like(id, isPost, toUser) {
-	var token = getCookie("phuot.token");
 	var tagID = isPost ? "p" + id : "c" + id;
 	var tagLike = isPost ? "pl" + id : "cl" + id;
 	$.ajax({
@@ -9,7 +8,6 @@ function like(id, isPost, toUser) {
 		data: {
 			"id": id,
 			"isPost": isPost,
-			"token": token,
 			"to": toUser
 		},
 		success: function(respone) {
