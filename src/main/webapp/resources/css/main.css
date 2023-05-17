@@ -955,7 +955,13 @@ pre::-webkit-scrollbar {
 pre::-webkit-scrollbar-track {
 	background-color: transparent;
 }
-
+.select2-container--default .select2-results>.select2-results__options{
+	max-height: 100px;	
+}
+.weatherWidget{
+	height: 180px;
+	border: 1px solid black;
+}
 pre::-webkit-scrollbar-thumb {
 	background-color: #a9a9a9;
 	border-radius: 5px;

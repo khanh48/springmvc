@@ -16,10 +16,12 @@ C:\Users\ADMIN\eclipse-workspace-web\forum\src\main\java\me\forum\WebSocketSetup
 C:\Users\ADMIN\eclipse-workspace-web\forum\src\main\java\me\forum\Config\EncodingPostProcessor.java
 C:\Users\ADMIN\eclipse-workspace-web\forum\src\main\java\me\forum\Entity\Notification.java
 C:\Users\ADMIN\eclipse-workspace-web\forum\src\main\java\me\forum\Service\CheckStatus.java
+C:\Users\ADMIN\eclipse-workspace-web\forum\src\main\java\me\forum\Config\Base.java
 C:\Users\ADMIN\eclipse-workspace-web\forum\src\main\java\me\forum\Controller\ProfileController.java
 C:\Users\ADMIN\eclipse-workspace-web\forum\src\main\java\me\forum\Dao\NotificationDao.java
 C:\Users\ADMIN\eclipse-workspace-web\forum\src\main\java\me\forum\Entity\Group.java
 C:\Users\ADMIN\eclipse-workspace-web\forum\src\main\java\me\forum\Dao\PostDao.java
+C:\Users\ADMIN\eclipse-workspace-web\forum\src\main\java\me\forum\Service\Weather.java
 C:\Users\ADMIN\eclipse-workspace-web\forum\src\main\java\me\forum\Dao\MessageDao.java
 C:\Users\ADMIN\eclipse-workspace-web\forum\src\main\java\me\forum\Controller\PostController.java
 C:\Users\ADMIN\eclipse-workspace-web\forum\src\main\java\me\forum\Dao\ImageDao.java

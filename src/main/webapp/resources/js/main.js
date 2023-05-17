@@ -38,6 +38,7 @@ document.addEventListener("DOMContentLoaded", function() {
 			this.style.height = this.scrollHeight + 'px';
 		}
 	}
+	
 })
 
 const path = location.pathname.split("/");
@@ -139,20 +140,22 @@ function login() {
 	});
 	return false;
 }
-$(document).ready(function() {
-	removeControl();
-	
+function getCities(){
 	$.getJSON("/resources/json/province.json",function (data) {
 		let cbxCity = "<select id='cbxCity'>";
    		$.each(data, function (index, item) {
-        	cbxCity += `<option value='{"name":"${item.name}","lat":${item.lat},"lon":${item.lon}}'>${item.name}</option>`;
+        	cbxCity += `<option value='{"name":"${item.name}","lat":${item.lat},"lon":${item.lon}}'${index == 0?"selected":""}>${item.name}</option>`;
     	});
     	cbxCity += "</select>";
     	$("#citySelect").html(cbxCity);
     	$("#cbxCity").select2({
-			theme: 'bootstrap-5'
+			width: "100%"
 		});
 	});
+}
+
+$(document).ready(function() {
+	removeControl();
 	
 	if (isPC()) {
 		$(".chat-input").on("keydown", function(e) {

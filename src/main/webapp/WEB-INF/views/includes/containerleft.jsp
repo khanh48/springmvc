@@ -12,7 +12,12 @@
 				<small>ID: ${userID.getTaikhoan() }</small>
 			</span>
 		</div>
-		<div id="citySelect">
+		<div id="citySelect"></div>
+		<div class="weatherWidget">
+			<div class="text-center mt-2" id="nameCity">Hà Nội</div>
+			<div class="d-flex justify-content-center"><span style="height: 70px;width: 70px;" id="weatherImg"></span></div>
+			<div class="text-center fs-2" id="weatherTemp">37°C</div>
+			<div class="text-center" id="weatherRange">37° / 25°</div>
 		</div>
 	</div>
 

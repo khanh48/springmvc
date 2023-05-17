@@ -14,9 +14,11 @@ import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import me.forum.Component.JwtProvider;
@@ -34,6 +36,7 @@ import me.forum.Entity.Notification;
 import me.forum.Entity.Post;
 import me.forum.Entity.Rule;
 import me.forum.Entity.User;
+import me.forum.Service.Weather;
 import me.forum.WebSocketSetup.UserHandler;
 
 @RestController
@@ -376,6 +379,13 @@ public class MainRestController {
 		
 		map.put("type", "success");
 		return map;
+	}
+	
+	@GetMapping(value = "/getWeather",  produces = "application/json; charset=UTF-8")
+	@ResponseBody
+	public String getWeather(@RequestParam float lat, @RequestParam float lon, HttpSession session){
+		JSONObject json = new JSONObject(Weather.GetWeather(lat, lon));
+		return json.toString();
 	}
 
 	public static String encrypt(String input, long key) {

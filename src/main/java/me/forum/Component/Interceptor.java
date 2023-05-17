@@ -24,6 +24,7 @@ import me.forum.Entity.Message;
 import me.forum.Entity.Notification;
 import me.forum.Entity.Post;
 import me.forum.Entity.User;
+import me.forum.Service.Weather;
 
 @Component
 public class Interceptor implements HandlerInterceptor {
@@ -41,7 +42,7 @@ public class Interceptor implements HandlerInterceptor {
 
 	@Override
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object object, ModelAndView modelAndView) throws Exception {
-		HttpSession session = request.getSession();
+		HttpSession session = request.getSession(true);
 		User user = (User) session.getAttribute(Base.USER);
 		if (user != null) {
 			int unread = 0, unreadMessage = 0;
