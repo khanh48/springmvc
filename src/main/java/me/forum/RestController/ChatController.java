@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.socket.TextMessage;
 
+import me.forum.Config.Base;
 import me.forum.Dao.MessageDao;
 import me.forum.Dao.UserDao;
 import me.forum.Entity.Message;
@@ -37,7 +38,7 @@ public class ChatController {
 		String type = request.getParameter("type");
 		String message = request.getParameter("message");
 		User user, user1;
-		user = (User) session.getAttribute("userID");
+		user = (User) session.getAttribute(Base.USER);
 		user1 = userDao.findUserByUserName(toUser);
 		if (user == null || user1 == null)
 			return map;
@@ -77,7 +78,7 @@ public class ChatController {
 	public Map<String, String> stopSession(@RequestParam boolean stopBot, HttpSession session) {
 		HashMap<String, String> map = new HashMap<>();
 		User user;
-		user = (User) session.getAttribute("userID");
+		user = (User) session.getAttribute(Base.USER);
 		if (user == null)
 			return map;
 		UserHandler.bots.get(user.getTaikhoan()).stop();
@@ -88,11 +89,11 @@ public class ChatController {
 	public Map<String, Object> searchToChat(@RequestParam(name = "input") String input, HttpSession session) {
 		HashMap<String, Object> json, map = new HashMap<>();
 		User user;
-		user = (User) session.getAttribute("userID");
+		user = (User) session.getAttribute(Base.USER);
 		if (user == null)
 			return map;
 		
-		List<User> result = userDao.SearchUser(input);
+		List<User> result = userDao.SearchUser(input, 3);
 		List<HashMap<String, Object>> results = new ArrayList<>();
 		for (User user2 : result) {
 			if(!user2.equals(user)) {
@@ -117,7 +118,7 @@ public class ChatController {
 			HttpSession session) {
 		HashMap<String, Object> map = new HashMap<>();
 		User user, user2;
-		user = (User) session.getAttribute("userID");
+		user = (User) session.getAttribute(Base.USER);
 		user2 = userDao.findUserByUserName(uid);
 		if (user == null)
 			return map;

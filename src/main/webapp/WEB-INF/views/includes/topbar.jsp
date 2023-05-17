@@ -12,11 +12,11 @@
 			<a class="navbar-brand mt-lg-0" href="/"> <img
 				src="/resources/images/logo.png" height="50" alt="logo">
 			</a><i class="bi bi-bag-fill"></i>
-			<form method="get">
+			<form action="/tim-kiem" method="get">
 				<div class="ms-2 search-group">
-					<input class="search" type="text" name="find"
+					<input class="search" type="text" name="value"
 						placeholder="Tìm kiếm" />
-					<button type="submit" name="go" class="search-btn">
+					<button type="submit" name="type" value="0" class="search-btn">
 					</button>
 				</div>
 			</form>
@@ -135,7 +135,7 @@
 					<a class="dropdown" href="#" id="navbarDropdownMenuAvatar"
 						role="button" data-bs-toggle="dropdown"
 						data-bs-auto-close="outside" aria-expanded="false"> <img
-						src="${userID.anhdaidien }" class="rounded-circle" height="30"
+						src="${userID.getAnhdaidien() }" class="rounded-circle" height="30"
 						width="30" alt="avatar">
 					</a>
 					<ul class="dropdown-menu dropdown-menu-end"
@@ -145,7 +145,7 @@
 						<li><a class="dropdown-item" href="/thong-bao">Thông
 								báo</a></li>
 						<li><a class="dropdown-item" href="/nhom">Nhóm</a></li>
-						<li class="log"><a class="dropdown-item" href="./search">Tìm
+						<li class="log"><a class="dropdown-item" href="/tim-kiem">Tìm
 								kiếm</a></li>
 
 						<c:if test="${userID.getRank() >= 2 }">
@@ -158,7 +158,6 @@
 											viên</a></li>
 									<li><a class="dropdown-item" href="/quan-ly-bai-viet">Bài
 											viết</a></li>
-									<li><a class="dropdown-item" href="#">Phê duyệt</a></li>
 								</ul></li>
 						</c:if>
 

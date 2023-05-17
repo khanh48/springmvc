@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import me.forum.Config.Base;
 import me.forum.Entity.Post;
 import me.forum.Entity.User;
 @Controller
@@ -18,7 +19,7 @@ public class ManageController extends BaseController {
 	public ModelAndView managePage(HttpSession session, HttpServletRequest request) {
 
 		mav.setViewName("member_manage");
-		User user = (User) session.getAttribute("userID");
+		User user = (User) session.getAttribute(Base.USER);
 		if (user == null || user.getRank() < 2) {
 			mav.setViewName("redirect:/");
 			return mav;
@@ -32,7 +33,7 @@ public class ManageController extends BaseController {
 	public ModelAndView postsManagePage(HttpSession session, HttpServletRequest request) {
 
 		mav.setViewName("posts_manage");
-		User user = (User) session.getAttribute("userID");
+		User user = (User) session.getAttribute(Base.USER);
 		if (user == null || user.getRank() < 2) {
 			mav.setViewName("redirect:/");
 			return mav;
@@ -47,7 +48,7 @@ public class ManageController extends BaseController {
 	public ModelAndView userManage(@RequestParam(name = "checkbox", required = false) int[] checkbox,
 			@RequestParam(name = "chucvu") int[] chucvu, HttpServletRequest request, HttpSession session) {
 		mav.setViewName("redirect:/quan-ly");
-		User user = (User) session.getAttribute("userID");
+		User user = (User) session.getAttribute(Base.USER);
 
 		if (user != null && checkbox != null) {
 
@@ -81,7 +82,7 @@ public class ManageController extends BaseController {
 	public ModelAndView userManage(@RequestParam(name = "checkbox", required = false) int[] checkbox,
 			@RequestParam(name = "nhom") int[] nhom, @RequestParam(name = "mabaiviet") long[] mabaiviet, HttpServletRequest request, HttpSession session) {
 		mav.setViewName("redirect:/quan-ly-bai-viet");
-		User user = (User) session.getAttribute("userID");
+		User user = (User) session.getAttribute(Base.USER);
 
 		if (user != null && checkbox != null) {
 			String[] tieude, noidung;

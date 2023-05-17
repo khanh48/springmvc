@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import me.forum.Component.JwtProvider;
+import me.forum.Config.Base;
 import me.forum.Dao.CommentDao;
 import me.forum.Dao.GroupDao;
 import me.forum.Dao.LikeDao;
@@ -63,17 +64,23 @@ public class MainRestController {
 			HttpSession session) {
 		HashMap<String, String> map = new HashMap<>();
 		User user = userDao.findUserByUserName(userName);
+		map.put("type", "failed");
 		if (user != null && user.getMatkhau().equals(User.MD5(password))) {
-			map.put("message", "success");
 			long curTime = System.currentTimeMillis();
+			if(curTime - user.getLastlogin() <= 1000L) {
+				map.put("message", "Thao tác quá nhiều.");
+				return map;
+			}
+			map.put("type", "success");
+			map.put("message", "success");
 			user.setLastlogin(curTime);
 			userDao.UpdateMaBaoMat(userName, JwtProvider.GetInstance().generate(userName), curTime);
 			user = userDao.findUserByUserName(userName);
-			session.setAttribute("userID", user);
+			session.setAttribute(Base.USER, user);
 			user.setTructuyen(true);
 			map.put("token", user.getMabaomat());
-		} else {
-			map.put("message", "failed");
+		}else {
+			map.put("message", "Tài khoản hoặc mật khẩu không chính xác.");
 		}
 
 		return map;
@@ -117,7 +124,7 @@ public class MainRestController {
 	public Map<String, String> editGroup(@RequestParam int id, @RequestParam String mota, HttpSession session) {
 		HashMap<String, String> map = new HashMap<>();
 		
-		User user = (User) session.getAttribute("userID");
+		User user = (User) session.getAttribute(Base.USER);
 		if(user == null || user.getRank() < 1) {
 			map.put("result", groupDao.getById(id).getMota());
 			return map;
@@ -131,7 +138,7 @@ public class MainRestController {
 	@RequestMapping(value = "/pinPost", method = RequestMethod.GET)
 	public String pinPost(@RequestParam long id ,HttpSession session) {
 		String result = "fail";
-		User user = (User) session.getAttribute("userID");
+		User user = (User) session.getAttribute(Base.USER);
 		if(user == null || user.getRank() < 1) {
 			return result;
 		}
@@ -145,7 +152,7 @@ public class MainRestController {
 	@RequestMapping(value = "/deleteNofity", method = RequestMethod.POST)
 	public String updateNofity(@RequestParam long id, HttpSession session) {
 		String result = "fail";
-		User user = (User) session.getAttribute("userID");
+		User user = (User) session.getAttribute(Base.USER);
 		if(user == null || !notificationDao.GetById(id).getNguoinhan().equals(user.getTaikhoan()))
 			return result;
 		
@@ -160,7 +167,7 @@ public class MainRestController {
 	public Map<String, String> changePass(HttpSession session, HttpServletRequest request) {
 		String oldPass, newPass, confirmPass, pattern;
 		HashMap<String, String> map = new HashMap<>();
-		User user = (User)session.getAttribute("userID");
+		User user = (User)session.getAttribute(Base.USER);
 		if(user == null) {
 			map.put("type", "failed");
 			map.put("message", "Tài khoản không tồn tại");
@@ -188,7 +195,7 @@ public class MainRestController {
 			map.put("message", "Đổi mật khẩu thành công.");
 			userDao.ChangePassword(user.getTaikhoan(), User.MD5(newPass));
 			user.setMatkhau(User.MD5(newPass));
-			session.setAttribute("userID", user);
+			session.setAttribute(Base.USER, user);
 		}
 		return map;
 	}
@@ -198,7 +205,7 @@ public class MainRestController {
 			@RequestParam String to, HttpSession session) {
 
 		Map<String, Object> map = new HashMap<>();
-		User user = (User) session.getAttribute("userID");
+		User user = (User) session.getAttribute(Base.USER);
 		User toUser = userDao.findUserByUserName(to);
 		boolean liked;
 		int count = 0;
@@ -237,7 +244,7 @@ public class MainRestController {
 	public Map<String, String> deleteCmt(@RequestParam int cid, HttpSession session) {
 		HashMap<String, String> map = new HashMap<>();
 		Comment cmt = commentDao.GetByID(cid);
-		User user = (User) session.getAttribute("userID");
+		User user = (User) session.getAttribute(Base.USER);
 		if(user == null || cmt == null) {
 			map.put("type", "failed");
 			map.put("message", "null");
@@ -257,7 +264,7 @@ public class MainRestController {
 
 		HashMap<String, String> map = new HashMap<>();
 		Post post = postDao.GetPostByID(pid);
-		User user = (User) session.getAttribute("userID");
+		User user = (User) session.getAttribute(Base.USER);
 		if(user == null || post == null) {
 			map.put("type", "failed");
 			map.put("message", "null");
@@ -285,7 +292,7 @@ public class MainRestController {
 		rank = request.getParameter("chucvu");
 		
 		List<User> listUser = userDao.FindLikeUser(taikhoan, hoten, email, sdt, rank);
-		User myUser = (User) session.getAttribute("userID");
+		User myUser = (User) session.getAttribute(Base.USER);
 		if(myUser == null) return map;
 		for (User user : listUser) {
 			if(user.getRank() >= myUser.getRank()) continue;
@@ -324,7 +331,7 @@ public class MainRestController {
 		mabaiviet = request.getParameter("mabaiviet");
 		
 		List<Post> listPost = postDao.FindLikePost(taikhoan, mabaiviet, tieude, noidung, nhom);
-		User myUser = (User) session.getAttribute("userID");
+		User myUser = (User) session.getAttribute(Base.USER);
 		if(myUser == null) return map;
 		for (Post post : listPost) {
 			
@@ -355,7 +362,7 @@ public class MainRestController {
 		String toUsername = request.getParameter("toUser");
 		User toUser, fromUser;
 		toUser = userDao.findUserByUserName(toUsername);
-		fromUser = (User) session.getAttribute("userID");
+		fromUser = (User) session.getAttribute(Base.USER);
 		
 		if(toUser == null || fromUser == null || message == null || message.isBlank()) {
 			map.put("type", "failed");

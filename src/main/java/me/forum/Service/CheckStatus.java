@@ -20,16 +20,16 @@ public class CheckStatus {
 
 	@Scheduled(fixedRate = 1000)
 	public void checkOffline() {
-		for (Entry<String, WebSocketSession> session : UserHandler.GetInstance().GetAllUsers().entrySet()) {
+		/*for (Entry<String, WebSocketSession> session : UserHandler.GetInstance().GetAllUsers().entrySet()) {
 			
 			User user = userDao.findUserByUserName(session.getKey());
 			if (session.getValue().isOpen()) {
 				user.setTructuyen(true);
+				//userDao.SetLastLogin(user.getTaikhoan());
 			} else {
 				user.setTructuyen(false);
-				userDao.SetLastLogin(user.getTaikhoan());
 			}
 
-		}
+		}*/
 	}
 }

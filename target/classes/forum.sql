@@ -10,7 +10,7 @@ create table if not exists chucvu(
 create table if not exists nguoidung(
     taikhoan char(13) not null,
     matkhau char(255) not null,
-    mabaomat nchar(255),
+    mabaomat nchar(255) default "",
     hoten nvarchar(50) not null,
     ngaysinh date,
     gioitinh nchar(10),
@@ -19,7 +19,7 @@ create table if not exists nguoidung(
     email char(50) default "",
     machucvu int not null DEFAULT 0,
     anhdaidien varchar(250) DEFAULT "/resources/images/default_avatar.png",
-    lastlogin bigint,
+    lastlogin bigint DEFAULT 0,
     tructuyen boolean not null default false,
     ngaytao datetime not null default now(),
 	constraint pk_nguoidung primary key(taikhoan),

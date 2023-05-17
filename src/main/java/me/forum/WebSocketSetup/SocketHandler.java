@@ -2,6 +2,7 @@ package me.forum.WebSocketSetup;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 import org.json.JSONObject;
 import org.springframework.web.socket.CloseStatus;
@@ -60,7 +61,14 @@ public class SocketHandler extends TextWebSocketHandler {
 
 	@Override
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-
+		for (Entry<String, WebSocketSession> i : handler.GetAllUsers().entrySet()) {
+			if(i.getValue().equals(session)) {
+				User user = userDao.findUserByUserName(i.getKey());
+				user.setTructuyen(false);
+				userDao.SetLastLogin(user.getTaikhoan());
+				break;
+			}
+		}
 	}
 
 	public boolean authentication(String token) {

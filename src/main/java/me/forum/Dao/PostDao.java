@@ -161,6 +161,15 @@ public class PostDao {
 		}
 	}
 	
+	public List<Post> Search(String input, int limit){
+		String sql = "select * from baiviet where tieude like ? or noidung like ? order by mabaiviet desc limit ?;";
+		try {
+			return jdbcTemplate.query(sql, new Object[] {input, input, limit}, new int[] {Types.NVARCHAR, Types.NVARCHAR, Types.INTEGER}, new PostMapper());
+		}catch (Exception e) {
+			return null;
+		}
+	}
+	
 	
 	public Post getHotPost(int manhom) {
 		try {
@@ -171,7 +180,6 @@ public class PostDao {
 	}
 	
 	public List<Post> getCustom(String option, String type, int manhom, int start, int limit){
-
 		String sql = "SELECT baiviet.*, COUNT(" + option + ".ma" + option + ") AS total_comments "
 				+ "FROM baiviet "
 				+ "INNER JOIN "+option+" ON baiviet.mabaiviet = " + option + ".mabaiviet and baiviet.manhom = " + manhom
@@ -184,8 +192,9 @@ public class PostDao {
 		} catch (DataAccessException e) {
 			return null;
 		}
-		
 	}
+	
+	
 	public Post getExaltedPost(int manhom) {
 		try {
 			return getCustom("binhluan", "desc", manhom, 0, 1).get(0);

@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
+import me.forum.Controller.BaseController;
 import me.forum.Module.ChatBot;
 
 public class UserHandler {
@@ -19,6 +20,7 @@ public class UserHandler {
 
 	public void addClient(String name, WebSocketSession session) {
 		clients.put(name, session);
+		BaseController.GetInstance().userDao.findUserByUserName(name).setTructuyen(true);
 	}
 
 	public void addClient(WebSocketSession session) {

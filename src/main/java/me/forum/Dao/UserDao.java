@@ -38,12 +38,12 @@ public class UserDao {
 			return null;
 		}
 	}
-	public List<User> SearchUser(String input) {
+	public List<User> SearchUser(String input, int limit) {
 		try {
-			return jdbcTemplate.query("select * from nguoidung where taikhoan like ? or hoten like ? group by taikhoan order by hoten asc limit 3",
+			return jdbcTemplate.query("select * from nguoidung where taikhoan like ? or hoten like ? group by taikhoan order by hoten asc limit ?",
 					new Object[] { "%" + input + "%",
-							"%" + input + "%"},
-					new int[] { Types.CHAR, Types.NVARCHAR }, new UserMapper());
+							"%" + input + "%", limit},
+					new int[] { Types.CHAR, Types.NVARCHAR, Types.INTEGER }, new UserMapper());
 		} catch (EmptyResultDataAccessException e) {
 			return null;
 		}

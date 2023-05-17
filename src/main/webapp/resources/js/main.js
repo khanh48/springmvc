@@ -113,7 +113,9 @@ function sendMessage() {
 
 function login() {
 	this.event.preventDefault();
-
+	let spinner = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>Loggin...`;
+	$("#btn-login").prop("disabled", true);
+	$("#btn-login").html(spinner);
 	$.ajax({
 		type: 'POST',
 		url: '/login',
@@ -123,11 +125,12 @@ function login() {
 		},
 		success: function(respone) {
 			var result = respone;
-
-			if (result.message === "failed") {
-				$('#err1-log').text("Sai tên tài khoản hoặc mật khẩu.");
+			$("#btn-login").prop("disabled", false);
+			$("#btn-login").html("Đăng nhập");
+			if (result.type === "failed") {
+				$('#err1-log').text(result.message);
 			}
-			else if (result.message === "success") {
+			else if (result.type === "success") {
 				$('#err1-log').text("");
 				setCookie("phuot.token", result.token);
 				location.reload();
@@ -139,7 +142,7 @@ function login() {
 $(document).ready(function() {
 	removeControl();
 	
-	$.getJSON("resources/json/province.json",function (data) {
+	$.getJSON("/resources/json/province.json",function (data) {
 		let cbxCity = "<select id='cbxCity'>";
    		$.each(data, function (index, item) {
         	cbxCity += `<option value='{"name":"${item.name}","lat":${item.lat},"lon":${item.lon}}'>${item.name}</option>`;

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import me.forum.Config.Base;
 import me.forum.Entity.User;
 
 @Controller
@@ -27,7 +28,7 @@ public class ProfileController extends BaseController {
 
 		String hoten, gioitinh, sodienthoai, sothich, pathImg, rootPath;
 		Date ngaysinh;
-		User user = (User) session.getAttribute("userID");
+		User user = (User) session.getAttribute(Base.USER);
 		mav.setViewName("redirect:/ho-so");
 		if (user == null) {
 			return mav;
@@ -58,7 +59,7 @@ public class ProfileController extends BaseController {
 			}
 		}
 		userDao.UpdateProfile(user.getTaikhoan(), hoten, gioitinh, ngaysinh, sodienthoai, sothich, pathImg);
-		session.setAttribute("userID", userDao.findUserByUserName(user.getTaikhoan()));
+		session.setAttribute(Base.USER, userDao.findUserByUserName(user.getTaikhoan()));
 		return mav;
 	}
 

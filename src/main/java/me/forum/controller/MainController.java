@@ -1,5 +1,6 @@
 package me.forum.Controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -9,12 +10,15 @@ import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import me.forum.Component.JwtProvider;
+import me.forum.Config.Base;
 import me.forum.Entity.Comment;
 import me.forum.Entity.Group;
+import me.forum.Entity.HTML;
 import me.forum.Entity.Post;
 import me.forum.Entity.User;
 
@@ -32,18 +36,10 @@ public class MainController extends BaseController {
 		return mav;
 	}
 
-	@RequestMapping(value = { "/chat"})
-	public ModelAndView chatPage(HttpSession session, HttpServletRequest request) {
-		mav.setViewName("chat");
-		mav.addObject("chatUser", null);
-		return mav;
-	}
-	
-
 	@RequestMapping(value = { "/chat/{username}"})
 	public ModelAndView chatPageUser(HttpSession session, @PathVariable(name = "username", required = false) String friend) {
 		mav.setViewName("chat");
-		User user = (User) session.getAttribute("userID");
+		User user = (User) session.getAttribute(Base.USER);
 		User chatUser = userDao.findUserByUserName(friend);
 		if(user == null || chatUser == null) {
 			return mav;	
@@ -75,7 +71,7 @@ public class MainController extends BaseController {
 	public ModelAndView myProfilePage(HttpSession session) {
 
 		mav.setViewName("profile");
-		User user = (User) session.getAttribute("userID");
+		User user = (User) session.getAttribute(Base.USER);
 		if (user == null) {
 			mav.addObject("profile", null);
 			mav.addObject("postOfUser", null);
@@ -94,7 +90,7 @@ public class MainController extends BaseController {
 			@RequestParam(name = "deleteNotifications", required = false) Object dn, HttpSession session) {
 
 		mav.setViewName("notification");
-		User user = (User) session.getAttribute("userID");
+		User user = (User) session.getAttribute(Base.USER);
 		boolean flag = false;
 
 		if(user == null) return mav;
@@ -172,20 +168,37 @@ public class MainController extends BaseController {
 		return mav;
 	}
 
-	@RequestMapping(value = { "/tim-kiem" })
-	public ModelAndView searchPage(HttpSession session) {
+	@RequestMapping(value = { "/tim-kiem" }, method = RequestMethod.GET)
+	public ModelAndView searchPage(@RequestParam(name = "type", required = false) Integer type, 
+			@RequestParam(name = "value", required = false) String value, HttpSession session) {
 		mav.setViewName("search");
-		
+		mav.addObject("search_users", null);
+		mav.addObject("search_posts", null);
+		User user = (User) session.getAttribute(Base.USER);
+		if(type != null && value != null) {
+			if(type == 0) {
+				List<User> users = userDao.SearchUser(value, 50);
+				mav.addObject("search_users", users);
+			}else {
+				List<Post> posts = postDao.Search(value, 50);
+				List<String> result = new ArrayList<>();
+				for (Post post : posts) {
+					result.add(HTML.GetPost(user, post));
+				}
+				mav.addObject("search_posts", result);
+			}
+		}
 		return mav;
 	}
 	@RequestMapping(value = "/logout")
 	public ModelAndView logout(HttpSession session) {
 		mav.setViewName("redirect:/");
-		if (session.getAttribute("userID") != null) {
-			String uname = ((User) session.getAttribute("userID")).getTaikhoan();
+		mav.addObject("search_posts", null);
+		if (session.getAttribute(Base.USER) != null) {
+			String uname = ((User) session.getAttribute(Base.USER)).getTaikhoan();
 			long curTime = System.currentTimeMillis();
 			userDao.UpdateMaBaoMat(uname, JwtProvider.GetInstance().generate(uname), curTime);
-			session.removeAttribute("userID");
+			session.removeAttribute(Base.USER);
 			session.removeAttribute("listNotify");
 		}
 		return mav;

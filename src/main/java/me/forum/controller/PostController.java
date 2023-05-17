@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import me.forum.Config.Base;
 import me.forum.Entity.Comment;
 import me.forum.Entity.HTML;
 import me.forum.Entity.Notification;
@@ -38,7 +39,7 @@ public class PostController extends BaseController {
 
 		List<String> list = new ArrayList<>();
 		List<Post> posts;
-		User user = (User) session.getAttribute("userID");
+		User user = (User) session.getAttribute(Base.USER);
 		posts = uid.isEmpty() ? postDao.GetPostsLimitDesc(start, limit) : postDao.GetPostsUserLimit(uid, start, limit);
 		for (Post p : posts) {
 			list.add(HTML.GetPost(user, p, false));
@@ -54,7 +55,7 @@ public class PostController extends BaseController {
 		String[] option = { "ngaytao", "luotthich", "binhluan" };
 		List<String> list = new ArrayList<>();
 		List<Post> posts, pins = null;
-		User user = (User) session.getAttribute("userID");
+		User user = (User) session.getAttribute(Base.USER);
 		String asc = isAscending ? "asc" : "desc";
 		if (sortOption == 0) {
 			posts = postDao.GetPostsLimit(gid, asc, start, limit);
@@ -83,7 +84,7 @@ public class PostController extends BaseController {
 
 		List<String> list = new ArrayList<>();
 		List<Comment> comments = commentDao.GetPostsLimitDesc(id, start, limit);
-		User user = (User) session.getAttribute("userID");
+		User user = (User) session.getAttribute(Base.USER);
 		for (Comment cmt : comments) {
 			list.add(HTML.GetComment(user, cmt));
 		}
@@ -99,7 +100,7 @@ public class PostController extends BaseController {
 		noidung = request.getParameter("noidung");
 		nhom = Integer.valueOf(request.getParameter("nhom"));
 		mav.setViewName("redirect:/");
-		User user = (User) session.getAttribute("userID");
+		User user = (User) session.getAttribute(Base.USER);
 		String rootPath = request.getServletContext().getRealPath("/");
 		if (user != null) {
 			String pathImg;
@@ -128,7 +129,7 @@ public class PostController extends BaseController {
 		String content;
 		content = request.getParameter("comment");
 		mav.setViewName("redirect:/bai-viet/" + id);
-		User user = (User) session.getAttribute("userID");
+		User user = (User) session.getAttribute(Base.USER);
 		Post post = postDao.GetPostByID(id);
 		if (user != null && post != null) {
 			long curTime = System.currentTimeMillis();

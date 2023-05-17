@@ -79,7 +79,8 @@
                     </div>
                     <div class='form-row'>
                         <div class='d-flex justify-content-center'>
-                            <input class='btn btn-primary mt-4 mb-3' type='submit' name='log' value='Đăng nhập'>
+                            <button class='btn btn-primary mt-4 mb-3' id="btn-login" type='submit' name='log'>Đăng nhập
+                            </button>
                         </div>
                     </div>
                 </form>
