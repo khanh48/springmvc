@@ -216,6 +216,21 @@ function loadPostWithSort(gid, reset) {
 	});
 }
 
+function changeCity(e, flag){
+	if(flag){
+		e.classList.replace("btn-setting","btn-close");
+		e.setAttribute("onclick","changeCity(this, false);");
+		$("#nameCity").hide();
+		$("#citySelect").show();
+	}else{
+		e.classList.replace("btn-close","btn-setting");
+		e.setAttribute("onclick","changeCity(this, true);");
+		$("#citySelect").hide();
+		$("#nameCity").show();
+	}
+	
+}
+
 function editGroup(e){
 	e.classList.replace("btn-edit","btn-save");
 	e.setAttribute("onclick","saveGroup(this);");
@@ -312,27 +327,9 @@ function findPost() {
 }
 
 
-function getWeather() {
-	let val = JSON.parse($("#cbxCity").val());
-	console.log(val);
-	$.ajax({
-		type: "GET",
-		url: "/getWeather",
-		data: {
-			lat: 21.333,
-			lon: 106.333
-		},
-		success: function(data) {
-			$("#nameCity").text(val.name);
-			$("#weatherImg").css("background-image",`url('http://openweathermap.org/img/wn/${data.current.weather[0]["icon"]}@2x.png')`);
-			$("#weatherTemp").text(data.current.temp.toFixed() + "°C");
-			$("#weatherRange").text(data.daily[0]["temp"]["min"].toFixed() + "° - "+data.daily[0]["temp"]["max"].toFixed()+"°");
-			console.log(response);
-		}
-	});
-}
 
 $(document).ready(function() {
+	getCities();
 	getWeather();
 	
 	$("#searchToChat").on("input keyup", function(e) {

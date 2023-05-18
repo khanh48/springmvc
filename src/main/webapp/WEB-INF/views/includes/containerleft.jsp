@@ -12,12 +12,25 @@
 				<small>ID: ${userID.getTaikhoan() }</small>
 			</span>
 		</div>
-		<div id="citySelect"></div>
-		<div class="weatherWidget">
-			<div class="text-center mt-2" id="nameCity">Hà Nội</div>
+		<div class="weatherWidget" style="position: relative;">
+			<div class="d-flex justify-content-center mt-2">
+				<span id="nameCity" style="max-width: 60%;"></span>
+				<div id="citySelect" style="display: none;width: 60%;">
+				<select id='cbxCity'>
+				</select>
+				</div>
+			</div>
+			
 			<div class="d-flex justify-content-center"><span style="height: 70px;width: 70px;" id="weatherImg"></span></div>
-			<div class="text-center fs-2" id="weatherTemp">37°C</div>
-			<div class="text-center" id="weatherRange">37° / 25°</div>
+			<div class="text-center fs-2" id="weatherTemp"></div>
+			<div class="text-center" id="weatherRange"></div>
+			<div class="d-flex justify-content-end" ></div>
+			<span style="position:absolute;right:7px;top:7px;" >
+				<button class="btn-setting btn-hover" onclick="changeCity(this, true)"></button>
+			</span>
+			<span style="position:absolute;right:7px;top:150px;" >
+				<button class="btn-reload btn-hover"></button>
+			</span>
 		</div>
 	</div>
 

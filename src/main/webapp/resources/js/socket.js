@@ -1,3 +1,8 @@
+document.addEventListener("DOMContentLoaded", function() {
+	if(localStorage.getItem("phuot.city") == null){
+		localStorage.setItem("phuot.city",JSON.stringify({name:"Hà Nội",lat:21.02833,lon:105.85417}));
+	}
+});
 
 var result = "";
 var soc;

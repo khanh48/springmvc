@@ -724,6 +724,13 @@ div.notify::-webkit-scrollbar-thumb:hover {
 	animation: newNotify 1.5s ease-in-out infinite;
 }
 
+#weatherImg{
+	height: 70px;
+	width: 70px;
+	background-size: 140%;
+	background-position: center center;
+}
+
 @media ( prefers-reduced-motion : reduce) {
 	.animated {
 		-webkit-animation: none;
@@ -1041,7 +1048,7 @@ label{
     color: #000;
     border: 0;
     border-radius: .375rem;
-    opacity: .7;
+    opacity: .6;
     background: transparent url("/resources/images/edit_icon.png") center/calc(1.275rem + .3vw) auto no-repeat;
 }
 .btn-edit{
@@ -1050,7 +1057,7 @@ label{
 .btn-save{
     background: transparent url("/resources/images/save.png") center/calc(1.275rem + .3vw) auto no-repeat;
 }
-.btn-pin, .btn-unpin, .btn-pinned{
+.btn-pin, .btn-unpin, .btn-pinned, .btn-reload, .btn-setting{
     box-sizing: content-box;
     width: 1em;
     height: 1em;
@@ -1058,7 +1065,10 @@ label{
     color: #000;
     border: 0;
     border-radius: .375rem;
-    opacity: .7;
+    opacity: .6;
+}
+.btn-hover:hover{
+	opacity: .8;
 }
 .btn-pinned{
     background: transparent url("/resources/images/pinned.png") center/1em auto no-repeat;
@@ -1068,6 +1078,12 @@ label{
 }
 .btn-unpin{
     background: transparent url("/resources/images/unpin.png") center/1em auto no-repeat;
+}
+.btn-reload{
+    background: transparent url("/resources/images/reload.png") center/1em auto no-repeat;
+}
+.btn-setting{
+    background: transparent url("/resources/images/setting.png") center/1em auto no-repeat;
 }
 @media ( max-width : 599px) {
 	.main {

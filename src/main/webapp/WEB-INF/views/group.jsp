@@ -36,7 +36,7 @@
 					<div class="c-body">
 						<span class="fs-4" href="/nhom/${group.getManhom() }">${group.getTennhom()}</span>
 						<c:if test="${userID.getRank() >= 1 }">
-							<button class="btn-edit" value="${group.getManhom() }" onclick="editGroup(this);"></button>
+							<button class="btn-edit btn-hover" value="${group.getManhom() }" onclick="editGroup(this);"></button>
 						</c:if>
 						<div>
 							<span>Mô tả:</span> <span id="group-description"><c:out value="${group.getMota()}"></c:out></span>

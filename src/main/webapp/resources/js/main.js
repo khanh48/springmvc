@@ -140,16 +140,43 @@ function login() {
 	});
 	return false;
 }
+
+function getWeather() {
+	let val = JSON.parse(localStorage.getItem("phuot.city"));
+	console.log(val)
+	$.ajax({
+		type: "GET",
+		url: "/getWeather",
+		data: {
+			lat: val.lat,
+			lon: val.lon
+		},
+		success: function(data) {
+			$("#nameCity").text(val.name);
+			$("#weatherImg").css("background-image",`url('http://openweathermap.org/img/wn/${data.current.weather[0]["icon"]}@2x.png')`);
+			$("#weatherTemp").text(data.current.temp.toFixed() + "°C");
+			$("#weatherRange").text(data.daily[0]["temp"]["min"].toFixed() + "° - "+data.daily[0]["temp"]["max"].toFixed()+"°");
+			sessionStorage.setItem("phuot.weather", true);
+		}
+	});
+}
+
 function getCities(){
 	$.getJSON("/resources/json/province.json",function (data) {
-		let cbxCity = "<select id='cbxCity'>";
+		let cbxCity, selected, defaultCity;
+		cbxCity = "";
+		defaultCity = JSON.parse(localStorage.getItem("phuot.city"));
    		$.each(data, function (index, item) {
-        	cbxCity += `<option value='{"name":"${item.name}","lat":${item.lat},"lon":${item.lon}}'${index == 0?"selected":""}>${item.name}</option>`;
+			selected = defaultCity.name == item.name?"selected":"";
+        	cbxCity += `<option value='{"name":"${item.name}","lat":${item.lat},"lon":${item.lon}}'${selected}>${item.name}</option>`;
     	});
-    	cbxCity += "</select>";
-    	$("#citySelect").html(cbxCity);
+    	$("#cbxCity").html(cbxCity);
     	$("#cbxCity").select2({
 			width: "100%"
+		});
+		$("#cbxCity").on("change", function(e){
+			localStorage.setItem("phuot.city", $(this).val());
+			getWeather();
 		});
 	});
 }

@@ -34,14 +34,14 @@ public class HTML {
 		item += "</div></span></div></div><div>";
 		
 		if(p.getGhim()) {
-			item += "<button class='btn-pinned me-2'></button>";
+			item += "<button class='btn-pinned btn-hover me-2'></button>";
 		}
 		
 		if(isInGroup && user != null && user.getRank() >= 1) {
 			if(p.getGhim()) {
-				item += "<button class='btn-unpin me-2' onclick='pinPost(this, "+p.getMabaiviet()+");'></button>";
+				item += "<button class='btn-unpin btn-hover me-2' onclick='pinPost(this, "+p.getMabaiviet()+");'></button>";
 			}else {
-				item += "<button class='btn-pin me-2' onclick='pinPost(this, "+p.getMabaiviet()+");' ></button>";
+				item += "<button class='btn-pin btn-hover me-2' onclick='pinPost(this, "+p.getMabaiviet()+");' ></button>";
 			}
 		}
 		
