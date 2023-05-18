@@ -2,8 +2,9 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <div class="left">
-	<div class="info">
-		<div class="d-flex">
+	<div class="info"">
+		<div class="d-flex" style="height: 50px;">
+		<c:if test="${not empty userID }">
 			<a href="/ho-so">
 				<img class="avt" alt="" src="${userID.getAnhdaidien() }">
 			</a>
@@ -11,10 +12,11 @@
 				<a class="text-black" href="/ho-so"><span class="d-block">${userID.getHoten() }</span></a>
 				<small>ID: ${userID.getTaikhoan() }</small>
 			</span>
+		</c:if>
 		</div>
 		<div class="weatherWidget" style="position: relative;">
 			<div class="d-flex justify-content-center mt-2">
-				<span id="nameCity" style="max-width: 60%;"></span>
+				<span id="nameCity"></span>
 				<div id="citySelect" style="display: none;width: 60%;">
 				<select id='cbxCity'>
 				</select>
@@ -25,11 +27,12 @@
 			<div class="text-center fs-2" id="weatherTemp"></div>
 			<div class="text-center" id="weatherRange"></div>
 			<div class="d-flex justify-content-end" ></div>
-			<span style="position:absolute;right:7px;top:7px;" >
+			<span style="position:absolute;right:7px;top:2px;" >
 				<button class="btn-setting btn-hover" onclick="changeCity(this, true)"></button>
 			</span>
-			<span style="position:absolute;right:7px;top:150px;" >
-				<button class="btn-reload btn-hover"></button>
+			<span style="position:absolute;right:7px;top:147px;" >
+				<small id="lastUpdate" style="vertical-align: top;"></small>
+				<button class="btn-reload btn-hover p-0"></button>
 			</span>
 		</div>
 	</div>
@@ -38,9 +41,9 @@
 		<div class="group">
 			<c:forEach items="${group }" var="i" varStatus="idx">
 				<c:if test="${idx.first }">
-					<div class="name group-name">
-						<a>${i.getNhom()}</a>
-					</div>
+					<a href="/nhom/${i.getManhom() }">
+					<div class="name group-name">${i.getNhom()}</div>
+					</a>
 				</c:if>
 				<div class="ps-1">
 					<div>

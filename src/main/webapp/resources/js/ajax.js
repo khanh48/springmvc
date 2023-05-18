@@ -266,7 +266,6 @@ function pinPost(e, id) {
 			id: id
 		},
 		success: function(response) {
-			console.log(response);
 			if(response == "pinned"){
 				e.classList.replace("btn-pin","btn-unpin");
 			}
@@ -330,7 +329,10 @@ function findPost() {
 
 $(document).ready(function() {
 	getCities();
-	getWeather();
+	getWeather(false);
+	$(".btn-reload").on("click", function(e) {
+		getWeather(true);
+	});
 	
 	$("#searchToChat").on("input keyup", function(e) {
 		searchToChat($(this).val());

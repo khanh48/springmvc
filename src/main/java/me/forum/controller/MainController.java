@@ -21,7 +21,6 @@ import me.forum.Entity.Group;
 import me.forum.Entity.HTML;
 import me.forum.Entity.Post;
 import me.forum.Entity.User;
-import me.forum.Service.Weather;
 
 @Controller
 public class MainController extends BaseController {

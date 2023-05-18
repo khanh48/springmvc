@@ -31,7 +31,8 @@
                 <i class="fas fa-shopping-cart"></i>
             </a> -->
 			<c:if test="${empty userID }">
-				<a class="nav-link log me-2" href="./search">Tìm kiếm</a>
+				<a class="nav-link me-2" href="/nhom">Nhóm</a>
+				<a class="nav-link log me-2" href="/tim-kiem">Tìm kiếm</a>
 				<a class="nav-link me-2" href="#" data-bs-toggle='modal'
 					data-bs-target='#modal-login'>Đăng nhập</a>
 			</c:if>
@@ -58,6 +59,11 @@
 					</a>
 					<ul class="dropdown-menu dropdown-menu-end dropdown-notify"
 						id="bell-ntf">
+						<c:if test="${empty listNotify}">
+						<li>
+						<a class="dropdown-item text-wrap">Không có thông báo mới</a>
+						</li>
+						</c:if>
 						<c:forEach var="i" items="${listNotify}">
 							<li><a class="dropdown-item text-wrap" href="${i.url}">
 									<p class="small mb-0">${i.getDateFormated()}</p>
@@ -93,7 +99,7 @@
 							<div class="input-group">
 								<input class="form-control" type="text" placeholder="ID hoặc tên" aria-describedby="button-addon1" autocomplete="off" id="searchToChat" />
 								<a class="btn btn-outline-secondary" href="/chat/chatbot" type="button" id="button-addon1">
-						<i class="fas fa-robot"></i></a>
+								<i class="fas fa-robot"></i></a>
 							</div>
 							<div id="schat-result">
 							<!-- 
@@ -109,6 +115,11 @@
 						</div>
 						<hr class="dropdown-divider">
 						<div class="chat-container">
+							<c:if test="${empty listMessage}">
+							<li>
+								<a class="dropdown-item text-wrap">Không có tin nhắn mới.</a>
+								</li>
+							</c:if>
 							<c:forEach items="${listMessage }" var="i">
 								<a id="chat-${i.getNguoigui().getTaikhoan() }"
 									class="dropdown-item text-wrap" style="display: flex;"

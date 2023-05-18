@@ -141,24 +141,35 @@ function login() {
 	return false;
 }
 
-function getWeather() {
+function getWeather(force) {
 	let val = JSON.parse(localStorage.getItem("phuot.city"));
-	console.log(val)
-	$.ajax({
-		type: "GET",
-		url: "/getWeather",
-		data: {
-			lat: val.lat,
-			lon: val.lon
-		},
-		success: function(data) {
-			$("#nameCity").text(val.name);
-			$("#weatherImg").css("background-image",`url('http://openweathermap.org/img/wn/${data.current.weather[0]["icon"]}@2x.png')`);
-			$("#weatherTemp").text(data.current.temp.toFixed() + "°C");
-			$("#weatherRange").text(data.daily[0]["temp"]["min"].toFixed() + "° - "+data.daily[0]["temp"]["max"].toFixed()+"°");
-			sessionStorage.setItem("phuot.weather", true);
-		}
-	});
+	if(sessionStorage.getItem("phuot.weather") == null || force){
+		$.ajax({
+			type: "GET",
+			url: "/getWeather",
+			data: {
+				lat: val.lat,
+				lon: val.lon
+			},
+			success: function(data) {
+				let d = new Date();
+				sessionStorage.setItem("phuot.weather", JSON.stringify(data));	
+				sessionStorage.setItem("phuot.weather.time", getTime());	
+				setWeatherDetail(val.name, data);
+			}
+		});
+	}else{
+		let data = JSON.parse(sessionStorage.getItem("phuot.weather"));
+		setWeatherDetail(val.name, data);
+	}
+}
+
+function setWeatherDetail(name, data){
+	$("#nameCity").text(name);
+	$("#weatherImg").css("background-image",`url('http://openweathermap.org/img/wn/${data.current.weather[0]["icon"]}@2x.png')`);
+	$("#weatherTemp").text(data.current.temp.toFixed() + "°C");
+	$("#weatherRange").text(data.daily[0]["temp"]["min"].toFixed() + "° - "+data.daily[0]["temp"]["max"].toFixed()+"°");
+	$("#lastUpdate").text(sessionStorage.getItem("phuot.weather.time"));
 }
 
 function getCities(){
@@ -176,7 +187,7 @@ function getCities(){
 		});
 		$("#cbxCity").on("change", function(e){
 			localStorage.setItem("phuot.city", $(this).val());
-			getWeather();
+			getWeather(true);
 		});
 	});
 }

@@ -809,6 +809,8 @@ div.notify::-webkit-scrollbar-thumb:hover {
 	font-size: 16px;
 	font-weight: 600;
 	text-overflow: ellipsis;
+	-ms-text-overflow: ellipsis;
+	-o-text-overflow: ellipsis;
 	white-space: nowrap;
 	cursor: pointer;
 	overflow: hidden;
@@ -967,7 +969,6 @@ pre::-webkit-scrollbar-track {
 }
 .weatherWidget{
 	height: 180px;
-	border: 1px solid black;
 }
 pre::-webkit-scrollbar-thumb {
 	background-color: #a9a9a9;
@@ -1004,6 +1005,8 @@ textarea::-webkit-scrollbar{
 
 .preview-message{
 	text-overflow: ellipsis;
+	-ms-text-overflow: ellipsis;
+	-o-text-overflow: ellipsis;
 	white-space: nowrap;
 	overflow: hidden;
 	color: #878787;
@@ -1084,6 +1087,15 @@ label{
 }
 .btn-setting{
     background: transparent url("/resources/images/setting.png") center/1em auto no-repeat;
+}
+
+#nameCity{
+	max-width: 60%;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	-ms-text-overflow: ellipsis;
+	-o-text-overflow: ellipsis;
 }
 @media ( max-width : 599px) {
 	.main {

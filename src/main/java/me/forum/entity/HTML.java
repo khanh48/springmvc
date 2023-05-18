@@ -53,7 +53,7 @@ public class HTML {
 
 		item += "</div></div><div> <div class='title'>";
 		if(!isInGroup) {
-			item += "<div class='name'>" + p.getNhom() + "</div>";
+			item += "<a href='/nhom/"+p.getManhom()+"' class='name'>" + p.getNhom() + "</a>";
 			item += "<span>></span>";
 		}
 		item += "<div class='name'>" + p.getTieude() + "</div></div></div>";

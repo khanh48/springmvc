@@ -3,8 +3,6 @@ package me.forum.Component;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,7 +22,6 @@ import me.forum.Entity.Message;
 import me.forum.Entity.Notification;
 import me.forum.Entity.Post;
 import me.forum.Entity.User;
-import me.forum.Service.Weather;
 
 @Component
 public class Interceptor implements HandlerInterceptor {

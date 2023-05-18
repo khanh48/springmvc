@@ -53,10 +53,7 @@ public class UserHandler {
 		int id = merge(sender, receiver);
 		TextMessage textMessage = new TextMessage(message);
 		WebSocketSession session = chats.get(id);
-		if(session.isOpen()) {
-			session.sendMessage(textMessage);
-		}
-
+		session.sendMessage(textMessage);
 	}
 
 	public boolean containsClient(String name) {
