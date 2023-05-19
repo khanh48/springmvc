@@ -10,7 +10,7 @@
 			<%@ include file="/WEB-INF/views/includes/containerleft.jsp"%>
 			<div class="right">
 				<c:if test="${not empty post }">
-					<div class="content" id="${post.getMabaiviet() }">
+					<div class="content rm" id="${post.getMabaiviet() }">
 						<div class='d-flex justify-content-between'>
 							<div class=' c-header'>
 								<span> <a class='name'
@@ -34,7 +34,7 @@
 						</div>
 						<div>
 							<div class='title'>
-								<div class='name'>${post.getNhom() }</div>
+								<a class='name' href="/nhom/${post.getManhom() }">${post.getNhom() }</a>
 								<span>></span>
 								<div class='name'><c:out value="${post.getTieude() }" escapeXml="true" /></div>
 							</div>

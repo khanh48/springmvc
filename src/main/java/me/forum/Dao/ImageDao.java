@@ -28,7 +28,7 @@ public class ImageDao {
 		String sql = "select * from hinhanh where mabaiviet = ?";
 		try {
 			return jdbcTemplate.query(sql, new Object[] {postID}, new int[] {Types.BIGINT}, new ImageMap());
-		} catch (DataAccessException e) {
+		} catch (Exception e) {
 			return null;
 		}
 	}

@@ -192,6 +192,16 @@ function getCities(){
 	});
 }
 
+function share(id){
+	let origin = window.document.location.origin;
+	navigator.clipboard.writeText(`${origin}/bai-viet/${id}`);
+	
+	$('#headerToast').text("Chia sẻ");
+	$('#toastMessage').html("Đã sao chép liên kết.");
+	const toast = new bootstrap.Toast($('#liveToast'));
+	toast.show();
+}
+
 $(document).ready(function() {
 	removeControl();
 	

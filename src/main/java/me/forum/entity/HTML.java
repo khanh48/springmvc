@@ -22,7 +22,7 @@ public class HTML {
 			isliked = "fas-liked";
 		}
 
-		String item = "<div class='content' id='" + p.getMabaiviet() + "'>";
+		String item = "<div class='content rm' id='" + p.getMabaiviet() + "'>";
 		item += "<div class='d-flex justify-content-between'>";
 		item += "<div class=' c-header'>";
 		item += "<span> <a class='name' href='" + uUrl + "'>";
@@ -92,7 +92,7 @@ public class HTML {
 				+ p.getMabaiviet() + "'\">";
 		item += "<i class='fas fa-comment action'></i>";
 		item += "<span class='count-comment'>" + numcmt + "</span>";
-		item += "</button><button type='button' class='share p-1'>";
+		item += "</button><button type='button' onclick='share("+p.getMabaiviet()+")' class='share p-1'>";
 		item += "<i class='fas fa-share action'></i><span class='count-share'></span>";
 		item += "</button></div></div>";
 		return item;
@@ -109,7 +109,7 @@ public class HTML {
 			isliked = "fas-liked";
 		}
 
-		String item = "<div class='content' id='" + cmt.getMabinhluan() + "'>";
+		String item = "<div class='content rm' id='" + cmt.getMabinhluan() + "'>";
 		item += "<div class='d-flex justify-content-between'>";
 		item += "<div class='c-header'><span>";
 		item += "<a class='name' href='" + uUrl + "'>";

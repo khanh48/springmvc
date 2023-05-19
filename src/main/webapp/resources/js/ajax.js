@@ -81,6 +81,7 @@ function loadComment(id) {
 			$.each(response, function(index, item) {
 				$("#listComments").append(item);
 			})
+			loadReadMore();
 		}
 	});
 }
@@ -178,6 +179,7 @@ function loadPost(uid) {
 				$("#listPosts").append(item);
 			})
 			removeControl();
+			loadReadMore();
 		}
 	});
 }
