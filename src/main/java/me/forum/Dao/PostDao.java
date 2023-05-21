@@ -24,7 +24,7 @@ public class PostDao {
 		try {
 			return jdbcTemplate.queryForObject("select count(mabaiviet) from baiviet where taikhoan=?",
 					new Object[] { user }, new int[] { Types.CHAR }, Integer.class);
-		} catch (DataAccessException e) {
+		} catch (Exception e) {
 			return 0;
 		}
 	}
@@ -36,7 +36,7 @@ public class PostDao {
 		try {
 			return jdbcTemplate.queryForObject("select * from baiviet where mabaiviet=?", new Object[] { id },
 					new int[] { Types.BIGINT }, new PostMapper());
-		} catch (DataAccessException e) {
+		} catch (Exception e) {
 			return null;
 		}
 	}
@@ -45,7 +45,7 @@ public class PostDao {
 		try {
 			return jdbcTemplate.query("select * from baiviet where taikhoan=? order by ngaytao desc", new Object[] { taikhoan },
 					new int[] { Types.CHAR }, new PostMapper());
-		} catch (DataAccessException e) {
+		} catch (Exception e) {
 			return null;
 		}
 	}
@@ -54,7 +54,7 @@ public class PostDao {
 		try {
 			return jdbcTemplate.query("select * from baiviet where manhom = ? order by ngaytao " +type+ " limit ?, ?",
 					new Object[] { manhom, start, limit }, new int[] { Types.INTEGER, Types.INTEGER, Types.INTEGER }, new PostMapper());
-		} catch (DataAccessException e) {
+		} catch (Exception e) {
 			return null;
 		}
 	}
@@ -63,7 +63,7 @@ public class PostDao {
 	public List<Post> GetAll() {
 		try {
 			return jdbcTemplate.query("select * from baiviet", new PostMapper());
-		} catch (DataAccessException e) {
+		} catch (Exception e) {
 			return null;
 		}
 	}
@@ -72,7 +72,7 @@ public class PostDao {
 		try {
 			return jdbcTemplate.query("select * from baiviet order by ngaytao desc limit ?, ?",
 					new Object[] { start, limit }, new int[] { Types.INTEGER, Types.INTEGER }, new PostMapper());
-		} catch (DataAccessException e) {
+		} catch (Exception e) {
 			return null;
 		}
 	}
@@ -82,7 +82,7 @@ public class PostDao {
 			return jdbcTemplate.query("select * from baiviet where taikhoan = ? order by ngaytao desc limit ?, ?",
 					new Object[] { taikhoan, start, limit }, new int[] { Types.CHAR, Types.INTEGER, Types.INTEGER },
 					new PostMapper());
-		} catch (DataAccessException e) {
+		} catch (Exception e) {
 			return null;
 		}
 	}
@@ -93,7 +93,7 @@ public class PostDao {
 			return jdbcTemplate.query("select * from baiviet where manhom = ? order by ngaytao desc limit ?, ?",
 					new Object[] { manhom, start, limit }, new int[] {Types.INTEGER, Types.INTEGER, Types.INTEGER },
 					new PostMapper());
-		} catch (DataAccessException e) {
+		} catch (Exception e) {
 			return null;
 		}
 	}
@@ -102,7 +102,7 @@ public class PostDao {
 		try {
 			return jdbcTemplate.query("select * from baiviet where tieude like ?", new Object[] { "%" + tieude + "%" },
 					new int[] { Types.NVARCHAR }, new PostMapper());
-		} catch (DataAccessException e) {
+		} catch (Exception e) {
 			return null;
 		}
 	}
@@ -110,7 +110,7 @@ public class PostDao {
 		try {
 			return jdbcTemplate.query("select * from baiviet where manhom = ? and ghim = true order by ngaytao desc limit 3", new Object[] { manhom },
 					new int[] { Types.INTEGER }, new PostMapper());
-		} catch (DataAccessException e) {
+		} catch (Exception e) {
 			return null;
 		}
 	}
@@ -145,7 +145,7 @@ public class PostDao {
 					"%" + noidung + "%", 
 					"%" + nhom + "%" },
 					new int[] { Types.CHAR, Types.CHAR, Types.LONGNVARCHAR, Types.NVARCHAR, Types.NCHAR}, new PostMapper());
-		} catch (EmptyResultDataAccessException e) {
+		} catch (Exception e) {
 			return null;
 		}
 	}
@@ -156,7 +156,7 @@ public class PostDao {
 					"insert into baiviet(mabaiviet, tieude, noidung, manhom, taikhoan) value(?, ?, ?, ?, ?)",
 					new Object[] { id, tieude, noidung, nhom, taikhoan },
 					new int[] { Types.BIGINT, Types.NVARCHAR, Types.LONGNVARCHAR, Types.INTEGER, Types.CHAR });
-		} catch (DataAccessException e) {
+		} catch (Exception e) {
 			return 0;
 		}
 	}
@@ -189,7 +189,7 @@ public class PostDao {
 		try {
 			return jdbcTemplate.query(sql, new PostMapper());
 			
-		} catch (DataAccessException e) {
+		} catch (Exception e) {
 			return null;
 		}
 	}

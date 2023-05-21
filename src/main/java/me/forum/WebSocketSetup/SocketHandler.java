@@ -48,7 +48,7 @@ public class SocketHandler extends TextWebSocketHandler {
 		default:
 			handler.addClient(user.getTaikhoan(), session);
 			String[] path = String.valueOf(json.get("path")).split("/");
-			if("chat".equals(path[1]) && path.length >= 3) {
+			if(path.length >= 3 && "chat".equals(path[1])) {
 				handler.addChat(path[2], user.getTaikhoan(), session);
 			}
 		}

@@ -29,7 +29,7 @@ public class MainController extends BaseController {
 	}
 
 	@RequestMapping(value = { "/", "/index" })
-	public ModelAndView homePage(HttpSession session, HttpServletRequest request) {
+	public ModelAndView homePage(HttpServletRequest request) {
 		mav.setViewName("index");
 		mav.addObject("posts", postDao.GetPostsLimitDesc(0, 10));
 		mav.addObject("groups", groupDao.getGroupList());

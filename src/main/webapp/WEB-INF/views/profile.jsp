@@ -11,27 +11,28 @@
 			<div class="right">
 				<c:if test="${not empty profile }">
 					<div class="content">
-						<div class='mt-0 ms-2'>
-							<div class=' c-header'>
+						<div class='mt-0 ms-2 d-flex'>
 								<img class='avt-profile rounded-circle'
 									src='${profile.getAnhdaidien() }'>
 								<div>
-									<div>
+									<div class="ps-2">
 										<i class="fas fa-circle ${profile.getStatus() }"></i>
 										<span class='name ps-0'>${profile.getHoten() }</span>
-										<small>ID: ${profile.getTaikhoan() }</small>
 										<c:if test="${ not empty userID and !profile.equals(userID)}">
 										
 											<a href="/chat/${profile.getTaikhoan() }"><i class="fas fa-comments text-muted ms-1"></i></a>
 										</c:if>
 									</div>
-									<p class='ps-2 mb-0'>Bài viết: ${postOfUser.size() }</p>
-									<p class='ps-2 mb-0'>Giới tính: ${profile.getGioitinh() }</p>
-									<p class='ps-2 mb-0'>Ngày sinh: ${profile.getNgaysinh() }</p>
-									<p class='ps-2 mb-0'>Số điện thoại:
+									<div>
+										
+										<small class="ps-2">ID: ${profile.getTaikhoan() }</small>
+										<p class='ps-2 mb-0'>Bài viết: ${postOfUser.size() }</p>
+										<p class='ps-2 mb-0'>Giới tính: ${profile.getGioitinh() }</p>
+										<p class='ps-2 mb-0'>Ngày sinh: ${profile.getNgaysinh() }</p>
+										<p class='ps-2 mb-0'>Số điện thoại:
 										${profile.getSodienthoai() }</p>
-									<p class='ps-2 mb-0'>Sở thích: ${profile.getSothich() }</p>
-								</div>
+										<p class='ps-2 mb-0'>Sở thích: ${profile.getSothich() }</p>
+									</div>
 							</div>
 						</div>
 					</div>
