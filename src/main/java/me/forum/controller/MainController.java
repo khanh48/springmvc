@@ -203,5 +203,32 @@ public class MainController extends BaseController {
 		}
 		return mav;
 	}
+	@RequestMapping(value = "/errors")
+	public ModelAndView errorPage(HttpServletRequest request) {
+		mav.addObject("errorMessage", null);
+		mav.setViewName("errors");
+		String result = "";
+		switch ((int)request.getAttribute("javax.servlet.error.status_code")) {
+		case 400:
+			result = "400 Bad Request";
+			break;
+		case 401:
+			result = "401 Unauthorized";
+			break;
+		case 403:
+			result = "403 Forbidden: Người dùng không được phép truy cập vào tài nguyên này";
+			break;
+		case 404:
+			result = "404 - Trang không tồn tại";
+			break;
+		case 500:
+			result = "500 Internal Server Error";
+			break;
+		default:
+			break;
+		}
+		mav.addObject("errorMessage", result);
+		return mav;
+	}
 
 }

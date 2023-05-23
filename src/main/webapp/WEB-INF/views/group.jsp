@@ -12,7 +12,7 @@
 			<div class="right">
 			<c:forEach items="${entities.get('group') }" var="i" varStatus="idx">
 				<div class="content">
-					<div class="c-body">
+					<div class="p-2">
 						<a class="fs-4" href="/nhom/${i.getManhom() }">${i.getTennhom()}</a>
 						<div>
 							<span>Mô tả:</span> <span><c:out value="${i.getMota()}"></c:out></span>
@@ -33,7 +33,7 @@
 				
 				<c:if test="${ empty entities}">
 				<div class="content">
-					<div class="c-body">
+					<div class="p-2">
 						<span class="fs-4" href="/nhom/${group.getManhom() }">${group.getTennhom()}</span>
 						<c:if test="${userID.getRank() >= 1 }">
 							<button class="btn-edit btn-hover" value="${group.getManhom() }" onclick="editGroup(this);"></button>

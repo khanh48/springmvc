@@ -214,6 +214,7 @@ function loadPostWithSort(gid, reset) {
 			}else{
 				$("#loadMore").hide();
 			}
+			loadReadMore();
 		}
 	});
 }
