@@ -164,7 +164,7 @@ public class PostDao {
 	public List<Post> Search(String input, int limit){
 		String sql = "select * from baiviet where tieude like ? or noidung like ? order by mabaiviet desc limit ?;";
 		try {
-			return jdbcTemplate.query(sql, new Object[] {input, input, limit}, new int[] {Types.NVARCHAR, Types.NVARCHAR, Types.INTEGER}, new PostMapper());
+			return jdbcTemplate.query(sql, new Object[] {"%" + input + "%", "%" + input + "%", limit}, new int[] {Types.NVARCHAR, Types.NVARCHAR, Types.INTEGER}, new PostMapper());
 		}catch (Exception e) {
 			return null;
 		}

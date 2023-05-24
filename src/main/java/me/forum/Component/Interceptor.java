@@ -76,6 +76,8 @@ public class Interceptor implements HandlerInterceptor {
 			allgroup.add(postDao.ByGroupLimit(post.getManhom(), 0, 3));
 		}
 		session.setAttribute("bestgroups", allgroup);
+		if(modelAndView != null)
+			modelAndView.addObject("errorMessage", null);
 	}
 
 	@Override

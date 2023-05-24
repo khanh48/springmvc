@@ -35,6 +35,9 @@ function connect(){
 				} else {
 					ntfNum.text("99+");
 				}
+				if(document.querySelector("#notify-empty") != null){
+					$("#bell-ntf").html("");
+				}
 				$("#bell-ntf").prepend(s);
 				$('#headerToast').text("Thông báo");
 				$('#toastMessage').html("<a href='" + data.url + "'><div class='notify-link'>" + data.message + "</div></a>");
@@ -64,9 +67,11 @@ function connect(){
 				let msgNum = $("#msg-num");
 				let num = parseInt(msgNum.text());
 				let newChatNode = document.querySelector("#chat-" + data.user);
-	
+				if(document.querySelector("#message-empty") != null){
+					$(".chat-container").html("");
+				}
 				if (newChatNode == null) {
-					$("#chat-container").prepend(addNewMessage(data, "unread"));
+					$(".chat-container").prepend(addNewMessage(data, "unread"));
 				} else {
 					let pr = newChatNode.parentNode;
 					pr.insertBefore(newChatNode, pr.firstChild);
@@ -85,6 +90,9 @@ function connect(){
 				break;
 			case "chat":
 				$(".list-message").append(addMessage(data.avatar, data.message, data.time, data.sender));
+				if(document.querySelector("#message-empty") != null){
+					$(".chat-container").html("");
+				}
 				addReadedMessage(data);
 	
 	
@@ -120,7 +128,7 @@ function addNewMessage(data, status) {
 function addReadedMessage(data) {
 	let newChatNode = document.querySelector("#chat-" + data.user);
 	if (newChatNode == null) {
-		$("#chat-container").prepend(addNewMessage(data, ""));
+		$(".chat-container").prepend(addNewMessage(data, ""));
 	} else {
 		let pr = newChatNode.parentNode;
 		pr.insertBefore(newChatNode, pr.firstChild);

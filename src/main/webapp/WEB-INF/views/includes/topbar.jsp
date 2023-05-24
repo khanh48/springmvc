@@ -60,7 +60,7 @@
 					<ul class="dropdown-menu dropdown-menu-end dropdown-notify"
 						id="bell-ntf">
 						<c:if test="${empty listNotify}">
-						<li>
+						<li id="notify-empty">
 						<a class="dropdown-item text-wrap">Không có thông báo mới</a>
 						</li>
 						</c:if>
@@ -116,7 +116,7 @@
 						<hr class="dropdown-divider">
 						<div class="chat-container">
 							<c:if test="${empty listMessage}">
-							<li>
+							<li id="message-empty">
 								<a class="dropdown-item text-wrap">Không có tin nhắn mới.</a>
 								</li>
 							</c:if>

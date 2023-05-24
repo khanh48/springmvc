@@ -205,7 +205,6 @@ public class MainController extends BaseController {
 	}
 	@RequestMapping(value = "/errors")
 	public ModelAndView errorPage(HttpServletRequest request) {
-		mav.addObject("errorMessage", null);
 		mav.setViewName("errors");
 		String result = "";
 		switch ((int)request.getAttribute("javax.servlet.error.status_code")) {

@@ -43,6 +43,24 @@
 						<div class='m-0 hide wh' style='text-align: end;'>
 							<span class='read-more'></span>
 						</div>
+						<div id="forpost${post.getMabaiviet() }" class="carousel slide mt-1" data-bs-ride="carousel">
+							<div class="carousel-inner">
+								<c:forEach items="${post.getImage() }" var="i" varStatus="idx">
+							
+									<div class="carousel-item <c:if test="${idx.first }">active</c:if>">
+										<img src="${i.getUrl() }" class="d-block w-100 postImg" alt="...">
+									</div>
+								</c:forEach>
+							</div>
+							<button class="carousel-control-prev" type="button" data-bs-target="#forpost${post.getMabaiviet() }" data-bs-slide="prev">
+								<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+								<span class="visually-hidden">Previous</span>
+							</button>
+							<button class="carousel-control-next" type="button" data-bs-target="#forpost${post.getMabaiviet() }" data-bs-slide="next">
+								<span class="carousel-control-next-icon" aria-hidden="true"></span>
+								<span class="visually-hidden">Next</span>
+							</button>
+						</div>
 						<hr class='m-0'>
 						<div class='interactive p-1 m-0'>
 							<button type='button' class='like p-1'

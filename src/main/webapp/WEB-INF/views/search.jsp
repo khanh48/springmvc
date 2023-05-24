@@ -49,6 +49,9 @@
 		</div>
 
 	</div>
+	<script>
+	loadReadMore();
+	</script>
 	<%@ include file="/WEB-INF/views/includes/footer.jsp"%>
 </body>
 
